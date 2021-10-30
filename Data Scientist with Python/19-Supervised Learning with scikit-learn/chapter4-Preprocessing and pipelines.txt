@@ -1,0 +1,112 @@
+
+
+1. Preprocessing data
+Welcome to the final chapter of this introductory course on supervised learning with scikit-learn! You have learnt how to implement both classification and regression models, how to measure model performance, and how to tune hyperparameters in order to improve performance. However, all the data that you have used so far has been relatively nice and in a format that allows you to plug and play into scikit-learn from the get-go. With real-world data, this will rarely be the case, and instead you will have to preprocess your data before you can build models. In this chapter, you will learn all about this vital preprocessing step.
+
+2. Dealing with categorical features
+Say you are dealing with a dataset that has categorical features, such as 'red' or 'blue', or 'male' or 'female'. As these are not numerical values, the scikit-learn API will not accept them and you will have to preprocess these features into the correct format. Our goal is to convert these features so that they are numerical. The way we achieve this by splitting the feature into a number of binary features called 'dummy variables', one for each category: '0' means the observation was not that category, while '1' means it was.
+
+3. Dummy variables
+For example, say we are dealing with a car dataset that has a 'origin' feature with three different possible values: 'US', 'Asia', and 'Europe'.
+
+4. Dummy variables
+We create binary features for each of the origins, as each car is made in exactly one country, each row in the dataset will have a one in exactly one of the three columns and zeros in the other two. Notice that in this case, if a car is not from the US and not from Asia, then implicitly, it is from Europe. That means that we do not actually need three separate features, but only two, so we can
+
+5. Dummy variables
+delete the 'Europe' column. If we do not do this, we are duplicating information, which might be an issue for some models.
+
+6. Dealing with categorical features in Python
+There are several ways to create dummy variables in Python. In scikit-learn, we can use OneHotEncoder. Or we can use pandas' get dummies function. Here, we will use get dummies.
+
+7. Automobile dataset
+The target variable here is miles per gallon or mpg. Remember that there is one categorical feature, origin, with three possible values: 'US', 'Asia', and 'Europe'.
+
+8. EDA w/ categorical feature
+Here is a box plot showing how mpg varies by origin. Let's encode this feature using dummy variables.
+
+9. Encoding dummy variables
+We import pandas, read in the DataFrame, and then apply the get dummies function. Notice, how pandas creates three new binary features. In the third row, origin USA and origin Europe have zeroes, while origin Asia has a one, indicating that the car is of Asian origin. But if origin USA and origin Europe are zero, then we already know that the car is Asian!
+
+10. Encoding dummy variables
+So, we drop the origin Asia column. Alternatively, we could have passed the "drop first" option to get dummies. Notice that the new column names have the following structure: original column name, underscore, value name. Once we have created our dummy variables, we can fit models as before.
+
+11. Linear regression with dummy variables
+Here, for example, we fit the ridge regression model to the data and compute its R-squared.
+
+12. Let's practice!
+Now it's your turn to practice dealing with categorical features. Enjoy!
+
+
+
+
+
+1. Handling missing data
+We say that data is missing when there is no value for a given feature in a particular row. This can occur in the real-world for many reasons: there may have been no observation, there may have been a transcription error, or the data may have been corrupted. Whatever the case, we, as data scientists, need to deal with it.
+
+2. PIMA Indians dataset
+Let's now load the PIMA Indians dataset. It doesn't look like it has any missing values as, according to df dot info, all features have 768 non-null entries. However, missing values can be encoded in a number of different ways, such as by zeroes, or question marks, or negative ones.
+
+3. PIMA Indians dataset
+Checking out df dot head, it looks as though there are observations where insulin is zero. And triceps, which is the thickness of the skin, is zero. These are not possible and, as we have no indication of the real values, the data is, for all intents and purposes, missing.
+
+4. Dropping missing data
+Before we go any further, let's make all these entries 'NaN' using the replace method on the relevant columns. So, how do we deal with missing data? One way is to drop all rows containing missing data.
+
+5. Dropping missing data
+We can do so using the pandas DataFrame method dropna. Checking out the shape of the resulting data frame, though, we see that we now have only approximately half the rows left! We've lost half of our data and this is unacceptable. If only a few rows contain missing values, then it's not so bad, but generally we need a more robust method. It is generally an equally bad idea to remove columns that contain NaNs.
+
+6. Imputing missing data
+Another option is to impute missing data. All imputing means is to make an educated guess as to what the missing values could be. A common strategy is, in any given column with missing values, to compute the mean of all the non-missing entries and to replace all missing values with the mean. Let's try this now on our dataset. We import Imputer from sklearn dot preprocessing and instantiate an instance of the Imputer: imp. The keyword argument missing values here specifies that missing values are represented by NaN; strategy specifies that we will use the mean as described above; axis equals 0 specifies that we will impute along columns, a '1' would mean rows. Now, we can fit this imputer to our data using the fit method and then transform our data using the transform method! Due to their ability to transform our data as such, imputers are known as transformers, and any model that can transform data this way, using the transform method, is called a transformer. After transforming the data, we could then fit our supervised learning model to it, but is there a way to do both at once?
+
+7. Imputing within a pipeline
+There sure is! We can use the scikit-learn pipeline object. We import Pipeline from sklearn dot pipeline and Imputer from sklearn dot preprocessing. We also instantiate a log reg model. We then build the Pipeline object! We construct a list of steps in the pipeline, where each step is a 2-tuple containing the name you wish to give the relevant step and the estimator. We then pass this list to the Pipeline constructor. We can split our data into training and test sets and
+
+8. Imputing within a pipeline
+fit the pipeline to the training set and then predict on the test set, as with any other model. For good measure here, we compute accuracy. Note that, in a pipeline, each step but the last must be a transformer and the last must be an estimator, such as, a classifier or a regressor.
+
+9. Let's practice!
+Now it's your turn to impute missing data and build machine learning pipelines!
+
+
+
+
+1. Centering and scaling
+Great work on imputing data and building machine learning pipelines using scikit-learn! Data imputation is one of several important preprocessing steps for machine learning. In this video, will cover another: centering and scaling your data.
+
+2. Why scale your data?
+To motivate this, let's use df dot describe to check out the ranges of the feature variables in the red wine quality dataset. The features are chemical properties such as acidity, pH, and alcohol content. The target value is good or bad, encoded as '1' and '0', respectively. We see that the ranges vary widely: 'density' varies from (point) 99 to to 1 and 'total sulfur dioxide' from 6 to 289!
+
+3. Why scale your data?
+Many machine learning models use some form of distance to inform them so if you have features on far larger scales, they can unduly influence your model. For example, K-nearest neighbors uses distance explicitly when making predictions. For this reason, we actually want features to be on a similar scale. To achieve this, we do what is called normalizing or scaling and centering.
+
+4. Ways to normalize your data
+There are several ways to normalize your data: given any column, you can subtract the mean and divide by the variance so that all features are centred around zero and have variance one. This is called standardization. You can also subtract the minimum and divide by the range of the data so the normalized dataset has minimum zero and maximum one. You can also normalize so that data ranges from -1 to 1 instead. In this video, I'll show you to to perform standardization. See the scikit-learn docs for how to implement the other approaches.
+
+5. Scaling in scikit-learn
+To scale our features, we import scale from sklearn dot preprocessing. We then pass the feature data to scale and this returns our scaled data. Looking at the mean and standard deviation of the columns of both the original and scaled data verifies this.
+
+6. Scaling in a pipeline
+We can also put a scalar in a pipeline object! To do so, we import StandardScaler from sklearn dot reprocessing and build a pipeline object as we did earlier; here we'll use a K-nearest neighbors algorithm. We then split our wine quality dataset in training and test sets, fit the pipeline to our training set, and predict on our test set. Computing the accuracy yields (point) 956, whereas performing KNN without scaling resulted in an accuracy of (point) 928. Scaling did improve our model performance!
+
+7. CV and scaling in a pipeline
+Let's also take a look at how we can use cross-validation with a supervised learning pipeline. We first build our pipeline. We then specify our hyperparameter space by creating a dictionary: the keys are the pipeline step name followed by a double underscore, followed by the hyperparameter name; the corresponding value is a list or an array of the values to try for that particular hyperparameter. In this case, we are tuning only the n neighbors in the KNN model. As always, we split our data into cross-validation and hold-out sets. We then perform a GridSearch over the parameters in the pipeline by instantiating the GridSearchCV object and fitting it to our training data. The predict method will call predict on the estimator with the best found parameters and we do this on the hold-out set.
+
+8. Scaling and CV in a pipeline
+We also print the best parameters chosen by our gridsearch, along with the accuracy and classification report of the predictions on the hold-out set.
+
+9. Let's practice!
+
+
+
+1. Final thoughts
+Congratulations on completing this Introduction to Supervised Learning with scikit-learn. You have sure come a long way.
+
+2. What you’ve learned
+To recap, you have learnt the fundamentals of using machine learning techniques to build predictive models for both regression and classification problems. You have used these skills to build models using real-world datasets. You have learnt the concepts of underfitting, overfitting. And have learnt the techniques of test-train split, cross-validation, and grid search in order to fine tune your models and report how good they are.
+
+3. What you’ve learned
+You've also gained first-hand experience at using regularization in your models, seen the utility of lasso and ridge regression, and learnt many types of data pre-processing steps that are essential for any well-rounded data scientist. For more information and examples, check out the scikit-learn documentation and my book, Introduction to Machine Learning with Python.
+
+4. Let's practice!
+Congratulations once again and we can't wait to see you in more courses.
+

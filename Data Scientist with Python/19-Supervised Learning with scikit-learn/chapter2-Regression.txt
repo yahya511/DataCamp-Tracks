@@ -1,0 +1,155 @@
+
+
+1. Introduction to regression
+Congrats on making it through that introduction to supervised learning and classification. Now, we're going to check out the other type of supervised learning problem: regression. In regression tasks, the target value is a continuously varying variable, such as a country's GDP or the price of a house.
+
+2. Boston housing data
+Our first regression task will be using the Boston housing dataset! Let's check out the data. First, we load it from a comma-separated values file, also known as a csv file, using pandas' read csv function. See the DataCamp course on importing data for more information on file formats and loading your data. Note that you can also load this data from scikit-learn's built-in datasets. We then view the head of the data frame using the head method. The documentation tells us the feature 'CRIM' is per capita crime rate, 'NX' is nitric oxides concentration, and 'RM' average number of rooms per dwelling, for example. The target variable, 'MEDV', is the median value of owner occupied homes in thousands of dollars.
+
+3. Creating feature and target arrays
+Now, given data as such, recall that scikit-learn wants 'features' and target' values in distinct arrays, X and y,. Thus, we split our DataFrame: in the first line here, we drop the target; in the second, we keep only the target. Using the values attributes returns the NumPy arrays that we will use.
+
+4. Predicting house value from a single feature
+As a first task, let's try to predict the price from a single feature: the average number of rooms in a block. To do this, we slice out the number of rooms column of the DataFrame X, which is the fifth column into the variable X rooms. Checking the type of X rooms and y, we see that both are NumPy arrays. To turn them into NumPy arrays of the desired shape, we apply the reshape method to keep the first dimension, but add another dimension of size one to X.
+
+5. Plotting house value vs. number of rooms
+Now, let's plot house value as a function of number of rooms using matplotlib's plt dot scatter. We'll also label our axes using x label and y label.
+
+6. Plotting house value vs. number of rooms
+We can immediately see that, as one might expect, more rooms lead to higher prices.
+
+7. Fitting a regression model
+It's time to fit a regression model to our data. We're going to use a model called linear regression, which we'll explain in the next video. But first, I'm going to show you how to fit it and to plot its predictions. We import numpy as np, linear model from sklearn, and instantiate LinearRegression as regr. We then fit the regression to the data using regr dot fit and passing in the data, the number of rooms, and the target variable, the house price, as we did with the classification problems. After this, we want to check out the regressors predictions over the range of the data. We can achieve that by using np linspace between the maximum and minimum number of rooms and make a prediction for this data.
+
+8. Fitting a regression model
+Plotting this line with the scatter plot results in the figure you see here.
+
+9. Let's practice!
+
+
+
+
+1. The basics of linear regression
+Now, how does linear regression actually work?
+
+2. Regression mechanics
+We want to fit a line to the data and a line in two dimensions is always of the form y = ax + b, where y is the target, x is the single feature, and a and b are the parameters of the model that we want to learn. So the question of fitting is reduced to: how do we choose a and b? A common method is to define an error function for any given line and then to choose the line that minimizes the error function. Such an error function is also called a loss or a cost function.
+
+3. The loss function
+What will our loss function be? Intuitively, we want the line to be as close to the
+
+4. The loss function
+actual data points as possible. For this reason, we wish to minimize the vertical distance between the fit and the data. So for each data point,
+
+5. The loss function
+we calculate the vertical distance between it and the line. This distance is called a residual.
+
+6. The loss function
+Now, we could try to minimize the sum of the residuals,
+
+7. The loss function
+but then a large positive residual would cancel out
+
+8. The loss function
+a large negative residual. For this reason we minimize the sum of the squares of the residuals! This will be our loss function and using this loss function is commonly called ordinary least squares, or OLS for short. Note that this is the same as minimizing the mean squared error of the predictions on the training set. See our statistics curriculum for more detail. When you call fit on a linear regression model in scikit-learn, it performs this OLS under the hood.
+
+9. Linear regression in higher dimensions
+When we have two features and one target, a line is of the form y = a1x1 + a2x2 + b, so to fit a linear regression model is to specify three variables, a1, a2, and b. In higher dimensions, that is, when we have more than one or two features, a line of this form, so fitting a linear regression model is to specify a coefficient, ai, for each feature, as well as the variable, b. The scikit-learn API works exactly the same in this case: you pass the fit method two arrays: one containing the features, the other the target variable. Let's see this in action.
+
+10. Linear regression on all features
+In this code, we are working with all the features from the Boston Housing dataset. We split it into training and test sets; we instantiate the regressor, fit it on the training set and predict on the test set. We saw that, in the world of classification, we could use accuracy as a metric of model performance. The default scoring method for linear regression is called R squared. Intuitively, this metric quantifies the amount of variance in the target variable that is predicted from the feature variables. See the scikit-learn documentation and our statistics curriculum for more details. To compute the R squared, we once again apply the method score to the model and pass it two arguments: the test data and the test data target. Note that generally you will never use linear regression out of the box like this; you will most likely wish to use regularization, which we'll see soon and which places further constraints on the model coefficients. However, learning about linear regression and how to use it in scikit-learn is an essential first step toward using regularized linear models.
+
+11. Let's practice!
+
+
+
+
+
+1. Cross-validation
+Great work on those regression challenges! You are now also becoming more acquainted with train test split and computing model performance metrics on your test set. Can you spot a potential pitfall of this process? Well, let's think about it for a bit:
+
+2. Cross-validation motivation
+if you're computing R squared on your test set, the R squared returned is dependent on the way that you split up the data! The data points in the test set may have some peculiarities that mean the R squared computed on it is not representative of the model's ability to generalize to unseen data. To combat this dependence on what is essentially an arbitrary split, we use a technique called cross-validation.
+
+3. Cross-validation basics
+We begin by splitting the dataset into five groups or folds.
+
+4. Cross-validation basics
+Then we hold out the first fold as a test set,
+
+5. Cross-validation basics
+fit our model on the remaining four folds,
+
+6. Cross-validation basics
+predict on the test set, and
+
+7. Cross-validation basics
+compute the metric of interest.
+
+8. Cross-validation basics
+Next, we hold out the
+
+9. Cross-validation basics
+second fold as our test set,
+
+10. Cross-validation basics
+fit on the remaining data,
+
+11. Cross-validation basics
+predict on the test set, and
+
+12. Cross-validation basics
+compute the metric of interest. Then similarly
+
+13. Cross-validation basics
+with the third,
+
+14. Cross-validation basics
+fourth, and
+
+15. Cross-validation basics
+fifth fold.
+
+16. Cross-validation basics
+As a result we get five values of R squared from which we can compute statistics of interest, such as the mean and median and 95% confidence intervals.
+
+17. Cross-validation and model performance
+As we split the dataset into five folds, we call this process 5-fold cross validation. If you use 10 folds, it is called 10-fold cross validation. More generally, if you use k folds, it is called k-fold cross validation or k-fold CV. There is, however, a trade-off as using more folds is more computationally expensive. This is because you are fittings and predicting more times. This method avoids the problem of your metric of choice being dependent on the train test split.
+
+18. Cross-validation in scikit-learn
+To perform k-fold CV in scikit-learn, we first import cross val score from sklearn dot model selection. As always, we instantiate our model, in this case, a regressor. We then call cross val score with the regressor, the feature data, and the target data as the first three positional arguments. We also specify the number of folds with the keyword argument, cv. This returns an array of cross-validation scores, which we assign to cv results. The length of the array is the number of folds utilized. Note that the score reported is R squared, as this is the default score for linear regression. . We print the scores here. We can also, for example, compute the mean, which we also do.
+
+19. Let's practice!
+Now it's your turn to try your hand at k-fold cross-validation in the interactive exercises. Have fun!
+
+
+
+
+1. Regularized regression
+Recall that
+
+2. Why regularize?
+what fitting a linear regression does is minimize a loss function to choose a coefficient ai for each feature variable. If we allow these coefficients or parameters to be super large, we can get overfitting. It isn't so easy to see in two dimensions, but when you have loads and loads of features, that is, if your data sit in a high-dimensional space with large coefficients, it gets easy to predict nearly anything. For this reason, it is common practice to alter the loss function so that it penalizes for large coefficients. This is called regularization. The first type of regularized regression that we'll look at is called ridge regression
+
+3. Ridge regression
+in which our loss function is the standard OLS loss function plus the squared value of each coefficient multiplied by some constant alpha. Thus, when minimizing the loss function to fit to our data, models are penalized for coefficients with a large magnitude: large positive and large negative coefficients, that is. Note that alpha is a parameter we need to choose in order to fit and predict. Essentially, we can select the alpha for which our model performs best. Picking alpha for ridge regression is similar to picking k in KNN. This is called hyperparameter tuning and we'll see much more of this soon. This alpha, which you may also see called lambda in the wild, can be thought of as a parameter that controls model complexity. Notice that when alpha is equal to zero, we get back OLS. Large coefficients in this case are not penalized and the overfitting problem is not accounted for. A very high alpha means that large coefficients are significantly penalized, which can lead to a model that is too simple and ends up underfitting the data. The method of performing ridge regression with scikit-learn mirrors the other models that we have seen.
+
+4. Ridge regression in scikit-learn
+We import Ridge from sklearn dot linear model, we split our data into test and train, fit on the training, and predict on the test. Note that we set alpha using the keyword argument alpha. Also notice the argument normalize: setting this equal to True ensures that all our variables are on the same scale and we will cover this in more depth later. There is another type of regularized regression called lasso regression,
+
+5. Lasso regression
+in which our loss function is the standard OLS loss function plus the absolute value of each coefficient multiplied by some constant alpha.
+
+6. Lasso regression in scikit-learn
+The method of performing lasso regression in scikit-learn mirrors ridge regression, as you can see here.
+
+7. Lasso regression for feature selection
+One of the really cool aspects of lasso regression is that it can be used to select important features of a dataset. This is because it tends to shrink the coefficients of less important features to be exactly zero. The features whose coefficients are not shrunk to zero are 'selected' by the LASSO algorithm. Let's check this out in practice.
+
+8. Lasso for feature selection in scikit-learn
+We import Lasso as before and store the feature names in the variable names. We then instantiate our regressor, fit it to the data as always. Then we can extract the coef attribute and store in lasso coef. Plotting the coefficients as a function of feature name yields this figure
+
+9. Lasso for feature selection in scikit-learn
+and you can see directly that the most important predictor for our target variable, housing price, is number of rooms! This is not surprising and is a great sanity check. This type of feature selection is very important for machine learning in an industry or business setting because it allows you, as a Data Scientist, to communicate important results to non-technical colleagues. And bosses! The power of reporting important features from a linear model cannot be overestimated. It is also valuable in research science, in order identify which factors are important predictors for various physical phenomena.
+
+10. Let's practice!

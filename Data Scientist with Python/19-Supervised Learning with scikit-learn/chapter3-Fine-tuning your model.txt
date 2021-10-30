@@ -1,0 +1,173 @@
+
+
+1. How good is your model?
+In classification,
+
+2. Classification metrics
+we've seen that you can use accuracy, the fraction of correctly classified samples, to measure model performance. However, accuracy is not always a useful metric.
+
+3. Class imbalance example: Emails
+Consider a spam classification problem in which 99% of emails are real and only 1% are spam. I could build a model that classifies all emails as real; this model would be correct 99% of the time and thus have an accuracy of 99%, which sounds great. However, this naive classifier does a horrible job of predicting spam: it never predicts spam at all, so it completely fails at its original purpose. The situation when one class is more frequent is called class imbalance because the class of real emails contains way more instances than the class of spam. This is a very common situation in practice and requires a more nuanced metric to assess the performance of our model.
+
+4. Diagnosing classification predictions
+Given a binary classifier, such as our spam email example, we can draw up a 2-by-2 matrix that summarizes predictive performance called a confusion matrix:
+
+5. Diagnosing classification predictions
+across the top are the predicted labels,
+
+6. Diagnosing classification predictions
+down the side the actual labels,
+
+7. Diagnosing classification predictions
+such as you see here. Given any model, we can fill in the confusion matrix according to its predictions.
+
+8. Diagnosing classification predictions
+In the top left square, we have the number of spam emails correctly labeled;
+
+9. Diagnosing classification predictions
+in the bottom right square, we have the number of real emails correctly labeled;
+
+10. Diagnosing classification predictions
+in the top right, the number of spam emails incorrectly labeled;
+
+11. Diagnosing classification predictions
+and in the bottom left, the number of real emails incorrectly labeled. Note that correctly labeled spam emails
+
+12. Diagnosing classification predictions
+are referred to as true positives and
+
+13. Diagnosing classification predictions
+correctly labeled real emails as true negatives.
+
+14. Diagnosing classification predictions
+While incorrectly labeled spam will be referred to as false negatives and
+
+15. Diagnosing classification predictions
+incorrectly labeled real emails as false positives.
+
+16. Diagnosing classification predictions
+Usually, the "class of interest" is called the positive class. As we are trying to detect spam, this makes spam the positive class. Which class you call positive is really up to you. So why do we care about the confusion matrix? First, notice that you can retrieve accuracy from the confusion matrix: it's the sum of the diagonal divided by the total sum of the matrix.
+
+17. Metrics from the confusion matrix
+There are several other important metrics you can easily calculate from the confusion matrix. Precision, which is the number of true positives divided by the total number of true positives and false positives. It is also called the positive predictive value or PPV. In our case, this is the number of correctly labeled spam emails divided by the total number of emails classified as spam. Recall, which is the number of true positives divided by the total number of true positives and false negatives. This is also called sensitivity, hit rate, or true positive rate. The F1-score is defined as two times the product of the precision and recall divided by the sum of the precision and recall, in other words, it's the harmonic mean of precision and recall. To put it in plain language, high precision means that our classifier had a low false positive rate, that is, not many real emails were predicted as being spam. Intuitively, high recall means that our classifier predicted most positive or spam emails correctly.
+
+18. Confusion matrix in scikit-learn
+Let's now compute the confusion matrix, along with the metrics for the classifier we trained on the voting dataset in the exercise. We import classification report and confusion matrix from sklearn dot metrics. As always, we instantiate our classifier, split the data into train and test, fit the training data, and predict the labels of the test set.
+
+19. Confusion matrix in scikit-learn
+To compute the confusion matrix, we pass the test set labels and the predicted labels to the function confusion matrix. To compute the resulting metrics, we pass the same arguments to classification report, which outputs a string containing all the relevant metrics, which you can see here. For all metrics in scikit-learn, the first argument is always the true label and the prediction is always the second argument.
+
+20. Let's practice!
+
+
+
+
+1. Logistic regression and the ROC curve
+It's time to introduce another model to your classification arsenal: logistic regression. Despite its name, logistic regression is used in classification problems, not regression problems. We won't go into the mathematical details here, see our stats courses for that, but we will provide an intuition towards how logistic regression or log reg works for binary classification, that is, when we have two possible labels for the target variable.
+
+2. Logistic regression for binary classification
+Given one feature, log reg will output a probability, p, with respect to the target variable. If p is greater than 0 (point) 5, we label the data as '1'; if p is less than 0 (point) 5, we label it '0'.
+
+3. Linear decision boundary
+Note that log reg produces a linear decision boundary. Using logistic regression in scikit-learn
+
+4. Logistic regression in scikit-learn
+follows exactly the same formula that you now know so well: perform the necessary imports, instantiate the classifier, split your data into training and test sets, fit the model on your training data, and predict on your test set. Here we have used the voting dataset that you worked with earlier in the course.
+
+5. Probability thresholds
+Notice that in defining logistic regression, we have specified a threshold of 0 (point) 5 for the probability, a threshold that defines our model. Note that this is not particular for log reg but also could be used for KNN, for example. Now, what happens as we vary this threshold?
+
+6. The ROC curve
+In particular, what happens to the true positive and false positive rates as we vary the threshold?
+
+7. The ROC curve
+When the threshold equals zero, the model predicts '1' for all the data, which means the true positive rate is equal to the false positive rate
+
+8. The ROC curve
+is equal to one. When the threshold
+
+9. The ROC curve
+equals '1', the model predicts '0' for all data, which means that both true and false positive rates
+
+10. The ROC curve
+are 0. If we
+
+11. The ROC curve
+vary the threshold between these two extremes, we get a series of different false positive and true positive rates.
+
+12. The ROC curve
+The set of points we get when trying all possible thresholds is called the receiver operating characteristic curve or ROC curve.
+
+13. Plotting the ROC curve
+To plot the ROC curve, we import roc curve from sklearn dot metrics; we then call the function roc curve; the first argument is given by the actual labels, the second by the predicted probabilities. A word on this in a second. We unpack the result into three variables: false positive rate, FPR; true positive rate, TPR; and the thresholds. We can then plot the FPR and TPR using pyplot's plot function to produce a figure such as this.
+
+14. Plotting the ROC curve
+We used the predicted probabilities of the model assigning a value of '1' to the observation in question. This is because to compute the ROC we do not merely want the predictions on the test set, but we want the probability that our log reg model outputs before using a threshold to predict the label. To do this we apply the method predict proba to the model and pass it the test data. predict proba returns an array with two columns: each column contains the probabilities for the respective target values. We choose the second column, the one with index 1, that is, the probabilities of the predicted labels being '1'.
+
+15. Let's practice!
+
+
+
+
+1. Area under the ROC curve
+Now the question is: given the ROC curve, can we extract a metric of interest?
+
+2. Area under the ROC curve (AUC)
+Consider the following: the larger the area under the ROC curve, the better our model is! The way to think about this is the following: if we had a model which produced an ROC curve that had a
+
+3. Area under the ROC curve (AUC)
+single point at 1,0, the upper left corner, representing a true positive rate of one and
+
+4. Area under the ROC curve (AUC)
+a false positive rate of zero, this would be a great model! For this reason,
+
+5. Area under the ROC curve (AUC)
+the area under the ROC, commonly denoted as AUC, is another popular metric for classification models.
+
+6. AUC in scikit-learn
+To compute the AUC, we import roc auc score from sklearn dot metrics. We instantiate our classifier, split our data into train and test sets, and fit the model to the training set. To compute the AUC, we first compute the predicted probabilities as above and then pass the true labels and the predicted probabilities to roc auc score. We can also compute the AUC using cross-validation.
+
+7. AUC using cross-validation
+To do so, we import and use the function cross val score as before, passing it the estimator, the features, and the target. We then additionally pass it the keyword argument scoring equals "roc auc" and print the AUC list as you can see here.
+
+8. Let's practice!
+Now, it's your turn to compute AUCs in the interactive exercise.
+
+
+
+
+1. Hyperparameter tuning
+Welcome back. Now that you're developing a feel for judging how well your models are performing, it is time to supercharge them.
+
+2. Hyperparameter tuning
+We have seen that when fitting a linear regression, what we are really doing is choosing parameters for the model that fit the data the best. We also saw that we had to choose a value for the alpha in ridge and lasso regression before fitting it. Analogously, before fitting and predicting K-nearest neighbors, we need to choose n neighbors. Such parameters, ones that need to be specified before fitting a model, are called hyperparameters. In other words, these are parameters that cannot be explicitly learned by fitting the model. Herein lies a fundamental key for building a successful model:
+
+3. Choosing the correct hyperparameter
+choosing the correct hyperparameter. The basic idea is to try a whole bunch of different values, fit all of them separately, see how well each performs, and choose the best one! This is called hyperparameter tuning and doing so in this fashion is the current standard. There may be a better way, however, and if you figure it out, I'd be surprised if it wouldn't make you famous. Now, when fitting different values of a hyperparameter, it is essential to use cross-validation as using train test split alone would risk overfitting the hyperparameter to the test set. We'll see in the next video that, even after tuning our hyperparameters using cross-validation, we'll want to have already split off a test set in order to report how well our model can be expected to perform on a dataset that it has never seen before.
+
+4. Grid search cross-validation
+The basic idea is as follows: we choose a grid of possible values we want to try for the hyperparameter or hyperparameters. For example, if we had two hyperparameters, C and alpha, the grid of values to test could look like this.
+
+5. Grid search cross-validation
+We then perform k-fold cross-validation for each point in the grid, that is, for each choice of hyperparameter or combination of hyperparameters.
+
+6. Grid search cross-validation
+We then choose for our model the choice of hyperparameters that performed the best! This is called a grid search and in scikit-learn we implement it using the class GridSearchCV.
+
+7. GridSearchCV in scikit-learn
+We import GridSearchCV from sklearn dot model selection. We then specify the hyperparameter as a dictionary in which the keys are the hyperparameter names, such as n neighbors in KNN or alpha in lasso regression. See the documentation of each model for the name of its hyperparameters. The values in the grid dictionary are lists containing the values we wish to tune the relevant hyperparameter or hyperparameters over. If we specify multiple parameters, all possible combinations will be tried. As always, we instantiate our classifier. We then use GridSearchCV and pass it our model, the grid we wish to tune over and the number of folds that we wish to use. This returns a GridSearch object that you can then fit to the data and this fit performs the actual grid search inplace. We can then apply the attributes best params and best score, respectively, to retrieve the hyperparameters that perform the best along with the mean cross-validation score over that fold.
+
+8. Let's practice!
+Now, it's your turn to practice your new grid search cross-validation chops. You'll also learn about RandomizedSearchCV, which is similar to GridSearch, except that it is able to jump around the grid. Happy grid searching!!
+
+
+
+
+Congrats on making it through those exercises. I hope that you had some serious fun with GridSearchCV and RandomizedSearchCV. After using K-fold cross-validation to tune my model's hyperparameters,
+
+2. Hold-out set reasoning
+I may want to report how well my model can be expected to perform on a dataset that it has never seen before, given my scoring function of choice. So, I want to use my model to predict on some labeled data, compare my prediction to the actual labels, and compute the scoring function. However, if I have used all of my data for cross-validation, estimating my model performance on any of it may not provide an accurate picture of how it will perform on unseen data. For this reason, it is important to split all of my data at the very beginning into a training set and hold-out set, then perform cross-validation on the training set to tune my model's hyperparameters. After this, I can select the best hyperparameters and use the hold-out set, which has not been used at all, to test how well the model can be expected to perform on a dataset that it has never seen before.
+
+3. Let's practice!
+You already have all the tools to perform this technique. Your old friend train test split and your new pal GridSearchCV will be particularly handy. Have a crack at it in the interactive exercises and we'll see you in the next chapter!
+

@@ -1,0 +1,88 @@
+
+
+1. Unsupervised Learning
+Hi! My name is Ben Wilson and I'm a Data Scientist and mathematician. We're here to learn about unsupervised learning in Python.
+
+2. Unsupervised learning
+Unsupervised learning is a class of machine learning techniques for discovering patterns in data. For instance, finding the natural "clusters" of customers based on their purchase histories, or searching for patterns and correlations among these purchases, and using these patterns to express the data in a compressed form. These are examples of unsupervised learning techniques called "clustering" and "dimension reduction".
+
+3. Supervised vs unsupervised learning
+Unsupervised learning is defined in opposition to supervised learning. An example of supervised learning is using the measurements of tumors to classify them as benign or cancerous. In this case, the pattern discovery is guided, or "supervised", so that the patterns are as useful as possible for predicting the label: benign or cancerous. Unsupervised learning, in contrast, is learning without labels. It is pure pattern discovery, unguided by a prediction task. You'll start by learning about clustering. But before we begin, let's introduce a dataset and fix some terminology.
+
+4. Iris dataset
+The iris dataset consists of the measurements of many iris plants of three different species. There are four measurements: petal length, petal width, sepal length and sepal width. These are the features of the dataset.
+
+1 http://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html/
+5. Arrays, features & samples
+Throughout this course, datasets like this will be written as two-dimensional numpy arrays. The columns of the array will correspond to the features. The measurements for individual plants are the samples of the dataset. These correspond to rows of the array.
+
+6. Iris data is 4-dimensional
+The samples of the iris dataset have four measurements, and so correspond to points in a four-dimensional space. This is the dimension of the dataset. We can't visualize four dimensions directly, but using unsupervised learning techniques we can still gain insight.
+
+7. k-means clustering
+In this chapter, we'll cluster these samples using k-means clustering. k-means finds a specified number of clusters in the samples. It's implemented in the scikit-learn or "sklearn" library. Let's see kmeans in action on some samples from the iris dataset.
+
+8. k-means clustering with scikit-learn
+The iris samples are represented as an array. To start, import kmeans from scikit-learn. Then create a kmeans model, specifying the number of clusters you want to find. Let's specify 3 clusters, since there are three species of iris. Now call the fit method of the model, passing the array of samples. This fits the model to the data, by locating and remembering the regions where the different clusters occur. Then we can use the predict method of the model on these same samples. This returns a cluster label for each sample, indicating to which cluster a sample belongs. Let's assign the result to labels, and print it out.
+
+9. Cluster labels for new samples
+If someone comes along with some new iris samples, k-means can determine to which clusters they belong without starting over. k-means does this by remembering the mean (or average) of the samples in each cluster. These are called the "centroids". New samples are assigned to the cluster whose centroid is closest.
+
+10. Cluster labels for new samples
+Suppose you've got an array of new samples. To assign the new samples to the existing clusters, pass the array of new samples to the predict method of the kmeans model. This returns the cluster labels of the new samples.
+
+11. Scatter plots
+In the next video, you'll learn how to evaluate the quality of your clustering. But for now, let's visualize our clustering of the iris samples using scatter plots. Here is a scatter plot of the sepal length vs petal length of the iris samples. Each point represents an iris sample, and is colored according to the cluster of the sample. To create a scatter plot like this, use PyPlot.
+
+12. Scatter plots
+Firstly, import PyPlot. It is conventionally imported as plt. Now get the x- and y- co-ordinates of each sample. Sepal length is in the 0th column of the array, while petal length is in the 2nd column. Now call the plt dot scatter function, passing the x- and y- co-ordinates and specifying c=labels to color by cluster label. When you are ready to show your plot, call plt dot show.
+
+13. Let's practice!
+It's time to take your first steps in unsupervised learning. Have fun!
+
+
+
+1. Transforming features for better clusterings
+Let's look now at another dataset,
+
+2. Piedmont wines dataset
+the Piedmont wines dataset. We have 178 samples of red wine from the Piedmont region of Italy. The features measure chemical composition (like alcohol content) and visual properties like color intensity. The samples come from 3 distinct varieties of wine.
+
+1 Source: https://archive.ics.uci.edu/ml/datasets/Wine
+3. Clustering the wines
+Let's take the array of samples and use KMeans to find 3 clusters.
+
+4. Clusters vs. varieties
+There are three varieties of wine, so let's use pandas crosstab to check the cluster label - wine variety correspondence. As you can see, this time things haven't worked out so well. The KMeans clusters don't correspond well with the wine varieties.
+
+5. Feature variances
+The problem is that the features of the wine dataset have very different variances. The variance of a feature measures the spread of its values. For example, the malic acid feature has a higher variance
+
+6. Feature variances
+than the od280 feature, and this can also be seen in their scatter plot. The differences in some of the feature variances is enormous, as seen here, for example, in the scatter plot of the od280 and proline features.
+
+7. StandardScaler
+In KMeans clustering, the variance of a feature corresponds to its influence on the clustering algorithm. To give every feature a chance, the data needs to be transformed so that features have equal variance. This can be achieved with the StandardScaler from scikit-learn. It transforms every feature to have mean 0 and variance 1. The resulting "standardized" features can be very informative. Using standardized od280 and proline, for example, the three wine varieties are much more distinct.
+
+8. sklearn StandardScaler
+Let's see the StandardScaler in action. First, import StandardScaler from sklearn.preprocessing. Then create a StandardScaler object, and fit it to the samples. The transform method can now be used to standardize any samples, either the same ones, or completely new ones.
+
+9. Similar methods
+The APIs of StandardScaler and KMeans are similar, but there is an important difference. StandardScaler transforms data, and so has a transform method. KMeans, in contrast, assigns cluster labels to samples, and this done using the predict method.
+
+10. StandardScaler, then KMeans
+Let's return to the problem of clustering the wines. We need to perform two steps. Firstly, to standardize the data using StandardScaler, and secondly to take the standardized data and cluster it using KMeans. This can be conveniently achieved by combining the two steps using a scikit-learn pipeline. Data then flows from one step into the next, automatically.
+
+11. Pipelines combine multiple steps
+The first steps are the same: creating a StandardScaler and a KMeans object. After that, import the make_pipeline function from sklearn.pipeline. Apply the make_pipeline function to the steps that you want to compose in this case, the scaler and the kmeans objects. Now use the fit method of the pipeline to fit both the scaler and kmeans, and use its predict method to obtain the cluster labels.
+
+12. Feature standardization improves clustering
+Checking the correspondence between the cluster labels and the wine varieties reveals that this new clustering, incorporating standardization, is fantastic. Its three clusters correspond almost exactly to the three wine varieties. This is a huge improvement on the clustering without standardization.
+
+13. sklearn preprocessing steps
+StandardScaler is an example of a "preprocessing" step. There are several of these available in scikit-learn, for example MaxAbsScaler and Normalizer.
+
+14. Let's practice!
+You've learned a lot this video. Now put it into practice and cluster some datasets!
+
+

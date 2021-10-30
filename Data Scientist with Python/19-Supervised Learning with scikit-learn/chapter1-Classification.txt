@@ -1,0 +1,141 @@
+
+
+1. Supervised learning
+Welcome to the course! My name is Andy and I'm a core contributor and co-maintainer of scikit-learn. You're here to learn about the wonderful world of supervised learning, arguably the most important branch of machine learning.
+
+2. What is machine learning?
+But what is machine learning? Machine learning is the science and art of giving computers the ability to learn to make decisions from data without being explicitly programmed. For example, your computer can learn to predict whether an email is spam or not spam given its content and sender. Another example: your computer can learn to cluster, say, Wikipedia entries, into different categories based on the words they contain. It could then assign any new Wikipedia article to one of the existing clusters. Notice that, in the first example, we are trying to predict a particular class label, that is, spam or not spam. In the second example, there is no such label. When there are labels present, we call it supervised learning. When there are no labels present, we call it unsupervised learning.
+
+3. Unsupervised learning
+Unsupervised learning, in essence, is the machine learning task of uncovering hidden patterns and structures from unlabeled data. For example, a business may wish to group its customers into distinct categories based on their purchasing behavior without knowing in advance what these categories maybe. This is known as clustering, one branch of unsupervised learning.
+
+4. Reinforcement learning
+There is also reinforcement learning, in which machines or software agents interact with an environment. Reinforcement agents are able to automatically figure out how to optimize their behavior given a system of rewards and punishments. Reinforcement learning draws inspiration from behavioral psychology and has applications in many fields, such as, economics, genetics, as well as game playing. In 2016, reinforcement learning was used to train Google DeepMind's AlphaGo, which was the first computer program to beat the world champion in Go.
+
+5. Supervised learning
+But let's come back to supervised learning, which will be the focus of this course. In supervised learning, we have several data points or samples, described using predictor variables or features and a target variable. Our data is commonly represented in a table structure such as the one you see here, in which there is a row for each data point and a column for each feature. Here, we see the iris dataset: each row represents measurements of a different flower and each column is a particular kind of measurement, like the width and length of a certain part of the flower. The aim of supervised learning is to build a model that is able to predict the target variable, here the particular species of a flower, given the predictor variables, here the physical measurements. If the target variable consists of categories, like 'click' or 'no click', 'spam' or 'not spam', or different species of flowers, we call the learning task classification. Alternatively, if the target is a continuously varying variable, for example, the price of a house, it is a regression task. In this chapter, we will focus on classification. In the following, on regression.
+
+6. Naming conventions
+A note on naming conventions: out in the wild, you will find that what we call a feature, others may call a predictor variable or independent variable, and what we call the target variable, others may call dependent variable or response variable.
+
+7. Supervised learning
+The goal of supervised learning is frequently to either automate a time-consuming or expensive manual task, such as a doctor's diagnosis, or to make predictions about the future, say whether a customer will click on an add or not. For supervised learning, you need labeled data and there are many ways to get it: you can get historical data, which already has labels that you are interested in; you can perform experiments to get labeled data, such as A/B-testing to see how many clicks you get; or you can also crowdsourced labeling data which, like reCAPTCHA does for text recognition. In any case, the goal is to learn from data for which the right output is known, so that we can make predictions on new data for which we don't know the output.
+
+8. Supervised learning in Python
+There are many ways to perform supervised learning in Python. In this course, we will use scikit-learn, or sklearn, one of the most popular and user-friendly machine learning libraries for Python. It also integrates very well with the SciPy stack, including libraries such as NumPy. There are a number of other ML libraries out there, such as TensorFlow and keras, which are well worth checking out once you got the basics down.
+
+9. Let's practice!
+Let's now jump into an exercise!
+
+
+
+
+1. Exploratory data analysis
+Let's now jump into our first dataset.
+
+2. The Iris dataset
+It contains data pertaining to iris flowers in which the features consist of four measurements: petal length, petal width, sepal length, and sepal width. The target variable encodes the species of flower and there are three possibilities: 'versicolor', 'virginica', and 'setosa'. As this is one of the datasets included in scikit-learn,
+
+3. The Iris dataset in scikit-learn
+we'll import it from there with from sklearn import datasets. In the exercises, you'll get practice at importing files from your local file system for supervised learning. We'll also import pandas, numpy, and pyplot under their standard aliases. In addition, we'll set the plotting style to ggplot using plt dot style dot use. Firstly, because it looks great and secondly, in order to help all you R aficionados feel at home. We then load the dataset with datasets dot load iris and assign the data to a variable iris. Checking out the type of iris, we see that it's a bunch, which is similar to a dictionary in that it contains key-value pairs. Printing the keys, we see that they are the feature names: DESCR, which provides a description of the dataset; the target names; the data, which contains the values features; and the target, which is the target data.
+
+4. The Iris dataset in scikit-learn
+As you see here, both the feature and target data are provided as NumPy arrays. The dot shape attribute of the array feature array tells us that there are 150 rows and four columns. Remember: samples are in rows, features are in columns. Thus we have 150 samples and the four features: petal length and width and sepal length and width. Moreover, note that the target variable is encoded as zero for "setosa", 1 for "versicolor" and 2 for "virginica". We can see this by printing iris dot target names, in which "setosa" corresponds to index 0, "versicolor" to index 1 and "virginica" to index 2.
+
+5. Exploratory data analysis (EDA)
+In order to perform some initial exploratory data analysis, or EDA for short, we'll assign the feature and target data to X and y, respectively. We'll then build a DataFrame of the feature data using pd dot DataFrame and also passing column names. Viewing the head of the data frame shows us the first five rows.
+
+6. Visual EDA
+Now, we'll do a bit of visual EDA. We use the pandas function scatter matrix to visualize our dataset. We pass it the our DataFrame, along with our target variable as argument to the parameter c, which stands for color, ensuring that our data points in our figure will be colored by their species. We also pass a list to fig size, which specifies the size of our figure, as well as a marker size and shape.
+
+7. Visual EDA
+The result is a matrix of figures, which on the diagonal are histograms of the features corresponding to the row and column. The off-diagonal figures are scatter plots of the column feature versus row feature colored by the target variable. There is a great deal of information in this scatter matrix.
+
+8. Visual EDA
+See, here for example, that petal width and length are highly correlated, as you may expect, and that flowers are clustered according to species.
+
+9. Let's practice!
+Now it's your turn to dive into a few exercises and to do some EDA. Then we'll back to do some machine learning. Enjoy!
+
+
+
+
+1. The classification challenge
+We have a set of labeled data and we want to build a classifier that takes unlabeled data as input and outputs a label. So how do we construct this classifier? We first need choose a type of classifier and it needs to learn from the already labeled data. For this reason, we call the already labeled data the training data. So let's build our first classifier!
+
+2. k-Nearest Neighbors
+We'll choose a simple algorithm called K-nearest neighbors. The basic idea of K-nearest neighbors, or KNN, is to predict the label of any data point by looking at the K, for example, 3, closest labeled data points and getting them to vote on what label the unlabeled point should have.
+
+3. k-Nearest Neighbors
+In this image, there's an example of KNN in two dimensions: how do you classify the data point in the middle?
+
+4. k-Nearest Neighbors
+Well, if k equals 3,
+
+5. k-Nearest Neighbors
+you would classify it as red and, if k equals 5, as green.
+
+6. k-Nearest Neighbors
+and, if k equals 5,
+
+7. k-Nearest Neighbors
+as green.
+
+8. k-NN: Intuition
+To get a bit of intuition for KNN, let's check out a scatter plot of two dimensions of the iris dataset, petal length and petal width. The following holds for higher dimensions, however, we'll show the 2D case for illustrative purposes.
+
+9. k-NN: Intuition
+What the KNN algorithm essentially does is create a set of decision boundaries and we visualize the 2D case here.
+
+10. k-NN: Intuition
+Any new data point here will be predicted 'setosa',
+
+11. k-NN: Intuition
+any new data point here will be predicted 'virginica',
+
+12. k-NN: Intuition
+and any new data point here will be predicted 'versicolor'.
+
+13. Scikit-learn fit and predict
+All machine learning models in scikit-learn are implemented as python classes. These classes serve two purposes: they implement the algorithms for learning a model, and predicting, while also storing all the information that is learned from the data. Training a model on the data is also called fitting the model to the data. In scikit-learn, we use the fit method to do this. Similarly, the predict method is what we use to predict the label of an, unlabeled data point.
+
+14. Using scikit-learn to fit a classifier
+Now we're going to fit our very first classifier using scikit-learn! To do so, we first need to import it. To this end, we import KNeighborsClassifier from sklearn dot neighbors. We then instantiate our KNeighborsClassifier, set the number of neighbors equal to 6, and assign it to the variable knn. Then we can fit this classifier to our training set, the labeled data. To do so, we apply the method fit to the classifier and pass it two arguments: the features as a NumPy array and the labels, or target, as a NumPy array. The scikit-learn API requires firstly that you have the data as a NumPy array or pandas DataFrame. It also requires that the features take on continuous values, such as the price of a house, as opposed to categories, such as 'male' or 'female'. It also requires that there are no missing values in the data. All datasets that we'll work with now satisfy these final two properties. Later in the course, you'll see how to deal with categorical features and missing data. In particular, the scikit-learn API requires that the features are in an array where each column is a feature and each row a different observation or data point. Looking at the shape of iris data, we see that there are 150 observations of four features. Similarly, the target needs to be a single column with the same number of observations as the feature data. We see in this case there are indeed also 150 labels. Also check out what is returned when we fit the classifier: it returns the classifier itself and modifies it to fit it to the data. Now that we have fit our classifier, lets use it to predict on some unlabeled data!
+
+15. Predicting on unlabeled data
+Here we have set of observations, X new. We use the predict method on the classifier and pass it the data. Once again, the API requires that we pass the data as a NumPy array with features in columns and observations in rows; checking the shape of X new, we see that it has three rows and four columns, that is, three observations and four features. Then we would expect calling knn dot predict of X new to return a three-by-one array with a prediction for each observation or row in X new. And indeed it does! It predicts one, which corresponds to 'versicolor' for the first two observations and 0, which corresponds to 'setosa' for the third.
+
+16. Let's practice!
+
+
+
+
+1. Measuring model performance
+Now that we know how to fit a classifier and use it to predict the labels of previously unseen data, we need to figure out how to measure its performance. That is, we need a metric.
+
+2. Measuring model performance
+In classification problems, accuracy is a commonly-used metric. The accuracy of a classifier is defined as the number of correct predictions divided by the total number of data points. This begs the question though: which data do we use to compute accuracy? What we are really interested in is how well our model will perform on new data, that is, samples that the algorithm has never seen before.
+
+3. Measuring model performance
+Well, you could compute the accuracy on the data you used to fit the classifier. However, as this data was used to train it, the classifier's performance will not be indicative of how well it can generalize to unseen data. For this reason, it is common practice to split your data into two sets, a training set and a test set. You train or fit the classifier on the training set. Then you make predictions on the labeled test set and compare these predictions with the known labels. You then compute the accuracy of your predictions.
+
+4. Train/test split
+To do this, we first import train test split from sklearn dot model selection. We then use the train test split function to randomly split our data. The first argument will be the feature data, the second the targets or labels. The test size keyword argument specifies what proportion of the original data is used for the test set. Lastly, the random state kwarg sets a seed for the random number generator that splits the data into train and test. Setting the seed with the same argument later will allow you to reproduce the exact split and your downstream results. train test split returns four arrays: the training data, the test data, the training labels, and the test labels. We unpack these into four variables: X train, X test, y train, and y test, respectively. By default, train test split splits the data into 75% training data and 25% test data, which is a good rule of thumb. We specify the size of the test size using the keyword argument test size, which we do here to set it to 30%. It is also best practice to perform your split so that the split reflects the labels on your data. That is, you want the labels to be distributed in train and test sets as they are in the original dataset. To achieve this, we use the keyword argument stratify equals y, where y the list or array containing the labels. We then instantiate our K-nearest neighbors classifier, fit it to the training data using the fit method, make our predictions on the test data and store the results as y pred. Printing them shows that the predictions take on three values, as expected. To check out the accuracy of our model, we use the score method of the model and pass it X test and y test. See here that the accuracy of our K-nearest neighbors model is approximately 95%, which is pretty good for an out-of-the-box model!
+
+5. Model complexity
+Recall that we recently discussed the concept of a decision boundary. Here, we visualize a decision boundary for several, increasing values of K in a KNN model. Note that, as K increases, the decision boundary gets smoother and less curvy. Therefore, we consider it to be a less complex model than those with a lower K. Generally, complex models run the risk of being sensitive to noise in the specific data that you have, rather than reflecting general trends in the data. This is know as overfitting.
+
+1 Source: Andreas Müller & Sarah Guido, Introduction to Machine Learning with Python
+6. Model complexity and over/underfitting
+If you increase K even more and make the model even simpler, then the model will perform less well on both test and training sets, as indicated in this schematic figure, known as a model complexity curve.
+
+7. Model complexity and over/underfitting
+This is called underfitting.
+
+8. Model complexity and over/underfitting
+We can see that there is a sweet spot in the middle that gives us the best performance on the test set.
+
+9. Let's practice!
+OK, now it's your turn to practice splitting your data, computing accuracy on your test set, and plotting model complexity curves!
+
+
