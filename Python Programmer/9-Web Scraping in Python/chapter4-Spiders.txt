@@ -1,0 +1,92 @@
+Got It!
+1. A Classy Spider
+We've arrived at our final chapter for this course. It's now time to put everything we've learned to use while creating spiders. Unlike the scraping on a single website that we've done already, a spider will crawl the web through multiple pages, following links if we choose, and scrape each of those pages automatically according to the procedures we've programmed.
+
+2. Your Spider
+Before narrowing in on our task during this lesson, let's jump into the deep end and look at the general form of the code we will be writing to create our spiders. While this doesn't look super complicated, we'll still break it into three parts to ingest.
+
+3. Your Spider
+The first part is simply the necessary importing of scrapy and the CrawlerProcess object. The second part, which happens to be the most important part for us, is the code for the actual spider. This code will tell scrapy what websites to scrape and how to scrape them with all the techniques we've built so far in this course. The code for the spider comes in the form of a class, a python object to house together methods and variables that relate to each other. We can name this class whatever we like. Though, the class must take scrapy.Spider as an input, which is why we needed to import scrapy above. The third part runs the spider, using the CrawlerProcess function. For our purposes in this course, we will only need to make sure that the spider name we pass to crawl method (in this case process.crawl) to the actual name of our spider. From here on, we will focus on the code for the spider.
+
+4. Weaving the Web
+We now narrow in on creating the actual spider. This is the class object which basically tells us what sites we want to scrape and how we want to scrape them. Again, the code may look a little complicated, but we will walk through it and see that we've built up the technique to cover most of the work. Here we have a code to scrape the DataCamp course directory. It includes all the basic pieces we need. We can name the class anything we want, here we called the class "DCspider" and defined the name variable within that class with a similar name (although we can assign any string to the name variable we want). This name variable is important for some of the action that happens under the hood of scrapy. We must have a start_requests method to define which site or sites we want to scrape, and which tells us where to send the information from these sites to be parsed. Finally, we need to have at least one method to parse to the website we scrape; we can call the parsing method (or methods) anything we want as long as we correctly identify the method within the start_requests function. All we are doing in this parser (which we named parse) is taking the HTML code and writing it to a file.
+
+5. We'll Weave the Web Together
+At this point, maybe you're still a little nervous about the amount of stuff that has suddenly been thrown at you in this lesson. Don't worry, in the exercises you have a chance to examine the code a little more closely. And, in the next lessons we will explain deeper what's happening so that by the end of this chapter, you'll feel comfortable making and running your own scrapy spiders!
+
+Got It!
+1. A Request for Service
+In the previous lesson, we quickly went over creating a simple scrapy spider, but didn't get into too much detail about what was going on. In this lesson, we will look deeper into the the start_requests method and its relation to the parsing method or methods within the our spider.
+
+2. Spider Recall
+Remember that the code to setup and run a spider roughly looked like the code we see here, where most of the work will go into coding the class we define for our spider.
+
+3. Spider Recall
+We've already seen an example of a spider which effectively would save the HTML code from the DataCamp course directory into a file. So, let's now narrow in on the start_requests method.
+
+4. The Skinny on start_requests
+First, within the spider class, we must define a method called start_requests which should take self as an input. The reason we don't have flexibility in this method name is because scrapy looks for the start_requests method by name within the class we define for our spider. We then have a list of the url or urls we would like to start scraping (but in this case, only one). It doesn't matter that we named this list urls, but it seems like a convenient name considering. Finally, we will take each url within the urls list and send it off to be dealt with. Now, this "send-off" is the most complicated part! But even before worrying about the "send-off" let's notice that we really did not need to loop over the urls list with only one url. We could have easily defined it without the for loop, but we wrote it originally with the loop to give you an idea of how you might construct this if you had several urls you want to initiate the spider with. Back to the "send-off": the yield command, which you might be familiar with already, acts kind of like a return command in that it returns values when the start_requests is run; yield is a python call, and is not specific to scrapy. We won't go into more detail about yield vs return here, but just note we are using yield in this method. The object we are yielding is a scrapy.Request object. We haven't seen these before, but again, that's OK. What yielding the scrapy.Request object does is send a response variable (the same response variable we are familiar with) pre-loaded with the HTML code from the url argument of the scrapy.Request call, to the parsing function defined in the callback argument.
+
+5. Zoom Out
+So, if we look at the entire spider class again, what we see is that the start_request call will pre-load a response variable with the HTML code from the DataCamp course directory, and send it to the method we have named parse. As a glimpse into the future, notice that the parse method has response as its second input variable, this is the variable passed from the scrapy.Request call. Also, notice that while there are many wheels turning in the start_requests method, most of them are happening under the hood, and the only real adjustments we need to make are to define which url or urls we are going to scrape, and what callback method we want to use to parse those scraped sites.
+
+6. End Request
+So, you've taken a big bite out of scrapy spiders already. Again, there are my things that scrapy has setup under the hood, and this can seem intimidating, but we're not learning how to build the engine in this course, we're learning how to drive the car.
+
+
+Got It!
+1. Move Your Bloomin' Parse
+At this point, you should be starting to feel comfortable looking at the class we define for a scrapy spider. You should have some feeling for how to setup and use the start_requests method in your spider, and understand that from the start_requests method, the yielded scrapy.Request call sends a scrapy response object to a parsing function for processing. In this lesson, we will focus on the parsing method.
+
+2. Once Again
+Let's again quickly remember the simple spider class we've seen before. Our focus will be the parse method. As a reminder, we do not need to name the parse method parse, but we could call it whatever we want as long as we correctly use the callback argument in the yielded scrapy.Request call in the start_requests function.
+
+3. You Already Know!
+Most of the scraping magic actually occurs within the parsing function. This is where we use the material we've been building up during this entire course! Over the last three chapters, you have built up the techniques to handle a scrapy response variable for data extraction! So, the only thing we need to focus on here is what to do with the extracted site data once you have your hands on it. In the previous example, we had the parser simply save the HTML code to a local file. In the next couple examples, I'll show you that we can do much, much more.
+
+4. DataCamp Course Links: Save to File
+The first example we'll look at extracts the DataCamp course links from the course directory (as we did in chapter 3), then saves these links to a file with one link per line.
+
+5. DataCamp Course Links: Parse Again
+Another, much more interesting and powerful example is to create a spider which crawls between different sites. We give you an example of that here. We start by first extracting the course links from the DataCamp course directory (as we did in the last chapter). Then, instead of printing anything to a file here, we will have the spider follow those links and parse those sites in a second parser. You see, finishing the first parse method, we loop over the links we extracted from the course directory, then we send the spider to follow each of those links and scrape those sites with the method parse2. Notice here that when we send our spider from the first parser to the second, we again use a yield command. But, instead of creating a scrapy.Request call (like we did in start_requests), we use the follow method in the response variable itself. The follow method works similarly to the scrapy.Request call, where we need to input the url we want to use to load a response variable and use the callback argument to point the spider to which parsing method we are going to use next.
+
+6. Follow the Web
+To help visualize what's happening, our spider starts at the base site (or sites) indicated in the start_requests method. From there, we can follow links on that site to other sites, and scrape them, or potentially even follow links on those sites to new sites, creating a web for our spider to crawl. Hence the name web-crawlers, and why the programs that crawl the web are often called spiders.
+
+7. Johnny Parsin'
+Guess what? You're well on your way to being a full-fledged web scraper. You should now understand the ideas behind scraping a single site, creating a spider to scrape for you, and understand the concept of crawling to scrape multiple sites. Our next lesson will give you a full example of this awesomeness.
+
+
+Got It!
+1. Capstone
+We're finally at the point that we can setup an entire scrapy spider from start to finish, and that's exactly what we will do in this lesson. In fact, what we will do is create a spider which first collects all the course links from the DataCamp course directory; then, it will follow those links to extract the course title and the titles of all the course chapters; finally, it will store this information in a dictionary for us to use as we want to later.
+
+2. Inspecting Elements
+The structure of our spider will be as you see here. You will notice all the usual suspects set up for us, including the naming variable within the spider class, and a start_requests method which directs us to the DataCamp course directory site. You will also notice at the bottom, we have an empty dictionary, called dc_dict, which is what we want to fill in with the course titles and course chapter titles during the scrape. Our first objective of scraping the course directory (to extract the course page links) will be coded in the parsing method we call parse_front within our spider class. From there, the spider will crawl to each of those course pages and fill in the dc_dict using the course titles as the keys, and a list of the course chapter titles as the items; this second order scraping method we will call parse_pages.
+
+3. Parsing the Front Page
+It remains for us to fill in the parsing code. Starting with parse_front, we will first direct to all the course block div elements (as we have done before). These course blocks divvy up the course information for each course in the directory. From each course block, we then direct to the course page link, again as we have done before. Using the extract method, we create a list of the links (as strings) that we want to follow. And finally, we will iterate through the links and yield a call to response.follow, directing the spider to crawl to each of these course pages. Note that the follow callback method is directed to parse_pages, which is the name of the parsing method we want to spider to use at the next step.
+
+4. Parsing the Course Pages
+Now, to fill in the parse_pages method, we remember that we want to extract the course title and the titles of the course chapters. After inspecting the HTML on one of the course pages, we discover that the course title is defined by the text within an h1 element whose class contains the word title. So, we start by directing to this text. To extract the course title, we will call extract_first rather than extract since we want to be left with the title as string, rather than a list containing the title, as extract would leave us with. Although it is unnecessary, when we do this, we can clean the text a little, removing strange character returns that often crop up in HTML. Fortunately, strings in python already include a strip method to do this cleaning for us! Next, we want to get to the chapter titles. On inspection, we discover that these are defined as the text within h4 elements whose class is chapter__title. So, we direct the spider to these pieces of text, extract the text and clean it as before. This time, we use extract to get a list of the many chapter titles per course. We finally end by filling in our dictionary whose keys are the course titles and corresponding elements are the chapter titles. And now that we have finished this parsing method, we have finished our spider.
+
+5. It's time to Weave
+Now it's your turn to start crawling!
+
+
+Got It!
+1. Stop Scratching and Start Scraping!
+Congratulations! It's like the age-old joke: "How many students does it take to scrape DataCamp?". "How many?". "Just you!" You've finished the course and we will spend this short video relishing in our new knowledge and accomplishments.
+
+2. Feeding the Machine
+One meta-theme I want you to leave with is the following: Many many courses in data science deal with how to process data that is already collected. Supervised vs unsupervised learning, clustering, deep learning, etc. etc. all deal with how to process a collection of data, but these courses or texts rarely deal with how we gather the data itself. Instead, this course has given you one important method of how to acquire these data to start with, from where you can then begin to consider how to analyze and process it. This is an extremely important step in data analysis, getting data to analyze!!
+
+3. Scraping Skills
+Rather than listing everything we've learned from start to finish, let's consider it in the opposite order, in the context that motivates our desire to learn this material in the first place. At the top level, we have identified a website or collection of websites with information we want to collect and eventually process. Because of the number of sites, the material on the site, or whatever other reasons, it would be much easier to run through this scraping computationally rather than by hand. So, we decide we're going to write some code to scrape for us. Since we are familiar with python, we choose to use scrapy since it has all the tools we need to scrape single sites, but also to create spiders which can crawl between multiple sites. Now, since we are going to use scrapy, we learn how to manipulate the Selector and Response objects within scrapy, particularly to extract the data we want to collect. But, we should also learn how to tell scrapy which elements to select. For this, we should learn either XPath or CSS Locator notation, buuuut, to make sense out of the XPath or CSS Locator notation, we really should understand the structure of HTML so we can make heads or tails of it.
+
+4. What'd'ya Know?
+Notice that you now have learned all these steps in the order you needed so that you can reach the original objective of scraping a site computationally. You have a usable mental model of the structure of HTML. You can translate that knowledge of HTML into a usable XPath or CSS Locator piece of code. You can use `Selector` and `Response` objects in scrapy to navigate to and extract the desired information from a website. You can even build a spider to crawl multiple sites! In summary, you now know how to scrape the web in python.
+
+5. EOT
+Thank you again for sticking out this entire course with me. And, again, congratulations!!
+

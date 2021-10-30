@@ -1,0 +1,95 @@
+Got It!
+1. Web Scraping With Python
+Hi everyone, my name is Thomas Laetsch. I'm currently a data scientist working in the Center for Data Science at New York University. In this course, Web Scraping with Python, you will learn some of the fundamental techniques in computational web scraping. That is, you will learn to create software to automate data extraction from online sources. Before moving to specifics and technicalities, let me convince you that these techniques can be a valuable addition to your data-science know-how, and that this course will be the perfect place to start or strengthen the foundational pieces of this skill set.
+
+2. Business Savvy
+You might ask yourself why businesses might employ those with experience web-scraping? What can businesses gain from web-scraping? Well, they can scrape competitor sites to gather prices for similar products or services to compare and adjust their own price set-points. They can scrape online reviews of their products or services, and gather public opinion around the company in general. They can scrape social media sites, or other public forums for contact or other information of clients or potential clients, to meaningfully direct resources towards this group of possible customers. And this was just a short list!
+
+3. It's Personal
+We list here a few fun things you can do scraping the web. You could search for your favorite memes from your favorite sites. You can scour through classified ads, looking for your favorite things. You can look for trending topics on social media sites. You can look for recipes you might be interested in on cooking blogs. In fact, there's a whole lot you can do!
+
+4. About My Work
+Now, let me give you an example that I've worked on. Here at the Center for Data Science, while working with an amazing sociologist, I have been heavily involved in collecting the data for the website: AmericanViolence.org. As was famously implied by the former FBI director James Comey, crime data has not been easy to collect and analyze across city agencies in the United States. It turns out though, that many such agencies publish this data online. The work I've done with my collaborators is to collect, process, and format these data into a single repository, starting with murder data for some of the largest cities in the US. So, realize this: many of the techniques you will learn in this course are the same that I used to collect data for AmericanViolence.org, which is now helping track trends in murders across the United States.
+
+5. Pipe Dream
+To better visualize the focus of what you will learn in these lectures and exercises, let's roughly breakdown the web-scraping pipeline into three pieces.
+
+6. Pipe Dream: Setup
+The first piece is the setup, that is, defining the goal or task and identifying the online sources which you believe will help you achieve the desired end result.
+
+7. Pipe Dream: Acquisition
+The second is the acquisition of these online data. This includes accessing the data, parsing this information, and extracting these data into meaningful and useful data structures.
+
+8. Pipe Dream: Processing
+The third is the processing phase, where you run these downloaded data through whatever analyses or processes needed to achieve the desired goal.
+
+9. How do you do?
+This course focuses on the acquisition phase. To accomplish this, we will be using python and the web-crawling framework scrapy. We chose scrapy since we can jump in quickly, and easily scale to large scraping projects. However, even if you aren't sold on using scrapy or python, you will still build techniques and intuition that will be valuable in any computational web-scraping environment you enjoy!
+
+10. Are you in?
+So, I hope you're as thrilled as I am to take part in this course, and gain the skills to start scraping the web for whatever reasons excite you!
+
+
+Got It!
+1. HyperText Markup Language
+These days, many of us are familiar with the letters "HTML", the Hypertext Markup Language read by web browsers to render and display website content. For us, this means that when we want to scrape the content from a particular website, we are often given the HTML code, and therefore, the focus of this lesson will be learning to navigate HTML to arrive at the content we may be interested in retrieving. In doing so, we will use a simple toy model of HTML as we become comfortable with how the code looks behind the scenes, and see that we can picture a tree-like structure of HTML to easily interpret the task of HTML navigation.
+
+2. The main example
+Here we are given a first look at a very simple example of HTML. Throughout this lesson, we will be using this same bit of HTML while we gain intuition towards HTML navigation, before playing with much longer and more involved examples. To give you an idea of what a web browser would show, on the right side is how Firefox displays this HTML on my computer.
+
+3. HTML tags
+The elements contained within the angle brackets are called "HTML tags", which, in well-formatted HTML, usually come in pairs. The pair contains a starting tag without a forward slash, and stopping tag with a forward slash. The root tag containing the main HTML content are those with the text "html" within the brackets. We also have a body tag, defining the body of the html; a div tag defining a section of the body; and several p tags defining paragraphs within the body.
+
+4. The HTML tree
+We notice that the HTML tags are nested within others, such as the body tag nested within the html root tag; a div tag nested within the body tag; two paragraph tags nested with in the div tag; etc.. This nesting gives rise to a hierarchy in the HTML which can be visualized as a tree structure as displayed here. The vocabulary we use to describe moving around the tree comes from looking at a family tree: As we move from left to right, we are moving forward generations; as we move top to bottom, we are moving between the same generation, and moving between siblings if the elements come from the same parent element.
+
+5. The HTML tree: Example 1
+For example, the children of the body element are the same as the second generation descendants of the root html element; in order from top to bottom, div is the first child, p is the second. These two elements (the div and p elements) are siblings as they are both children of the same parent, the parent being the body element.
+
+6. The HTML tree: Example 2
+The two third generation descendants of the html element are circled here. Both of these elements are paragraph p elements, and both are children of the same div element parent, and hence siblings. Note that these two circled paragraph elements are not descendants of the third, uncircled paragraph element. This is graphically represented by the fact that, although the two circled paragraph elements are further to the right on the tree, we cannot follow a path from the uncircled paragraph element to the two circled ones. This is analogous to saying that, even though your niece is a future generation, she is not your descendant.
+
+7. Introduction to HTML Outro
+To sum up, we got our first glimpse at HTML, introduced ourselves to html tags, visualized the HTML code as a tree, and learned how to describe navigating that tree's structure! Time to give it a try!
+
+
+Got It!
+1. HTML Tags and Attributes
+In the last lesson, we became familiar with the tree-like structure of HTML, and learned how to navigate the tree to access specific elements. We did not pay much attention to the actual HTML tags, nor the specifics of HTML syntax beyond this tree-like structure. In this lesson, we delve deeper into some of the HTML-specific syntax.
+
+2. Do we have to?
+You may ask why we want to get more specific here? It turns out that sometimes we want to access information that is held within the HTML tags themselves -- we often want access this info in order to find the URL pointed to by a specific link on the site, or because it can potentially give us another method to select specific HTML elements with a more friendly syntax than traversing the entire HTML tree.
+
+3. Tag, you're it!
+To start, let's look at an abstract tag formatting. There are many HTML tag types that follow the same formatting; we have already seen three tag names: the html, div, and p tags. These tags can also contain **attributes** which provide special instructions for the contents contained within that tag. Specific html attribute names are followed by an equals sign, followed by information which is being passed to that attribute within the tag; in well-formatted HTML the information is in quotes. Sound confusing? Don't worry!
+
+4. Let's "div"vy up the tag
+To look at a specific example, let's consider a div tag with two attributes: id and class. We chose these two attributes here because they arise frequently in practice. In well-formatted HTML, the id attribute can be used as a unique identifier for the tag element; in this case, the id "unique-id" should only belong to this specific div element, giving us a quick way to identify it. The class attribute "some class" can also help us identify this div element, but even in well-formatted HTML, it doesn't need to be unique. No tag needs to have an id nor a class attribute, but all tags can be given an id and a class. A point that will find its way to a future lesson is that a tag can belong to multiple classes, and this is done when the class attribute (that is, the quoted text assigned for that class) has multiple class names separated by spaces; in fact, this div tag would belong to both classes: "some" and "class".
+
+5. "a" be linkin'
+Let's look at another example. The "a" tag-name here is the specific tag for hyperlinks, the links we click on within a website to redirect somewhere. The most important attribute within these hyperlink tags is the "href" attribute. This attribute is used to identify the URL where the hyperlink redirects to.
+
+6. Tag Traction
+It turns out that there are many allowable tag types in HTML, and many allowable attributes which sometimes depend on those tag types. We will not be able to, nor want to go through each and every one of these in this course! Rather, we're going to learn techniques that will be applicable regardless of the tag; with a special focus on id, class, and href attributes we saw in this lesson, building up methods that can easily apply to other attributes as you encounter them. And don't worry, even with only those three attributes, we will get a lot of traction!
+
+7. Et Tu, Attributes?
+So, what did we learn in this lesson? We focused on HTML specific syntax, learning the general abstract structure of HTML tags. We saw how to identify the tag-name and attributes within those tags. Now, let's practice!
+
+
+Got It!
+1. Crash Course X
+At this point we've run through the basics of HTML, with some wordy ways to describe how to navigate to particular elements. However, if we want to describe where these elements are within our programs (programs made to navigate and scrape HTML), then we need to build up a standard, program-friendly language or syntax to do so. You have noticed that all your exercises at this point have been multiple choice, and this is because we didn't have the necessary understanding of how to turn our wordy navigation of HTML into a variable for the computer to ingest. That changes now. This lesson will give a crash course in some basics of what's called XPath notation, one of two common choices for this purpose. And, in the next chapters, we will go deeper into both syntaxes with many more examples.
+
+2. Another Slasher Video?
+Jumping right in, a simple XPath string we could write in python is given here. One nice property of XPath notation is that you might already have some familiarity with similar syntaxes, because it uses a single forward slash in an analogous way as you do if you are navigating directories, or typing a URL into your browser. The single forward-slash moves us forward one generation. In fact, if we think of the tag-names as the "directory" names, then these simple XPaths will look very much like navigating between directories. What might seem unfamiliar are the brackets. These brackets are used to help specify which element or elements we want to direct to. For example, there could be several div elements which are children of the body element (that is, several div siblings), so, we can use the brackets to narrow in on the div element we want.
+
+3. Another Slasher Video?
+To illustrate the sample XPath string we wrote in the last slide, here we have highlighted the div element which would be selected within a tree representation of some HTML. Notice that the number 2 in the brackets of our XPath expression refers to the second div element of the three div elements (ordered from top to bottom as usual), paying attention to the fact that the first child of the body is a span element, so is not counted when looking at the div elements.
+
+4. Slasher Double Feature?
+Another important feature of XPath notation is the double forward-slash. Using the double-forward slash tells us to "look forward to all future generations" (instead of just one generation like the single forward-slash). So, for example, we could navigate to all table elements within an HTML document by simply typing double forward-slash table. Or, we could want to restrict to a specific div element (say, the one we learned how to navigate to in the last couple slides), and navigate to all table elements which are descendants of that div element.
+
+5. Ex(path)celent
+And, that's it for now! We have only just scratched the surface of XPath notation, but we've gone deep enough that you can begin to write some code and get your feet wet navigating HTML computationally. Let me emphasize here that XPath is general, meaning that it is not python specific. So, if you decide to start scraping the web in R, say, most libraries there will also be able to read and interpret your XPath strings.
+
+

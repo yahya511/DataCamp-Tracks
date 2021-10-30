@@ -1,0 +1,101 @@
+Got It!
+1. XPath Navigation
+Welcome to Chapter 2! In this first lesson, we will start delving deeper into XPath notation to navigate HTML.
+
+2. Slashes and Brackets
+As we briefly saw before, XPath directs us down one generation with a single forward slash, and down all future generations with a double forward slash. We also saw that using square brackets in the XPath expression helps narrow in on which element or elements we want, but it turns out these brackets aren't always necessary nor desired.
+
+3. To Bracket or not to Bracket
+For example, the first XPath expression without brackets and the second with brackets lead us to the same element the body element since there is only one html element at the root level, and one body element which is a child of that html element.
+
+4. A Body of P
+As another example, the XPath string here leads us to the single paragraph element which is one generation below the body element. Do you understand why there is only this one element selected? It's because there is only one paragraph element which is a child of the body element!
+
+5. The Birds and the Ps
+On the other hand, if we consider the XPath string here, this directs us to both paragraph children of the div element. We haven't clarified a specific one. We could, of course, add in brackets to help narrow in on which element we want; in this case, we will be selecting the second paragraph child of the div element.
+
+6. Double Slashing the Brackets
+Using a double forward-slash, we could have selected all paragraph elements which are within the HTML document. Adding the bracketed number 1, it turns out we select two elements! Let's take this opportunity to be very careful in describing exactly what adding the brackets filled with a number does. When we add the brackets filled with the number N, say, to the end of an XPath expression, each of the elements that are selected before adding the brackets asks: "Am I the Nth of my selected siblings?"; if the answer is "Yes!", then that element is selected. Here, with the brackets filled with the number 1, the top paragraph element is selected because it asks "Am I the first element of my selected siblings?" and answers "Yes!". The bottom paragraph element is also selected since its sibling is the div element, which was not not originally selected, and so when the bottom paragraph element asks "Am I the first element of my selected siblings?" the answer is again "Yes!". Honestly, I don't often mix double forward-slashes and brackets filled with numbers. We'll see in later slides there are other, more interesting ways to use brackets to select elements.
+
+7. The Wildcard
+One final piece of notation we will cover in this lesson is the "wildcard" character, the asterisks. The asterisks indicates we want to ignore tag type. For example, in this expression, we are directed to both children of the body element, regardless that one is a div element and one is a paragraph element.
+
+8. Xposé
+To summarize, we have learned the basics of XPath notation, including the meaning of single and double forward slashes, as well as some uses for the square brackets; and finally you saw the asterisks as the "wildcard" character. You will become more familiar with these ideas in the exercises!
+
+
+Got It!
+1. Off the Beaten XPath
+In this lesson, we are going to continue to build on our XPath syntax, learning to navigate to elements based on their attributes as well as direct to the attribute information within elements. I know that we're continuing with some stuff that seems technical, but we're close to getting to the point to start using what we've learned to scrape real websites!
+
+2. (At)tribute
+Let's start by first pointing out that in XPath notation, the @ symbol is used to distinguish attributes. For example, if we see @class, @id, or @href, in the XPath expression, then it is referring to a class attribute, id attribute, or href attribute, respectively.
+
+3. Brackets and Attributes
+We saw before that square brackets can be used in xpath syntax to hone in on a specific element or elements based on their order within a given generation. We can also include other information within square brackets to select specific elements.
+
+4. Brackets and Attributes
+For example, the XPath string here will direct to all paragraph elements from //p, and then reduce down to all those whose class attribute is equal to "class-1". Note that we have the class attribute in quotations. Now, my convention is to use single quotes to define the XPath string, and double quotes as needed within the XPath expression itself.
+
+5. Brackets and Attributes
+As another example, we could use the expression here with the wildcard character to first direct to all elements within the HTML document, and reduce down to whichever element has "uid" as its id attribute.
+
+6. Brackets and Attributes
+Or, we could combine what we know to first navigate to the div element with id attribute equal to "uid", and then collect the second paragraph child of that div element.
+
+7. Content with Contains
+A useful tool we can include within our square-bracketed expression is the "contains" function. The format of the "contains" function is given abstractly here, with the left argument containing the attribute name (including the at symbol), and the right argument is the string expression we want to search for within the given attribute. What it does is searches the attributes of that specific attribute name and matches with those where the string expression is a sub-string of the full attribute.
+
+8. Contain This
+To make this clearer, let's look at an example. The expression here will choose all elements in which the string "class-1" is contained as a substring within the full class attribute; this even includes the third paragraph belonging to class-12, because class-1 is a substring of class-12.
+
+9. Contain This
+The last example differs from what we've seen so far since the expression here without the contains function only matches elements whose entire class attribute is equal to "class-1".
+
+10. Get Classy
+Now, let's consider how to direct to the attribute information itself. To do so, we first create an XPath expression to the element or elements we want to pull out some attribute information from. Say, we would like to direct to the class attribute of this highlighted paragraph element. We already know how to direct to the highlighted area.
+
+11. Get Classy
+To direct to the attribute itself, we take the XPath, follow it by a forward slash, and follow that by the @ symbol connected to the attribute name of interest, in this case, class. As a quick note. If we were instead to use a double forward slash before the @ symbol with the attribute name, we would not only direct to the attribute of the elements selected in the XPath, but also all of those attributes in their future generations too.
+
+12. End of the Path
+In this lesson, we've looked at how to use the at-symbol attribute notation in an XPath to navigate to elements based on their attributes, as well as navigate to the actual attribute information itself.
+
+
+Got It!
+1. Introduction to the scrapy Selector
+In this lesson we will begin to familiarize ourselves with scrapy's Selector object, so named because it is the scrapy object used to select portions of the HTML using XPath (or a so-called CSS Locator -- something we'll learn about later). Some of what we see in this lesson may seem a bit gnarly. But keep in mind that once we master this step, we will have already learned how to use the main parsing tool scrapy offers, letting us actually read in an HTML document and access the inner elements we want.
+
+2. Setting up a Selector
+Through this lesson, we will be using the Selector we set up in this slide as our running example. We will import Selector from scrapy. We have made a string of HTML, which we pass to the Selector as text, creating a selector object "sel", which is the object we'll be learning to use. It will become clearer as we move along, but we can think of the Selector "sel" as having "selected" the entire HTML document. Before moving on, let's note that the html has two paragraph elements, the first saying "Hello World!"; the second saying "Enjoy DataCamp!".
+
+3. Selecting Selectors
+To put to work all the XPath notation we've built-up, we can call the xpath Selector method to create new Selector objects, selecting the pieces of HTML we are interested in. When doing so, the return value is a SelectorList (a list with some "scrapy extras") containing new Selector objects. For example, if we use an xpath to select all paragraph objects from our running example, we will have a SelectorList of two Selector objects, one for each of the paragraphs.
+
+4. Extracting Data from a SelectorList
+Selectors and SelectorLists are nice, but at the end of the day, we really want to access the data inside the Selector or SelectorList. We can do this easily by using the "extract" method. For a SelectorList, by calling the extract method, we are left with a list of strings, where each of the strings is the data from the Selectors which were originally in the SelectorList. If we only want the data (as a string) from the first element of a SelectorList, we can also call the quick extract_first method.
+
+5. Extracting Data from a Selector
+Although extract_first is convenient if you want the first piece of data in a SelectorList, we could grab the data from any other Selector within our SelectorList. To give an example of this, lets say we create a SelectorList named ps, then take the second Selector in the list (remembering that python indexes lists starting at 0, so we use the index 1 rather than 2). Then we apply the extract function to this Selector. Note that a Selector only has one piece of data, so extract leaves us with the string of this data (rather than a list of strings as was the case with SelectorLists).
+
+6. Select This Course!
+In this lesson, we learned briefly how to set up a scrapy Selector object, but more importantly spent time learning how to use an xpath to select and extract pieces of the HTML code. Basically, you now have the knowledge to actually start scraping an HTML document once you have the HTML input into a Selector object. That is awesome!
+
+
+Got It!
+1. "Inspecting the HTML"
+So far we've only really played with toy examples of HTML; very simple code to illustrate the points we want to make, making sure the text of the HTML can fit onto a slide. This doesn't reflect most (or any) HTML you will encounter out in the wild. We'll spend this lesson looking at how I go about exploring HTML and inputting the HTML as text into a Selector object. For this lesson, I will describe the exploration part using my Firefox browser, but even if that isn't your browser of choice, most major web browsers have similar functionality. So, you should be able to use this lesson and by analogy use Chrome, or Safari, or another browser which has similar capability.
+
+2. "Source" = HTML Code
+If I navigate to a website which has content I want to scrape, I can view the HTML source code of the website in Firefox by either right clicking within the page (or Control+Click on a Mac) and selecting "View Page Source"; or another way to get there on my version of Firefox is by going to the Tools menu, selecting Web Developer and selecting "Page Source". My version of Chrome has similar selections, and I bet your browser does too! This is a first step in "inspecting the HTML", looking at the actual HTML source code.
+
+3. Inspecting Elements
+Another useful tool which Firefox provides (as does Chrome, and I'm sure many other browsers), is the ability to "inspect an element". What this means is that you can select an element on the website and ask to be directed to the actual HTML Code for that specific element. In Firefox, you let your mouse hover over the element you're interested in, then right-click (or Control+Click on a Mac), and select "Inspect Element". This opens a second pane in the browser and highlights the HTML for that specific element. This is extremely useful when trying to figure out characteristics of an element which you might want to use in your scraper.
+
+4. HTML text to Selector
+The final piece of this lesson is to give you a quick understanding of how we get the HTML text into a Selector object. The way we do this is using the python requests library. We won't delve into requests more than this short introduction here. In fact, in the last chapter, you will learn how to do everything within scrapy itself, without using requests. But this is still a nice piece of information to carry with you. In this example we will get the HTML from the DataCamp course directory. The requests library makes it easy to get the HTML as a string by first passing to requests.get the url (as a string) of the site you want the HTML from, then looking at the content, as we have done here. You'll notice that we assigned the content to the variable html to pass to the Selector.
+
+5. You Know Our Secrets
+In several lessons and exercises you will hear or read things like "...by inspecting the HTML..." or "...we have pre-loaded a variable with the HTML..." or "...we have loaded the HTML into a Selector object..." Now, you know what we did to "inspect the HTML" or how we "pre-loaded a variable or Selector object" with an HTML string. And the best part is, you can do it too!
+
+
