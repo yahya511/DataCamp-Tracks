@@ -1,0 +1,138 @@
+Got It!
+1. Faster package development with templates
+Great work so far, you've learned all the essential steps to build and publish a great package. In this chapter you'll learn some tips to make this whole process easier, and a few final things you can add to your package to make it more professional.
+
+2. Templates
+As you've seen in earlier chapters, a Python package has a lot of additional files you need to write. Which means when starting from scratch there is a lot to remember, and fill in. Fortunately, you can use templates to do a lot of this work for you.
+
+3. cookiecutter
+Cookiecutter is a command line tool which creates projects from templates. You can use it to create a basic, empty Python package, like this one. These templates can create all of the additional files which your package needs, so you can focus more on the code, and won't need to worry you have forgotten something.
+
+4. Using cookiecutter
+You run cookiecutter from the terminal, and pass it the URL of the template you would like to use.
+
+5. Using cookiecutter
+The standard template for Python packages is this one. But there are lots more templates you can use choose from.
+
+6. Using cookiecutter
+When you run this, it will ask you to fill in some details about the package you are creating. The first field you must fill in is your full name. Each field has a default value in square brackets. In this case the default is the name of the template author.
+
+7. Using cookiecutter
+This value will be used to set the author name inside the package setup-dot-py file. You'll need to type yours, and press enter to continue.
+
+8. Using cookiecutter
+It will prompt you for some more details used to fill in the template. This includes the package name and slug. The slug is just the name you want the package to be registered under. The package will be pip-installed with this name.
+
+9. Using cookiecutter
+The project description will go in the README file. You don't need to worry too much about what you write for this description. You can still manually edit the contents of the README file later. If you are happy with the default arguments you can just press enter without typing to accept them.
+
+10. Using cookiecutter
+You should specify yes to use pytest, and no to the other two options. We haven't been able to cover these in this course.
+
+11. Using cookiecutter
+We also don't use a command-line interface, so we enter 3 to pick this option. We will include an author file, which is just a list of the package authors.
+
+12. Using cookiecutter
+Finally, you can choose a license, if one of the options is appropriate for you. If not, you can choose not-open-source and add a license manually.
+
+13. Template output
+cookiecutter creates a new directory with your package name, and fills it with all the files we have covered. Each of these files has good default content. Even the setup-dot-py file has been completely filled out. However, you may still want to make some edits. For example, here the README is a restructured text file rather than markdown. It also adds some extra files we will cover later, like the AUTHORS file, which lists the authors of the package and their contact details.
+
+14. Template output
+Finally, it adds some more files which we won't be using in this course. These can safely be deleted.
+
+15. Let's practice!
+Using templates is a really great way to start a package in the real world, so let's practice!
+
+
+
+Got It!
+1. Version numbers and history
+Your package is looking really great now. In this lesson, we'll look at a few small changes you can make to polish it off before your next release.
+
+2. Final files
+In the last lesson you saw that cookiecutter created these two new files, contributing and history.
+
+3. CONTRIBUTING.md
+The contributing file is either a markdown or reStructured-text file. This is your call out to other developers for help, and is the first place another developer will look if they are interested in assisting with your package. It is up to you what information you choose to include in this file. You might ask potential developers to join a mailing list, or to email you, or how they can get involved via Github. The standard contributing file which cookiecutter creates, is a great place to start, but you can change it if you'd like to send out a different message to potential collaborators.
+
+4. HISTORY.md
+The history file is really important for your users. In chapter two, we said that a package's history file is used to figure out which versions of a package will work with your package. There are different terms for this file, you might hear it being called the history, change-log or release notes, but they are all the same thing. The history file will tell your users the important things that have changed between the previous and new releases. This allows them to figure out which versions of your package they should use.
+
+5. HISTORY.md
+The history file is also a markdown or restructured text file. There is no official guide on how to structure this file, but best practices would look something like this. There should be a heading for each version of your package released, and subheadings for ...
+
+6. HISTORY.md
+existing parts of the package that have been improved,
+
+7. HISTORY.md
+for new parts of the package that have been added,
+
+8. HISTORY.md
+for bug fixes,
+
+9. HISTORY.md
+and for deprecation warnings, which tell the users when the package has been changed in a way which might break their code that uses it. Under each of these headings there are bullet points telling the users the important updates that have happened. Not all updates will be included here, just the ones which might affect your users.
+
+10. HISTORY.md rendered
+When rendered the file looks like this.
+
+11. Version number
+When you make changes, and are ready to make a new release, you will need to increase the version number. Only one copy of the package can be associated with each version number. So PyPI won't let you upload a copy with a version number you have used before. There are two places in the package where you must update the version number. The setup-dot-py file and the top level init-dot-py file.
+
+12. The package version number
+The version number in the setup file is used by pip and PyPI. The version number in the init file is included for the user, and it is best-practices to include this. It allows them to print and use the package version.
+
+13. bumpversion
+These version numbers can be updated simultaneously using the simple bump-version tool. This tool is used from the terminal and will search through your package and increase the version number in appropriate places. You simply need to navigate to the top of your package and run bump-version with the argument major, minor or patch, and it will increase the major, minor or patch number.
+
+14. Let's practice!
+That's it for these extra files, let's practice!
+
+
+
+Got It!
+1. Makefiles and classifiers
+There are two last things you should know about before you start developing packages in the wild. Makefiles which will speed up your development, and classifiers which will help people find your package.
+
+2. Classifiers
+Inside the setup-dot-py file you will notice that cookiecutter has filled in the classifiers parameter. This is a list of categories for each release of your package. Users on PyPI can search through packages, and filter based on classifiers. Like if they are looking for packages for Python 2, or with a particular license type. Here we have classified that the mysklearn package is currently intended for developers, and is in pre-alpha stage, meaning it's not ready to be used by general users. We state the type of license, the language used in the package, and the versions of Python it is compatible with. This package is for Python 3, so we add this classifier. We also add classifiers for the minor versions 3.6 to 3.8, since these are the specific versions of Python 3 that the package works with. There are lots more classifiers you can use for your package, but you should always include these as a minimum. You can see a full list of classifiers here.
+
+3. What are Makefiles for?
+You will notice that cookiecutter also created a Makefile from the template. Throughout this course you were using a lot of terminal commands. Sometimes these commands can be very repetitive, and sometimes hard to remember. Can you remember exactly what terminal commands you used to upload your distributions to PyPI? This is where the Makefile comes in.
+
+4. What is in a Makefile?
+Makefiles are kind of like Python modules. You can write functions inside them, but these functions are used from the terminal. Inside the Makefile, cookiecutter has added a bunch of functions like this dist function. This function runs the setup-dot-py file to build source and wheel distributions for your package. There is also a clean-build function, which deletes the old distribution files so you can safely create new ones for a new release. There is also the test function, which simply runs pytest, and the release function which uploads your newest distributions to PyPI.
+
+5. How do I use the Makefile?
+You can use the makefile functions by navigating to the top of your package and using the command make followed by the function name.
+
+6. How do I use the Makefile?
+So to build new source and wheel distributions, you would type make dist into the terminal and run this.
+
+7. Makefile summary
+You can also get a summary of the commands available in the Makefile by using the make help command. This lists the functions in the makefile as well as what they do.
+
+8. Let's practice!
+Okay, let's go on to the final practice!
+
+
+
+Got It!
+1. Wrap-up
+Congratulations! You have covered a lot in this course, and by now you will be able to create great packages for yourself and others. I hope you are excited to use this to turn some of the code you already have into a package.
+
+2. Small beginnings
+Some of the most used Python packages started from one person deciding they were a good idea. And so I wish you, and whatever you decide to create, great success.
+
+3. Recap
+In this course, you took some loose code and learned how to transform it into a fully fledged package. And here is a reminder of all the things you covered in just a short time.
+
+4. Further topics
+You already have the skills you need to start creating great packages, but at some point you will need to start writing more complex tests for your package. And for this, there is a great course right here on DataCamp that goes more in-depth than we could here. You also might want to create a website for your package documentation. Thanks to tools like sphinx and websites like read-the-docs, this is easy and free. You can find out more about this here.
+
+5. Well done!
+Well done again, and happy developing!
+
+
+

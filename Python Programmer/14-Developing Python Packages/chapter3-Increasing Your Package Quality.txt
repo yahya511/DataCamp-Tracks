@@ -1,0 +1,139 @@
+
+Got It!
+1. Testing your package
+Great work so far! You have completed every step required to transform some loose code into a package hosted on PyPI. In this chapter we are going to focus on bringing your code up to an even higher standard. And the first step on this journey is testing.
+
+2. The art and discipline of testing
+When you are writing code, you will probably be performing small tests along the way to make sure it's working. Imagine you are writing this function to return the first and last element in a list. You might test it like this. This is the basic idea of testing, but in a good package, instead of just running this test once, you would save the code used to run this test. This means every time you make changes you can run all your tests again, to make sure your changes haven't broken anything.
+
+3. The art and discipline of testing
+Good packages like to brag to users about how many tests they have. At the time of writing, 91 percent of the Pandas package is covered by tests. Writing tests will help you track down bugs, and also signals to your users that your package can be trusted to perform as intended.
+
+4. Writing tests
+Each function in your package should have a test function. Here the test function for get-ends is defined. It runs the get-ends function on a list and makes sure get-ends returns the correct answer. If get-ends returns the correct answer then the test function passes.
+
+5. Writing tests
+If something is wrong with get-ends, then this test function raises an assertion error.
+
+6. Writing tests
+You can also include multiple assert statements to test your function in different ways.
+
+7. Organizing tests inside your package
+You should keep these tests in their own directory which is in the top folder of the package.
+
+8. Organizing tests inside your package
+The best way to lay out the tests directory is to copy the structure of the code directory. The test directory has an empty init file and the preprocessing subdirectory. Inside this subdirectory is the test-normalize module. The test-normalize module should contain all the tests for functions in the normalize module. Every other module in the code directory should have its own test module in the test directory.
+
+9. Organizing a test module
+Inside the test module, there should be a test function for each function defined in the source module. Remember that you will need to import the functions you are testing from the main package. This should be done using an absolute import. In this course we are only going to use these simple assert statements for testing, but if your package has more complex functions you will need more complex tests. If you'd like to learn more, you can take this great course on writing more complex tests here on DataCamp.
+
+10. Running tests with pytest
+Once you have written these tests you can run them all at once using pytest. From the terminal all you need to do is navigate to the top of your directory, and then run the pytest command. Pytest will look inside the test directory, and search for all modules that start with test-underscore. Inside those modules it will look for all functions that start with test-underscore, and it will run these functions.
+
+11. Running tests with pytest
+The output for pytest will look something like this.
+
+12. Running tests with pytest
+Pytest was run in the mysklearn directory and it found 6 test functions.
+
+13. Running tests with pytest
+The test functions cover the normalize and standardize modules with 50 percent and 100% coverage of the code.
+
+14. Running tests with pytest
+All 6 tests passed.
+
+15. Running tests with pytest
+If a test fails then pytest will highlight this so you can fix it.
+
+16. Let's practice!
+Alright, it's time make your package even better by adding tests. Let's practice!
+
+
+
+Got It!
+1. Testing your package with different environments
+Great work on writing those tests for your package. This will make it easy to check your package is working properly as you make changes.
+
+2. Testing multiple versions of Python
+But if you are trying to write a package which will work with multiple versions of Python, then you will need to test each version separately. This means you will need to install the versions of Python you would like to support, install your package and all of its dependencies within each Python version and run pytest.
+
+3. Testing multiple versions of Python
+An easier way to test multiple Python versions, and the most common way, is to use a tool called tox.
+
+4. What is tox?
+Tox is a tool specifically built to run package tests with multiple versions of Python. You can run tox from the terminal, just like pytest.
+
+5. Configure tox
+In order to use tox, you need to create a configuration file telling tox what to run in each environment and also which Python versions to use. The configuration file must be named tox-dot-ini and needs to be placed in the top level of the package, alongside the setup-dot-py file.
+
+6. Configure tox
+Inside the file you need to create the tox heading like this. You will then specify the versions of Python you want to test using the envlist parameter. Here we are testing python 2.7, 3.5, 3.6 and 3.7. You need to have these versions of Python already installed on your computer. Tox won't install new python versions. Using each of these versions of Python, tox will install your package and its dependencies. Under the testenv heading you need to tell tox what you want it to do once it has installed your package. You use the commands parameter to tell tox to run pytest. However, pytest isn't installed by your package dependencies, so you need to specify pytest as a tox dependency. You could actually add any commands you like to the commands list and tox will run them all. These need to be shell commands, which you could run from the terminal.
+
+7. Running tox
+To run tox, all you need to do is navigate to the top of your package and run the tox command.
+
+8. tox output
+For each version of Python you are testing you should see some output like this. This first section just tells you that tox has created a new Python 2.7 environment and installed the package and all the dependencies.
+
+9. tox output
+Next it starts running your commands. Here it runs pytest and shows the results from this. It repeats this for each version of Python you added in the configuration file.
+
+10. tox output
+and finally it shows you a summary.
+
+11. tox output
+If there was an error using one of the Python versions you would see output like this, and could use it to track down the cause of this error.
+
+12. Let's practice!
+Alright, time to test your package with multiple versions of Python. Let's practice!
+
+
+
+Got It!
+1. Keeping your package stylish
+You are well on your way to building stable, working packages, but it's time to think more about style.
+
+2. Introducing flake8
+Good code is read many more times than it is written, and so to help the reader, and yourself, we use the standard Python style guide, PEP8. This covers how variables and functions should be named, and generally how your code should be laid out. Following these conventions makes your code easier for others to understand and use. When developing code, it can be hard to spot bugs when you are writing it; that's why we use pytest. Similarly, it can be hard to spot every place where you have deviated in style; for this we use flake8.
+
+3. Running flake8
+Flake8 is a static code checker, which means it reads through your code without actually running it. Here we run flake8 from the terminal, passing it one of our modules to evaluate. It prints a series of style improvement suggestions. The output includes the file name, then the line number, then the character number of the violation, and a problem code and description.
+
+4. Using the output for quality code
+Here is the features-dot-py module. It's a bit messy. We didn't use the math import, and we haven't spaced out our functions. In the mean function, we used 3 spaces to indent instead of 4, and in the std function, we created a variable that isn't used. This module is bug-free and would pass our tests, but it could still be better.
+
+5. Using the output for quality code
+If we make the suggested changes and run flake8 again, it prints nothing, meaning our code is stylish.
+
+6. Breaking the rules on purpose
+Remember that PEP8 is only a guide, so you might bend these rules occasionally. For example, PEP8 says that after an equals sign, you should have only one space, but you might find that these two expressions
+
+7. Breaking the rules on purpose
+become clearer if you add an additional space. If you made this choice, flake8 would notify you about it every time, which could get annoying.
+
+8. Breaking the rules on purpose
+You can stop this by placing a noqa comment on the line. This stands for no quality-assurance. Now flake8 won't evaluate this line of code.
+
+9. Breaking the rules on purpose
+If we include a violation code after noqa, then flake8 will evaluate the line but ignore this particular type of violation.
+
+10. flake8 settings
+It is possible to ignore specific errors using flake8 without adding comments. For the previous case, we could use flake8's ignore flag and pass it a list of violation codes to ignore. Or if we only want to search for a specific set of violations, we can select those. Here we search for unused imports and variables.
+
+11. Choosing package settings using setup.cfg
+We can save these settings for flake8 by creating a setup-dot-cfg file in the package directory.
+
+12. Choosing package settings using setup.cfg
+In this config file, we create a section header for flake8 and then define the settings we want. For example, we'll ignore line spacing in all modules, and we will exclude setup-dot-py from being evaluated. We can also tell flake8 to ignore specific violations in particular files. Here we tell it to ignore extra spaces, but only in the main module of this example package. When we use flake8 inside our package, these settings will be used without us having to specify them.
+
+13. The whole package
+You can run flake8 on the whole package at once by navigating to the top of the package, and running flake8 from the terminal.
+
+14. Use the least filtering possible
+Using these config options, or noqa comments, produce different amounts of violation filtering. You should always use the minimum amount of filtering possible.
+
+15. Let's practice!
+Now let's practice!
+
+
+

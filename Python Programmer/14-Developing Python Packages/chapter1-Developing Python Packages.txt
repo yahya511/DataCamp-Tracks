@@ -1,0 +1,137 @@
+Got It!
+1. Starting a package
+Welcome to this course on building packages in Python. I'm James, and I will be your foreman as you build your own complete package during this course.
+
+2. Why build a package anyway?
+Building packages is a tremendously useful skill for anyone who codes. Whether you are running analysis or simulations, building machine learning models, data pipelines, or applications. If you have ever copied and pasted functions, classes or any code from one project to another, packaging is for you. Packaging makes your code easier to reuse by bundling it up and making it importable, just like your other favorite Python packages such as numpy, pandas, and scikit-learn. Packaging stops you having to copy or rewrite lots of functions, and also stops you having multiple versions of the same code spread across many files. We write code for ourselves and others, and packaging makes it easier to share your code.
+
+3. Course content
+In this course, you are going to build a full package from scratch. You will learn about file layout within your package; how to structure your import statements to expose functions to users; how to make your package installable; how to include licenses and READMEs; maintaining your package quality using style convention and unit testing tools; building distributable versions of your package you can share publicly; and using package templates to speed up development.
+
+4. Scripts, modules, and packages
+We'll be using the terms 'script', 'package' and 'module' in this course. A script is a python file which is made to be run directly. It is designed to do one set of tasks. A package is a directory of Python files which you import functions from. All the code in this directory is related and works together. Sometimes packages are layered. They can contain smaller packages inside them. We call the inside ones subpackages. A module is one of the Python files inside a directory which you import code from. Each module stores some of the package code. You'll see an example module later. In the wild, you will also hear people use the term 'library'. This is sometimes used to mean package, but sometimes people will use it to refer to a group of related packages. For example the Python standard library, which includes lots of basic Python packages such as the math, os and datetime packages.
+
+5. Directory tree of a package
+Because this course is about organizing Python code into a package, we will need to show the structure of directories. We'll be using directory trees for this. In this example, we are looking inside the the directory called my-simple-package. Inside this directory, there are two files, init-dot-py and simple-module-dot-py. This directory is the simplest python package you could make. The simple-module-dot-py file contains the package code, and the init-dot-py file is a special file which tells Python that this directory is a package.
+
+6. Contents of simple package
+Initially, the init-dot-py file will be completely empty. But it is an important file, and we'll use this to structure the package imports later. The simple-module-dot-py file has all the code for our package.
+
+7. Subpackages
+The package directory can contain subdirectories, Here, preprocessing and regression are subdirectories of my-sk-learn. Each of these directories is a subpackage, and has its own init-dot-py file. Using subpackages helps to organize your code, just as using subdirectories helps to organize your documents. You should place closely related functions and classes in the same module, and related modules in the same subpackage.
+
+8. Let's practice!
+In the following exercises, you'll begin creating your first package. Let's practice.
+
+Got It!
+1. Documentation
+A really important part of developing packages is writing documentation.
+
+2. Why include documentation?
+It can be tempting to neglect this part of your package, instead focusing only on your functional code, but good documentation means users can actually use your code. You should write documentation for each function, each class, and each class method. Users can access your documentation from within python using the help function. This documentation explains the numpy-dot-sum function, and its parameters.
+
+3. Why include documentation?
+Similarly, this is the documentation for the numpy-dot-array class.
+
+4. Why include documentation?
+And this is the documentation for the dot-mean method of the array class.
+
+5. Function documentation
+Documentation is contained in a string at the top of each function. It begins and ends with three quotation marks.
+
+6. Function documentation
+The first sentence of documentation is a summary, and should read like a command; like you are telling the function what to do. For simple functions this is all the documentation you will need.
+
+7. Function documentation
+For more complex functions you can add additional information below.
+
+8. Function documentation
+After the summary, you'll have sections outlining the input parameters, and returned values.
+
+9. Documentation style
+To write this section you will need to choose a documentation style. There are several standard styles for python documentation you can choose, but you must be consistent within your package. In this course you'll use the NumPy style. It's more verbose than the others, but it's good for documenting complex functions.
+
+10. NumPy documentation style
+It's also used in many scientific python packages, like NumPy, SciPy, Pandas, and Scikit-Learn.
+
+11. NumPy documentation style
+Let's look at the documentation of an example function. The NumPy style uses section headings with underscores. The parameters are laid out like this - the parameter's name, followed by a colon, and the parameter's type. Here, array-like means a numpy array, a list, or a nested list, but in your own documentation you can specify any type. Below this, on an indented line you should have a description of the parameter.
+
+12. NumPy documentation style
+If there are multiple options for the type of a parameter, or a certain set of valid values, you should list them all.
+
+13. NumPy documentation style
+The next section lists the returned values and their types in order. This is formatted just like the parameters list.
+
+14. NumPy documentation style
+These are the basic sections for any function. You can also include these other sections, which you can read more about here.
+
+1 https://numpydoc.readthedocs.io/en/latest/format.html
+15. Documentation templates and style translation
+Pyment is a tool used to generate template docstrings for your functions and classes. This is run from the terminal, and can generate documentation in many styles. It can also translate documentation from one of these styles to another.
+
+16. Documentation templates and style translation
+Here we use pyment to generate docstring templates for the textanalysis module you wrote earlier. We use the w option to tell pyment to overwrite the textanalysis-dot-py file, and specify the output format as the NumPy style.
+
+17. Documentation templates and style translation
+pyment creates a template with headings and the parameter names. You'll need to fill in the rest of the detail.
+
+18. Translate to Google style
+Later, if you decide to change documentation style, you can use pyment again. We run the same command, but specify the Google docstyle. When pyment finds documentation which is not in this style it modifies it.
+
+19. Translate to Google style
+20. Package, subpackage and module documentation
+There is also module, package, and subpackage documentation. This helps your users navigate your package and understand what it can do. Package documentation is placed in a string at the top of the package init-dot-py file. This should summarize the package. Similarly, subpackage documentation is placed at the top of the subpackage init-dot-py. Module documentation is written at the top of the module file.
+
+21. Let's practice!
+We've covered a lot, now let's practice!
+
+
+Got It!
+1. Structuring imports
+Now you've got a complete documented package, you need to think about how users will access its different parts.
+
+2. Without package imports
+The package you were working on has no internal imports yet - neither does this one. This means when you import the package, you cannot access any of the subpackages or modules. The package doesn't know about them.
+
+3. Without package imports
+To access the subpackages, you would need to import each of them separately, each time you use them.
+
+4. Without package imports
+The subpackages don't know about the modules they contain either.
+
+5. Without package imports
+So each module has to be imported too. We can stop this by using internal imports, to import the modules into the subpackages, and the subpackages into the package. This gives our package structure, and allows us connect its different parts.
+
+6. Importing subpackages into packages
+In the package's init-dot-py file, we import the subpackages. We can do this using absolute or relative imports. The path of absolute imports starts at the top of the package. Here we tell Python to look within my-sklearn and import the preprocessing subpackage. Alternatively, we can use a relative import, and start the path from the current file. The dot here means the current file's parent directory. So this relative import says from the current directory import preprocessing. You only need one of these lines. In Python, absolute imports are preferred, they are more explicit. But you'll see later that these import statements can get really long. That's when we use relative imports.
+
+7. Importing modules
+After making this change, we can access the subpackage when we import my-sklearn, but we still can't access its modules.
+
+8. Importing modules
+Importing modules is the same as importing subpackages. Inside the subpackage's init-dot-py file, we add a statement to import the normalize module. We can use an absolute import, starting from the top of the package, or a relative import starting from this file.
+
+9. Restructuring imports
+Now when we import the package, we can access all the functions in this module. Sometimes this will leave you with a very long path to access a function.
+
+10. Import function into subpackage
+You can set up shortcuts to get rid of this. Let's say in the normalize module, there is only one function you want users to access. The other code in the module is just helper functions for this. In the preprocessing init-dot-py file you can directly import the useful function.
+
+11. Import function into subpackage
+Now you've imported the normalize-data function into preprocessing, so you can use this shorter path to access it.
+
+12. Importing between sibling modules
+If a module file is getting too big, you might split it into multiple files. Here some of the functions from normalize have been moved into funcs-dot-py. However, we still need to use them inside the normalize module, so we need to import them. As usual, we can use absolute or relative imports to import the two functions.
+
+13. Importing between modules far apart
+There might be classes or functions you want to use in many of your modules. Here there is a custom exception class which is defined in utils-dot-py. To import this into these other modules, we can use this absolute import, or this relative import. Previously, we said that one dot in a path meant the parent directory of the file. Two dots means the parent of the parent directory. Starting from normalize-dot-py in the file tree, its parent is preprocessing, and its parent is my-sklearn. Then from the utils file in this directory we import the exception class.
+
+14. Relative import cheat sheet
+Here's a cheat sheet you can refer back to for relative imports.
+
+15. Let's practice!
+Now let's practice.
+
+
+

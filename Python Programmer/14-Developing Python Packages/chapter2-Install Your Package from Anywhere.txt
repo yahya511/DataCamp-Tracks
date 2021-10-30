@@ -1,0 +1,170 @@
+Got It!
+1. Installing your own package
+By this stage, you have completed the source code for your package. But there's one more step before your local copy of the package is ready for use. You need to install it.
+
+2. Why should you install your own package?
+Previously, when you imported your package in the example script, the script and the package directory were both in the same folder. Like this example.
+
+3. Why should you install your own package?
+However, if you move the script and the package apart, you will no longer be able to import your package. This is because the script can search for packages in its parent directory, but it won't search outside that. But if you install it, you can import the package no matter where the script is located. Just like you can always import NumPy, or any other package, when it is installed.
+
+4. setup.py
+To make the package installable, you are going to add a new file to the package - the setup-dot-py script. This script also contains metadata for the package, and will be important later on if you want to publish your package.
+
+5. Package directory structure
+To add the setup script, we need to restructure our directory slightly. The setup script is part of the package, but not part of the source code.
+
+6. Package directory structure
+Therefore we create a new folder inside the package directory to keep the source code. It's very common to name the inner and outer folders the same thing. Here the outer package directory is called my-sklearn, and inside this directory there is the directory of source code, also called my-sklearn.
+
+7. Package directory structure
+The outer directory also contains the setup script. Doing this keeps the source code separate from extra files the package needs. We'll be adding more of these files later in this chapter.
+
+8. Inside setup.py
+Inside the setup-dot-py script, we import the setup function from the setuptools package. The only thing we need to do in this script is call this setup function. Here we call the function and pass in metadata for the package, including author name, a short description for the package, the package name and the package version number. The version number has thee parts, the major number, minor number, and patch number. As you develop the package you will increment these numbers. You increase the patch number for bug fixes and improvements to the functions that already exist, increase the minor number for new features, and increase the major number for really big changes.
+
+9. Inside setup.py
+From setup-tools you also need to import the find-packages function. This is used to find the paths of your packages and subpackages. Here we use the find-packages function and pass the result into the setup function. We tell the find-packages function to include the my-sklearn package. my-sklearn-dot-star tells the function to include all the subpackages inside my-sklearn as well.
+
+10. Editable installation
+Once you have written the setup script you can install the package. You should navigate to the directory containing the setup file, and then you can use pip to install the package like this. Pip runs the setup-dot-py script for you. The dot at the end of this command means install the package in the current directory. The dash-e means to install this package in an editable mode. This means when you make changes to the source code, like fixing a bug or adding new features, these changes are included when you import the package. If you didn't do this, you would need to reinstall the package each time you make a change.
+
+11. Let's practice!
+Okay, time to make your package installable. Let's practice!
+
+
+Got It!
+1. Dealing with dependencies
+Great work so far. Your package is coming along nicely. Now it's time to start thinking about how to make your package usable by other people.
+
+2. What are dependencies?
+It's quite likely your package will use other packages inside of it. Maybe you use NumPy functions, or Pandas DataFrames or anything else. Being a good package developer means not reinventing packages that already exist. These extra packages that you use inside yours are the dependencies of your package. When someone else, or just you, tries to install your package, you need to make sure that they have these packages installed too.
+
+3. Adding dependencies to setup.py
+To ensure that your users have the right packages installed, you can set the install-requires parameter inside the setup function of the setup script. Here you list the packages which your package depends on. Then when someone uses pip to install your package, pip will install these extra packages as well, unless the user already has them. These dependencies are updated often, and the version number changes. In this example, any version number of these packages is allowed,
+
+4. Controlling dependency version
+but sometimes your code will depend on functions which only exist in specific versions of another package. Let's say that a function used in our package was only introduced in pandas version one-point-zero. Here you say the user must have this version of pandas or later. You can also specify an exact version of a package. Here the user must have scipy version one-point-one. No other version will do. And here you say that the version of matplotlib must be at least two-point-two-point-one but cannot be version three or more.
+
+5. Controlling dependency version
+You should try to allow as many versions of these dependent packages as possible. If you restrict the version numbers too much then your user will not be able to install your package at the same time as other packages they need. You should also not have any unnecessary dependencies.
+
+6. Python versions
+Just like you specify which version of dependent packages a user needs to have, you can specify which version of Python they need to have. Here we say that the version of Python installed must be two-point-seven or greater, but cannot be three-point-zero or three-point-one. The star must be used when we are excluding version numbers.
+
+7. Choosing dependency and package versions
+You may be wondering how you find out which dependency versions and Python versions will work with your package. You can search online for the functions you use, and find which version of the package they were introduced in. A good place to start is the package history or release notes. You can also perform tests with multiple different package and Python versions. We'll cover this in a later lesson.
+
+8. Making an environment for developers
+A really important part of developing any software is reproducibility. You and your package co-authors need to have the exact same versions of all the dependent packages so you can track down bugs. This is different to the install-requires dependencies where you try to allow as many different versions as possible, here you want to know exactly which versions you are using. You can show all the package versions you have installed using the pip freeze command.
+
+9. Making an environment for developers
+You should export this information into a text file which you include with your package. Then anyone can install all of the packages in this file later using this pip install command. Having the exact same set of packages makes it easier to hunt down any bugs.
+
+10. Let's practice!
+Okay, time to add dependencies to your package. Let's practice!
+
+
+Got It!
+1. Dealing with dependencies
+Great work so far. Your package is coming along nicely. Now it's time to start thinking about how to make your package usable by other people.
+
+2. What are dependencies?
+It's quite likely your package will use other packages inside of it. Maybe you use NumPy functions, or Pandas DataFrames or anything else. Being a good package developer means not reinventing packages that already exist. These extra packages that you use inside yours are the dependencies of your package. When someone else, or just you, tries to install your package, you need to make sure that they have these packages installed too.
+
+3. Adding dependencies to setup.py
+To ensure that your users have the right packages installed, you can set the install-requires parameter inside the setup function of the setup script. Here you list the packages which your package depends on. Then when someone uses pip to install your package, pip will install these extra packages as well, unless the user already has them. These dependencies are updated often, and the version number changes. In this example, any version number of these packages is allowed,
+
+4. Controlling dependency version
+but sometimes your code will depend on functions which only exist in specific versions of another package. Let's say that a function used in our package was only introduced in pandas version one-point-zero. Here you say the user must have this version of pandas or later. You can also specify an exact version of a package. Here the user must have scipy version one-point-one. No other version will do. And here you say that the version of matplotlib must be at least two-point-two-point-one but cannot be version three or more.
+
+5. Controlling dependency version
+You should try to allow as many versions of these dependent packages as possible. If you restrict the version numbers too much then your user will not be able to install your package at the same time as other packages they need. You should also not have any unnecessary dependencies.
+
+6. Python versions
+Just like you specify which version of dependent packages a user needs to have, you can specify which version of Python they need to have. Here we say that the version of Python installed must be two-point-seven or greater, but cannot be three-point-zero or three-point-one. The star must be used when we are excluding version numbers.
+
+7. Choosing dependency and package versions
+You may be wondering how you find out which dependency versions and Python versions will work with your package. You can search online for the functions you use, and find which version of the package they were introduced in. A good place to start is the package history or release notes. You can also perform tests with multiple different package and Python versions. We'll cover this in a later lesson.
+
+8. Making an environment for developers
+A really important part of developing any software is reproducibility. You and your package co-authors need to have the exact same versions of all the dependent packages so you can track down bugs. This is different to the install-requires dependencies where you try to allow as many different versions as possible, here you want to know exactly which versions you are using. You can show all the package versions you have installed using the pip freeze command.
+
+9. Making an environment for developers
+You should export this information into a text file which you include with your package. Then anyone can install all of the packages in this file later using this pip install command. Having the exact same set of packages makes it easier to hunt down any bugs.
+
+10. Let's practice!
+Okay, time to add dependencies to your package. Let's practice!
+
+
+
+Got It!
+1. Including licences and writing READMEs
+Your package is really coming along! However, there are a couple of really important pieces missing - the license and a README file.
+
+2. Why do I need a license?
+The license is a really important file for code you want to share online. If you host your package online, but do not include a license, then you are not giving permission to other people to share, modify or even use the code! Many great packages are open source and may be freely modified and shared by other users. This openness has led to the success of many of these packages as they have attracted developers to work on them.
+
+3. Open source licenses
+There are lots of different licenses you might include, and we can't go into all of these in this course. If you would like to open source your package, then I thoroughly recommend you to find out information about these license choices here. All of the open source licenses on this popular website allow individuals to use your package themselves, and to modify and share it. Some licenses might require modified versions of the package to be open sourced, and shared with the same license you used.
+
+1 https://choosealicense.com
+4. What is a README?
+Another important file for your project is your README. This file acts as the front page of your package. If you host your package online on Github or PyPI then your README will be displayed there.
+
+5. What to include in a README
+What you include is mostly up to you, but a good README will have the package title; a description of the package including its most important features; instructions on how to install the package; some example uses to get started; a section on how to contribute to the package code; and a brief note on the type of license used.
+
+6. README format
+Just like there are multiple formats for documentation, there are two formats used for READMEs - reStructuredText and markdown. In this course, you'll use markdown to write your README. It is slightly simpler than reStructuredText and is a common choice in the wild. Most of what you write in markdown will be easy to convert to reStructuredText if you ever need a more complex README.
+
+7. Commonmark
+There are some slightly different versions of markdown out there. But the version for READMEs is called commonmark. Commonmark is a file format like HTML, but is much much simpler. On the left you can see what is inside the README markdown file, and the on the right is what gets displayed when the file is rendered.
+
+8. Commonmark
+You can add titles using a hashtag; you can add text, and make a section bold by wrapping it in double asterisks; you can add links like this;
+
+9. Commonmark
+you can add subtitles using multiple hashtags;
+
+10. Commonmark
+and even add code samples by wrapping it in triple backticks.
+
+11. Adding these files to your package
+The license and README files should be added to the top directory, alongside the setup script and the requirements file.
+
+12. MANIFEST.in
+There is one last file you will need to create before you can release your package to the world. This is the manifest-dot-in file. This file is used to list all of the extra files that you want to distribute along with your package. You'll learn more about distributing you package in the next lesson. This manifest file is important because by default your license will not be included when someone downloads your package, and neither will your README.
+
+13. MANIFEST.in
+Inside the manifest file we just need to include the license and the README like this.
+
+14. Let's practice!
+Okay, now it's time to go and add the last few files you need to make your package publishable. Let's practice!
+
+
+
+Got It!
+1. Publishing your package
+Your package is now ready to be released online, congratulations on bringing it this far!
+
+2. PyPI
+When you install packages using pip, you are normally downloading them from the python package index, known as PyPI. This is an online code repository, and anyone anywhere can upload packages to it. You just need to register for a free account. It can be tempting to wait until your package is fully finished and polished before releasing it. But releasing early, just as soon as it might be useful to someone, means you can get feedback and you might attract other people to help you develop it.
+
+1 https://pypi.org/
+3. Distributions
+When you upload your package to PyPI you actually upload a package distribution. A distribution is just a bundled version of your code which is ready to be installed. There are two important kinds of distributions in Python. Source distributions and wheel distributions. Source distributions are basically just the Python files you have written. To install this distribution the files must be downloaded and then the setup script is run. A wheel distribution is a version of your package in a slightly processed format. It can be installed without running the setup script and so is faster for the user to install and is usually smaller in size, so is faster to download as well. The wheel distribution is the preferred Python distribution, and pip will install a package using this when it is available. However, when you upload distributions to PyPI, it is good practice to upload both the wheel and the source distribution.
+
+4. How to build distributions
+You can build source and wheel distributions from the terminal using this command. You run the setup script and pass sdist to make the source distribution and bdist-wheel to make the wheel distribution. This will create a dist directory and add wheel and source distributions inside. It will also create build and egg-info directories, but you can ignore these.
+
+5. Getting your package out there
+Now that you have built your distributions the only thing left to do is upload them. You can do this from the terminal using twine. Twine is a tool specifically made for uploading packages to PyPI. Here we upload all the distributions in the dist directory. You can also upload your distributions to the Test-PyPI repository, which is a version of the PyPI repository made for testing. It's a good place to start. In order to upload, you'll first have to go to either PyPI or Test-PyPI to register for an account.
+
+6. How other people can install your package
+Once you've done this, your package is live and anyone can install it using PIP. It is also possible to install your package from Test-PyPI using a longer command. You specify the index-url which is where the package is downloaded from, and the extra-index-url which is where PIP can search for your dependency packages.
+
+7. Let's practice!
+Alright, it's time build some distributions ready for upload. Let's practice!
+
+

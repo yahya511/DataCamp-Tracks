@@ -1,0 +1,72 @@
+Got It!
+1. Writing Your First Package
+Up to this point, we've covered some important topics for Software Engineering in Python. Now we're going to get our hands dirty and put these ideas into practice by building a python package from the ground up. We've seen how useful packages can be for easily importing functionality into a workflow, but what is under the covers? How do we make one ourselves?
+
+2. Package structure
+A minimal python package consists of 2 elements: a directory and a python file. You can see the basic structure here. The name of the directory will be the name of the package, but how should you name it? We can turn to PEP 8 again for some guidance.
+
+3. Package structure
+To paraphrase, PEP 8 states that packages should have short, all-lowercase names. The use of underscores in a package name is discouraged, but you can and should use them if it improves readability. Outside of this, you have the freedom to brand as you'd like. I'd suggest picking a name that conveys the functionality of the package.
+
+4. Package structure
+The file in our newly branded directory doesn't have any flexibility in naming. We must name it underscore underscore init underscore underscore dot py. This file lets python know that the directory we created is a package. And that's it! With this structure we've created a package that we can import just like we would import numpy or any other package. Note that as of Python version 3-point-3 any directory can be imported as if it were a package without error even if it doesn't follow this structure. Earlier versions of Python would throw an error if you tried to import an improperly formatted package. Even though a directory might import without error, you will run into issues if you do not follow this structure.
+
+5. Importing a local package
+So how do we import our package? Before we look at some code let's establish where our script is relative to our new package. We'll be working in the my_script dot py file that's in the same location as our package directory.
+
+6. Importing a local package
+With all the setup we've done so far, importing the package is a breeze. At the top of our script, we can use import my_package. Just for an added bonus, let's check out what happens if we try to call help on our package. We get some minimal information with python letting us know that it is indeed a package and additionally we see the location of our __init__ dot py file. As we previously covered, it's up to the developer to add in useful documentation to be printed whenever a user calls help. Later we will be going over how we can add this documentation as well as implementing some functionality to make our package more useful.
+
+7. Let's Practice
+We just covered how to make a python package skeleton. This is an important concept that will serve as a foundation for all the useful packages you'll be writing in the future. Before that, let's review with some exercises.
+
+
+Got It!
+1. Adding Functionality to Packages
+Great work on those exercises. You're now a bonafide Python package developer. The next step to package development is to add some useful functionality.
+
+2. Package structure
+To start, let's again look at the file structure we'll be using. Here we've added a file to our package's directory named utils dot py. Again, when we import and work with our resulting package we'll be in the my_script file that's in the same directory as our package. Note that we can choose a different name than utils, but keep in mind that file names should follow the same conventions as package naming. That is, file names should be all lower case and avoid underscores unless it improves readability or if it's a special case such as our package's init file.
+
+3. Adding functionality
+With the right structure in place, the next step is to write some code. Here, in our utils dot py file, we write a function that prints one of two possible statements based on user input. Our utils file is known as a submodule and we can import and with a dot notation syntax of the form: package name dot submodule name dot function name. In this example, we call my_package dot utils dot we_need_to_talk.
+
+4. Importing functionality with __init__.py
+Alternatively, we can use our package's init file to make our utils' function more easily accessible by the user. To do this, we import our function in our init file as you see here. The dot notation we use when writing dot utils is known as a relative import and it must be used when packaging in Python versions 3 and above. Importing our function in the init file saves some typing when we want to import and use our function. We're now able to call my_package dot we_need_to_talk without including the additional reference to our utils submodule, importing the function in the init file took care of this reference for us.
+
+5. Extending package structure
+In our example, we added a single file, or submodule, to our package, but we can extend this structure indefinitely to meet our needs. However, when creating larger packages you must be more mindful about organization. When working with multiple submodules should you import them all in init? As a general rule, you should import your package's key functionality in your init file to make it directly and easily accessible. Less central functionality can be accessed by users through the longer submodule dot syntax we saw earlier. The decision of what is 'key' functionality is a gray area, and because of this, there isn't always a clear best way to organize your package. As a package developer, you'll need to use your judgment to decide what you think will give your users the best experience.
+
+6. Extending package structure
+In addition to adding additional submodules, you can also build out packages inside your package! These are known as subpackages. Notice how the subpackage still follows the packaging rules of being a directory with an init file. We won't be covering subpackages in depth in this course but exposure to these different structures can be helpful when looking at someone else's code.
+
+7. Let's Practice
+All right, we just covered how to add functionality by defining functions in a package by using submodules and the init file. In the following exercises, you'll practice this important skill. Good luck.
+
+
+Got It!
+1. Making your package portable
+Now that you have a functional package you might want to share it with your colleagues.
+
+2. Steps to portability
+The two main steps to sharing a python package are creating setup dot py and requirements dot txt. These two pieces provide information on how to install your package and recreate its required environment. These files list information about what dependencies you've used as well as allowing you to describe your package with additional metadata.
+
+3. Portable package structure
+Here's how the two files fit into our package structure. They're located at the same level as our package directory. Now let's see what content goes into the files themselves.
+
+4. Contents of requirements.txt
+A requirements file shows how to recreate the environment needed to properly use your package. This includes a list of python packages and optionally the version requirements for each package. Here we see 3 different ways to specify our requirements. If we don't have a reason to specify a version we can just list the package name as you see here for matplotlib. If version is important. We can mark a specific version by using a double equals, or mark a minimum version by using greater than or equal. Since open source packages are constantly evolving, specifying a version can be a big help to your users. To leverage our requirements file we can use this pip install command. This installs all the packages listed with respect the correct version. Note that we didn't actually install our package, we just recreated its environment.
+
+5. Contents of setup.py
+setup dot py is what tells pip how to install our actual package. Additionally, its info will be used by PyPi if you decide to publish. The contents of this in our case contains a single call to the setup function from the setuptools package. There are other options, but setuptools is one of the most common and powerful choices. Here we use just a few of the possible setup arguments. There are many more options available that you can read more about in the setuptools documentation. The argument's names make them fairly self-explanatory; for example, your package's name is assigned to name and so on. Some less obvious arguments in our example are install_requires and packages. packages in essence lists the location of all the init files in our package. Our package has a single init file and it's in the directory 'my_package'. As we saw before, more complex packages might include subpackages with their own init files, if this was the case we would also list their locations here. Until you start writing more complex packages, the contents of the packages list will likely be the same as the name argument. install_requires might look familiar, in the case of our package, the contents are the same as our requirements file.
+
+6. install_requires vs requirements.txt
+An example of when install_requires can differ is if you want to specify where pip should download packages from. This can be specified in the requirements file as you see here. We won't go into much detail here since this advanced option is not often needed in everyday use. To read up more on the differences you can see the documentation linked here.
+
+7. pip installing your package
+Now that we've completed our setup-dot-py, we can install our package with pip using pip install dot from inside the same directory as our package. This will install our package at an environment level so we can import it into any python script using the same environment.
+
+8. Let's Practice
+We just covered some important aspects of how to make your package portable. Let's jump into some exercises to review.
+
+
