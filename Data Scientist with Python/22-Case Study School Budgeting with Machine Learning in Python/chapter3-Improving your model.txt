@@ -1,0 +1,99 @@
+
+
+1. Pipelines, feature & text preprocessing
+You've submitted your first simple model. Now it's time to combine what we've learned about NLP with our model pipeline and incorporate the text data into our algorithm.
+
+2. The pipeline workflow
+The supervised learning course introduced pipelines, which are a repeatable way to go from raw data to a trained machine learning model. The scikit-learn Pipeline object takes a sequential list of steps where the output of one step is the input to the next. Each step is represented with a name for the step, that is simply a string, and an object that implements the fit and the transform methods. A good example is the CountVectorizer that we used earlier. As we'll see Pipelines are a very flexible way to represent your workflow. In fact, you can even have a sub-pipeline as one of the steps! The beauty of the Pipeline is that it encapsulates every transformation from raw data to a trained model.
+
+3. Instantiate simple pipeline with one step
+After importing the relevant modules, we'll start with a one step pipeline. Although we don't need a pipeline for a single step, this exercise will get us familiar with the syntax. Remember, we create a Pipeline by passing it a series of named steps. In this case the name is the string 'clf', and the step is the one-vs-rest logistic regression classifier we created earlier.
+
+4. Train and test with sample numeric data
+The sample dataset we've been working with has numeric data in the numeric columns and the with missing column. We'll start by building a model to predict the label column with the numeric data.
+
+5. Train and test with sample numeric data
+First, we'll use the train_test split function from sklearn dot model_selection. Our X will just be the numeric column, and our Y will be the dummy encoding of the label column. We'll call the fit method on our Pipeline, just like a normal classifier in sklearn. We can see that it returns a Pipeline that has one step to do our logistic regression.
+
+6. Train and test with sample numeric data
+By using the score function on our pipeline, we can see how our Pipeline performs on the test set. The default scoring method for this classifier is accuracy. That's good enough for our sample dataset.
+
+7. Adding more steps to the pipeline
+Let's add the with_missing column to our training set. Oops! Now when we call fit, we see a value error that explains that our input has NaN values.
+
+8. Preprocessing numeric features with missing data
+To address this, we'll add an Imputer to our pipeline, which will fill in the NaN values. To do so, we add a step to the Pipeline with the name 'imp' and an Imputer object. The default imputation in scikit-learn is to fill missing values with the mean of the column in question. You can look at the documentation of the Imputer object to see other possible imputation strategies.
+
+9. Preprocessing numeric features with missing data
+We can call fit and score on the new pipeline, just like we did before. But, in this case our model also includes the column with_missing which had NaN values that were imputed.
+
+10. Let's practice!
+Now it's time for you to try building a pipeline!
+
+
+
+
+1. Text features and feature unions
+In this video, we'll look at how we process text data in a pipeline and then how we put it all together.
+
+2. Preprocessing text features
+Our sample dataframe contains one column we haven't used yet, the text column. First, we'll change our train an test data just to be working with the text data for now. Then, we'll add a step to our Pipeline with the name vec and the CountVectorizer object from scikit-learn. Now our pipeline will use the CountVectorizer on our dataset, and then it will pass the result into our classifier.
+
+3. Preprocessing text features
+Again, we can call the fit and score methods on the Pipeline. The score function now reports our accuracy if we just use the text data.
+
+4. Preprocessing multiple dtypes
+Let's say we want to use all of our data in a single pipeline. We can't just have a Pipeline that has a CountVectorizer step, Imputation step, and then a classifier. The CountVectorizer won't know what to do with the numeric columns, and we don't want to perform imputation on the text columns. In order to build our pipeline, we need to separately operate on the text columns and on the numeric columns. There are two tools: FunctionTransformer and FeatureUnion that will help us build a Pipeline to work with both our text and numeric data. The first utility that we cover is the FunctionTransformer.
+
+5. FunctionTransformer
+FunctionTransformer has a simple job: take a Python function, and turn it into an object that the scikit-learn Pipeline can understand. We'll write two simple functions: one that takes the whole dataframe, and returns just the numeric columns. The other will take the whole dataframe and return just the text columns. Using these function transformers, we can build a separate Pipeline for our numeric data and for our text data.
+
+6. Putting it all together
+First, we'll do our train_test split on the entire dataset and import the FunctionTransformer and FeatureUnion utilities.
+
+7. Putting it all together
+Next, we'll create two FunctionTransformer objects. The first takes a dataframe and just returns the column named 'text'. The second takes a dataframe and returns the columns named 'numeric' and 'with_missing'. These two function transformer objects will let us set up separate Pipelines that operate on the selected columns only. Note that we've passed the parameter validate equals False. This simply tells scikit-learn it doesn't need to check for NaNs or validate the dtypes of the input. We'll do that work ourselves.
+
+8. FeatureUnion Text and Numeric Features
+FeatureUnion from the sklearn dot pipeline module is the other utility we need. We know that our text pipeline generates the array on the left, our text features.
+
+9. FeatureUnion Text and Numeric Features
+And our numeric pipeline generates the array on the right, our numeric features.
+
+10. FeatureUnion Text and Numeric Features
+The FeatureUnion object puts these two sets of features together as a single array that will be the input to our classifier.
+
+11. Putting it all together
+Here's our entire pipeline, which processes our text and numeric data. First, we create our separate text and numeric pipelines. Remember, get_numeric_data and get_text_data are the FunctionTransformers that we just created. These pipelines output our numeric features and our text features respectively. The we create our overall pipeline, which has two steps: First, the FeatureUnion takes a list of objects, calls each one, and then concatenates the output into a wide array out of all of the results. In this case, it will call our numeric pipeline and then our text pipeline. Once we have this array of all of our features, we can pass it to our classifier. We can call fit and score on this pipeline, just like our simpler ones before it.
+
+12. Let's practice!
+Now it's your turn to work with Pipeline, FeatureUnion and FunctionTransformer.
+
+
+
+
+1. Choosing a classification model
+Now that we understand how to pull together text and numeric data into a single machine learning pipeline, we'll return to talking about our school budget dataset. In the sample dataset, there was only one text column. This is the format that CountVectorizer expects.
+
+2. Main dataset: lots of text
+However, our main dataset has 14 text columns. In an interactive exercise during our NLP chapter we wrote a function combine_text_columns that put together all of the text columns into a single column. We'll re-use this function as part of our Pipeline to process the text in the budget dataset.
+
+3. Using pipeline with the main dataset
+Again, as we did in the last chapter, we'll use the get_dummies function from pandas to create our label array, and we'll also create our train-test split using the multilabel_train_test_split function. Hopefully, this is starting to feel familiar.
+
+4. Using pipeline with the main dataset
+Now we'll create a pipeline for working with our main dataset. The beauty of this code, is that it has one change from the code we used for the sample dataset: we create a FunctionTransformer object using our combine_text_columns function instead of the simple selection function we used in the sample dataset. Other than this one change, the pipeline that processes the text, imputes the numeric columns, joins those results together and then fits a multilabel logistic regression remains the same.
+
+5. Performance using main dataset
+We can now fit this Pipeline on the school budget dataset. As part of our exercises, we'll look at the results of this pipeline. Now we have infrastructure for processing our features and fitting a model. This infrastructure allows us to easily experiment with adapting different parts of the pipeline. Part of your challenge in the exercises will be to improve the performance of the pipeline.
+
+6. Flexibility of model step
+For example, we can easily experiment with different classes of models. All of our Pipeline code can stay the same, but we can update the last step to be a different class of model instead of LogisticRegression. For example, we could try a RandomForestClassifier, NaiveBayesClassifier, or a KNeighborsClassifier instead. In fact, you can look at the scikit-learn documentation and choose any model class you want!
+
+7. Easily try new models using pipeline
+Here's an example of how simple it is to change the classification method in our scikit-learn Pipeline. We simply import a different class of model--in this case, we'll use a RandomForestClassifier. Then, the only other line that needs to change is the one that defines the classifier inside the Pipeline. This makes it very simple for us to try a large number of different model classes and determine which one is the best for the problem that we're working on.
+
+8. Let's practice!
+Now your task is to implement the classification pipeline on the school budget dataset. You will also get the chance to experiment with the Pipeline steps and model class. See how much you can improve the performance of the model!
+
+

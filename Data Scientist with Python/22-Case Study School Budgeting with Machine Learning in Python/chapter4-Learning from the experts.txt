@@ -1,0 +1,99 @@
+
+
+1. Learning from the expert: processing
+In this chapter, we're going to see the tips and tricks that got the winning competitor to the top of the leaderboard.
+
+2. Learning from the expert
+Some of the tricks are about text processing, some are about statistical methods, and some are about computational efficiency. While some of this may be new, some of it may be familiar from this course or other work you've done on DataCamp. By knowing which tools to combine, we can build extremely effective models.
+
+3. Learning from the expert: text preprocessing
+In our introduction to natural language processing, we introduced the same tools that the winner used. These are common tools for manipulating text, and are often effective for improving models based on text data. The first trick the winner used was to tokenize on punctuation. By noticing that there are lots of characters like hyphens, periods, and underscores in the text we are working with, the winner picked out a better way of separating words than just spaces. The other trick was to use a range of n-grams in the model. By including unigrams and bigrams, the winner was more likely to capture important information that appears as multiple tokens in the text--for example, "middle school".
+
+4. N-grams and tokenization
+One of the massive benefits of building our models on top of scikit-learn is that many of these common tools are implemented for us and are well-tested by a large community. To change our tokenization and add bi-grams, we can change our call to CountVectorizer. We'll pass the regular expression to only accept alpha-numeric characters in our tokens. We defined this expression back in chapter 2. We'll also add the parameter ngram_range equals (1, 2). This tells the CountVectorizer to include 1-grams and 2-grams in the vectorization. These changes to the call to CountVectorizer are the only changes we need to make in order to add these preprocessing steps. We can easily update our pipeline to include this change, which will be part of the exercises.
+
+5. Range of n-grams in scikit-learn
+Then we fit our updated pipeline in the same way that we've been doing throughout the course: simply call the fit method on our Pipeline object. Getting predictions from our model is also the same as it has been throughout.
+
+6. Range of n-grams in scikit-learn
+We use the predict_proba function to get our class probabilities. Because we have built our preprocessing into our Pipeline, we don't need to do any additional processing on our holdout data when we load it. The pipeline represents the entire prediction process from raw data to class probabilities.
+
+7. Let's practice!
+Now it's your turn to implement these text processing tricks and see how they improve your score.
+
+
+
+
+1. Learning from the expert: a stats trick
+Now that you have experience with the text processing tricks that won the competition, we'll introduce some additional tools that the winner used.
+
+2. Learning from the expert: interaction terms
+The statistical tool that the winner used is called interaction terms. We use bigrams to account for when words appear in a certain order. However, what if terms are not next to each other? For example, consider "English Teacher for 2nd Grade" and "2nd Grade - budget for English Teacher". If I want to identify this line item as a staff position for an elementary school, it helps to know that both "2nd grade" and "English teacher" appear. Interaction terms let us mathematically describe when tokens appear together.
+
+3. Interaction terms: the math
+We're going to walk through a brief bit of math here to help explain interaction terms. If we look at a simple linear model, we have
+
+4. Interaction terms: the math
+Beta-one times X1, beta 2 times X2.
+
+5. Interaction terms: the math
+Here, X1 and X2 represent whether or not a particular token appears in the row. The betas are the coefficients, which represent how important that particular token is. To add an interaction term,
+
+6. Interaction terms: the math
+we add another column to our array, X3 that equals X1 times X2. Because X1 and X2 are either 0 or 1, when we multiply them, we only get a 1 if both occur. This new column, X3, has its own coefficient, Beta 3, which can separately measure how important it is that X1 and X2 appear together. Again,
+
+7. Adding interaction features with scikit-learn
+scikit-learn provides us with a straightforward way of adding interaction terms. In scikit-learn this functionality is called PolynomialFeatures and we import it from the sklearn dot preprocessing module. As an example, we'll show the same x matrix as the last slide. When we create a PolynomialFeatures we tell it the degree of features to include. In our example, we looked at multiplying 2 columns together to see if they co-occurred, so degree equals 2, however you could 3, 4, or more. While this can sometimes improve the model results, adding larger degrees very quickly scales the number of features outside of what is computationally feasible. The interaction_only equals True parameter tells PolynomialFeatures that we don't need to multiply a column by itself, and we'll talk about include_bias on the next slide. When we fit and transform our array, x, we can see that we get the expected output from the last slide with the new column added. We opted not to include a bias term in our model, but you could have if you wanted to. A bias term is an offset for a model.
+
+8. A note about bias terms
+For example, if we plot age on the x-axis, and weights on the y-axis, we'd have a line that had a value 7-point-5 lbs when the baby is born, because a baby has a weight even when it is 0 years old! A bias term allows your model to account for situations where an x value of 0 should have a y value that is not 0, like in this example.
+
+9. Sparse interaction features
+As we mentioned, adding interaction terms makes your X array grow exponentially. Because of computational concerns, our CountVectorizer returns an object called a sparse matrix. We won't dig into the details here, but the standard PolynomialFeatures object is not compatible with a sparse matrix. We provide you with a replacement, SparseInteractions which works with a sparse matrix. You only need to pass it the degree parameter for it to work in the same way.
+
+10. Let's practice!
+Now it's your turn to practice adding interaction terms with SparseInteractions to your code, and you can see what effect they have on your score!
+
+
+
+
+1. Learning from the expert: the winning model
+Congratulations! You've implemented nearly all of the winning pipeline. Just a couple more tweaks.
+
+2. Learning from the expert: hashing trick
+We've mentioned that we need to balance adding new features with the computational cost of additional columns. For example, adding 3-grams or 4-grams is going to have an enormous increase in the size of the array. As the array grows in size, we need more computational power to fit our model. The "hashing trick" is a way of limiting the size of the matrix that we create without sacrificing too much model accuracy. A hash function takes an input, in this case a token, and outputs a hash value. For example, the hash value may be an integer like in this example below. We explicitly state how many possible outputs the hashing function may have. For example, we may say that we will only have 250 outputs of the hash function. The HashingVectorizer then maps every token to one of those 250 columns. Some columns will have multiple tokens that map to them. Interestingly, the original paper about the hashing function demonstrates that even if two tokens hash to the same value, there is very little effect on model accuracy in real world problems.
+
+3. When to use the hashing trick
+We've been working with a small subset of the data for this course, however, the size of the full dataset is part of the challenge. In this situation, we want to do whatever we can to make our array of features smaller. Doing so is called "dimensionality reduction". The hashing trick is particularly useful in cases like this where we have a very large amount of text data.
+
+4. Implementing the hashing trick in scikit-learn
+Implementing the hashing trick is very simple in scikit-learn. Instead of using the CountVectorizer, which creates the bag of words representation, we change to the HashingVectorizer. We can pass this the same token_pattern and ngram_range as before. The parameters norm equals None and non_negative equals True let you drop in the HashingVectorizer as a replacement for the CountVectorizer. For more details on those two parameters, you can see the scikit-learn documentation. We can now use the HashingVectorizer in a Pipeline instead of the CountVectorizer.
+
+5. The model that won it all
+We've worked through the three categories of tools that the winner put together to win the competition. The NLP trick was to use bigrams and tokenize on punctuation. The statistical trick was to add interaction terms to the model. The computational trick was to use a HashingVectorizer. You can now code all of these in a scikit-learn Pipeline. However, there's one thing we haven't talked about yet. What is the class of model that the winner used? Was it a deep convolutional neural network? Extreme gradient boosted trees? An ensemble of local-expert elastic net regressions?
+
+6. The model that won it all
+No! The winning model was, in fact, the simple model we started with: logistic regression!The competition wasn't won by a cutting edge algorithm. Instead, it was won by thinking carefully about how to create features for the model and then adding a couple of easily implemented tricks. So, instead of reaching for those advanced algorithms that are hard to interpret and expensive to train, it's always worth it to see how far you can get with simpler methods.
+
+7. Let's practice!
+Now it's your chance to use all these tools together to create the winning Pipeline.
+
+
+
+
+1. Next steps and the social impact of your work
+Congratulations on finishing this course! I hope you enjoyed it and learned some useful tools to add to your data science toolbox. Your new skills have the ability to really make a difference. The volume of data is growing everywhere, not only in the tech industry. And with this growth in data comes opportunity: the opportunity to use your data science skills to make people's lives better.
+
+2. Can you do better?
+One of our goals has been to demonstrate how flexible and powerful the Pipeline API is in scikit-learn. We've successively added small code changes that have had a big effect on our model. Now we want you to think about how you might improve things. Some areas to look at might be: Including stemming or stop-word removal in your natural language processing. Trying a different class of model like RandomForest, KNN or Naive Bayes. Doing further processing on the numeric columns and handling NaNs differently than the default Imputer. One of the benefits of scikit-learn is GridSearch (as you learned about in the supervised learning course). Check out the scikit-learn documentation to see how to perform grid search over every object in a Pipeline. You could even look around the scikit-learn docs and experiment with a new technique you haven't used before. Feel free to sign up on DrivenData and experiment with some of these methods on the full dataset. Learning how these approaches effect real-world data can be a huge boost to your skills.
+
+3. Hundreds of hours saved
+The goal of building this model was to make an education non-profit more effective in helping school districts with their budgeting decisions. Having a model like the one we have built saves hundreds of hours a year in human time that was spent simply labeling line items. Now budget analysts can spend their time on the decisions that really matter.
+
+4. DrivenData: Data Science to save the world
+If you're interested in other ways to use data science to have a social impact, we invite you to check out www-dot-drivendata-dot-org. We've always got competitions just like this running where you can look at new datasets, try interesting methods, learn from the community, and have an impact.
+
+5. Let's practice!
+Thanks again for being part of this course. Now go out and change the world!
+
+

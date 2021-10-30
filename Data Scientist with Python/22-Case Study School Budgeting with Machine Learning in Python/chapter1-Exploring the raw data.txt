@@ -1,0 +1,121 @@
+
+
+1. Introducing the challenge
+Hello DataCampers! How's it going? Really glad you've decided to join us for this course. We have an exciting journey ahead of us through some real data and some incredibly useful tips and tricks from expert data scientists. I'm Peter Bull, a data scientist and a co-founder of DrivenData. Our mission is to bring the power of data science to social impact organizations. One of the ways we do that is by running online data science challenges for non-profits, NGOs, and social enterprises. In our challenges, a global community of data scientists--like you!--competes to solve a particular problem. We'll work
+
+2. Introducing the challenge
+through one of these competitions as a case-study, and we'll show you how the winner achieved the best score. In the course, we'll do some natural language processing, some feature engineering, and boost our computational efficiency. In addition to these pro-tips, we'll look at one of the ways in which we can use data to have a social impact.
+
+3. Introducing the challenge
+School budgets in the United States are incredibly complex, and there are no standards for reporting how money is spent. Schools want to be able to measure their performance--for example, are we spending more on textbooks than our neighboring schools, and is that investment worthwhile? However to do this comparison takes hundreds of hours each year in which analysts hand-categorize each line-item. Our goal is to build a machine learning algorithm that can automate that process. For each line item, we have some text fields that tell us about the expense--for example, a line might say something like "Algebra books for 8th grade students". We also have the amount of the expense in dollars. This line item then has a set of labels attached to it. For example, this one might have labels like "Textbooks," "Math," and "Middle School." These labels are our target variable. This is a supervised learning problem where we want to use correctly labeled data to build an algorithm that can suggest labels for unlabeled lines. This is in contrast to an unsupervised learning problem where we don't have labels, and we are using an algorithm to automatically which line-items might go together. For this problem,
+
+4. Over 100 target variables!
+we have over 100 unique target variables that could be attached to a single line item. Because we want to predict a category for each line item, this is a classification problem. This is as opposed to a regression problem where we want to predict a numeric value for a line item--for example, predicting house prices. Here are some of the actual categories that we need to determine: Is this expense for
+
+5. Over 100 target variables!
+pre-kindergarten education (which is important because it has different funding sources)? Or, is there a particular
+
+6. Over 100 target variables!
+Student_Type that this expense supports? Overall, there are 9 columns with many different possible categories in each column.
+
+7. How we can help
+If you talk to the people who actually do this work, it is impossible for a human to label these line items with 100% accuracy. To take this into account, we don't want our algorithm to just say "This line is for textbooks." We want it to say: "It's most likely this line is for textbooks, and I'm 60% sure that it is. If it's not textbooks, I'm 30% sure it's 'office supplies.'" By making these suggestions, analysts can prioritize their time. This is called a human-in-the-loop machine learning system.
+
+8. How we can help
+We will predict a probability between 0 (the algorithm thinks this label is very unlikely for this line item) and 1 (the algorithm thinks this label is very likely). We'll take a quick break to review and then come back to talk about how to load the data. -
+
+9. Let's practice!
+We'll take a quick break to review and then come back to talk about how to load the data.
+
+
+
+
+1. Exploring the data
+We left off the last video by showing that we'd be predicting probabilities for each budget line item. Let's be clear what this looks like in practice.
+
+2. A column for each possible value
+For example, we'll say we are predicting the hair type and eye color of people. We have the categories "curly," "straight," and "wavy" for hair and "brown" and "blue" for eyes. If we are predicting probabilities, we need a value for each possible value in each column. In this case,
+
+3. A column for each possible value
+the target would have the columns for each hair type and for each eye color. Later in the course, we'll talk more about how to perform this transformation. We'll begin by loading our data.
+
+4. Load and preview the data
+As an example, in this video we'll work with a small sample dataset. For the exercises, you'll be loading the actual school budget dataset. You've seen pandas functions for loading data before, and in this case we'll be working with a file of comma-separated values: a CSV. First, we'll import pandas giving it the alias pd so we don't have to type pandas every time we want to use a function. We'll use the function read_csv and pass the filename to our dataset. Then, the function head shows us the first 5 rows of the DataFrame and the column names. We can see this sample dataset has both numeric data and text data.
+
+5. Summarize the data
+The function info tells us--yep, you guessed it--a bit more information about our dataset. Importantly, it tells us the datatype of each column. Columns that can be recognized as a numeric type--integers and floats--will be recognized as such. Columns that can't will get the generic type of object. Additionally, info tells us if any of the columns have missing values. As we can see, the column with_missing has 95 non-null entries, which means that there are 5 rows that are missing a value in the with_missing column. The next summary function
+
+6. Summarize the data
+we want to use is describe. This function gives us summary statistics of numeric columns in our data frame. In addition to also giving us a hint about missing values with count, we can get a sense for the mean, standard deviation, minimum and maximum of the column.
+
+7. Let's practice!
+Now it's your turn to load the actual dataset we'll be working with using read_csv and then look at what it contains with the functions head, info, and describe.
+
+
+
+
+1. Looking at the datatypes
+We've seen we have some numeric values and some text values in our dataset. It's common to have data where each value is from a known set of categories. For example, a column season_of_year may have the values winter, spring, summer, and fall. These kinds of data are not simply strings. Let's look at
+
+2. Objects instead of categories
+our sample dataset again. If we look at the label column, we can see that it takes either the value a or the value b. We can treat these kinds of variables in a way that solves two problems for us.
+
+3. Encode labels as categories
+The first problem is that our machine learning algorithms work on numbers. We need a numeric representation of these strings before we can do any sort of model-fitting. The second problem is that strings can be slow. We never know ahead of time how long a string is, so our computers have to take more time processing strings than numbers, which have a precise number of bits. In pandas, there is a special datatype called category that encodes our categorical data numerically, and--because of this numerical encoding--it can speed up our code. In pandas, we can call the astype function with the string category to change a column's type from object to category.
+
+4. Encode labels as categories (sample data)
+Here are two rows of the 'label' column from the sample dataframe. When the data is loaded, pandas assumes that these variables are strings, so the dtype is object. By calling astype('category'), we are returned a categorical variable. As we can see, pandas is already smarter about the values that appear in the column--in this case, the two values a and b.### Slide 5: Dummy variable encoding. We have actually converted these strings into a numeric representation of the categories.
+
+5. Dummy variable encoding
+To see this numeric representation, we can use the get_dummies function in pandas. This is called get_dummies because this process is called creating "dummy variables". Our dummy variables dataframe has two columns: the first, if the value is "label_a," the second if the value is "label_b." Each row contains a 1 if that row is of that category, and a 0 if not. This is also called a "binary indicator" representation. Note that the prefix_sep parameter is useful to tell the get_dummies function what character should separate the original column name and the column value for our dummy variable. Before we create categorical representations of our budget data, we want to mention
+
+6. Lambda functions
+lambda functions, a feature of the Python language. Instead of using the def syntax you may have seen before, lambda functions let you make simple, one-line functions. For example, we may want a function that squares a variable. We can define a lambda function that takes a parameter, the variable x. The function itself just multiplies x by x and returns the result. We can call this function just like any other Python function, and it returns whatever the one line of code evaluates to.
+
+7. Encode labels as categories
+In the sample dataframe, we only have one relevant column called label. But, you'll remember from looking at the budget data that there are multiple columns we want to make categorical. To make multiple columns into categories, we need to
+
+8. Encode labels as categories
+apply the function to each column separately. We will use a small lambda function to convert each column to a category. We then use the apply method on a pandas dataframe to apply this function to each of the relevant columns separately by passing the axis equals 0 parameter. Now it's your turn to use astype('category')
+
+9. Let's practice!
+to encode categorical variables in our actual dataset to help speed up the models that you're going to use on your data.
+
+
+
+
+1. How do we measure success?
+The next step is to decide how we decide if our algorithm works. Choosing how to evaluate your machine learning model is one of the most important decisions an analyst makes. The decision balances the real-world use of the algorithm, the mathematical properties of the evaluation function, and the interpretability of the measure.
+
+2. How do we measure success?
+Often we hear the question "how accurate is your model?" Accuracy is a simple measure that tells us what percentage of rows we got right. However, sometimes accuracy doesn't tell the whole story. Consider the case of identifying spam emails. Let's say that only 1% of the emails I receive are spam. The other 99% are legitimate emails. I can build a classifier that is 99% accurate just by assuming every message is legitimate, and never marking any message as spam. But this model isn't useful at all because every message, even the spam, ends up in my inbox. The metric we use for this problem is called log loss. Log loss is what is generally called a "loss function," and it is a measure of error. We want our error to be as small as possible, which is the opposite of a metric like accuracy, where we want to maximize the value.
+
+3. Log loss binary classification
+Let's look at how logloss is calculated. It takes the actual value,
+
+4. Log loss binary classification
+1 or 0, and it takes our prediction,
+
+5. Log loss binary classification
+which is a probability between 0 and 1.
+
+6. Log loss binary classification
+The greek letter sigma (which looks like an uppercase E below) indicates that we're taking the sum of the logloss measures for each row of the dataset. We then multiply this sum
+
+7. Log loss binary classification
+by -1 over N, the number of rows, to get a single value for loss. We will unpack this math a little more
+
+8. Log loss binary classification: example
+by looking at an example. Consider the case where the true label is 0, but we predict confidently that the label is 1. In this case, because y is 0, the first term becomes 0. This means the logloss is calculated by (1 - y) times log(1 - p). This simplifies to log(1 - 0-point-9) or log(0-point-1), which is 2-point-3. Now,
+
+9. Log loss binary classification: example
+consider the case that the correct label is 1, but our model is not sure and our prediction is right in the middle (0-point-5). Our logloss is 0-point-69. Since We are trying to minimize log loss, we can see that it is better to be less confident than it is to be confident and wrong.
+
+10. Computing log loss with NumPy
+Here is an implementation of logloss. The most important detail is the clip function which sets a maximum and minimum value for the elements in an array. Since log(0) is negative infinity, we want to offset our predictions ever so slightly from being exactly 1 or exactly 0 so that our score remains a real number. In this example we use the eps variable to be 0-point-00 (thirteen zeros) 1, which is close enough to zero to not effect our overall scores. After adjusting the predictions slightly with clip, we calculate logloss using the formula.
+
+11. Computing log loss with NumPy
+If we call this function on the examples we looked at earlier, we can see that the confident and wrong item returns the expected value of 2-point-3 and the prediction that is right in the middle returns 0-point-69. We have implemented it here to demonstrate how to take a mathematical equation and turn it into a function to use for evaluation, just like you may need to if you were participating in a machine learning competition.
+
+12. Let's practice!
+Now let's develop some intuition for how the logloss metric performs with a few examples.

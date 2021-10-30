@@ -1,0 +1,139 @@
+
+
+1. It's time to build a model
+When approaching a machine learning problem, and in particular looking at a dataset from a machine learning competition,
+
+2. It's time to build a model
+it's always a good approach to start with a very simple model. Creating a simple model first helps to give us a sense of how challenging a question actually is. Before we dig deep into complex models where many more things can go wrong, we want to understand how much signal we can pull out using basic methods.
+
+3. It's time to build a model
+We'll start with a model that just uses the numeric data columns. In building our first model, we want to go from raw data to predictions as quickly as possible. In this case, we'll use multi-class logistic regression, which treats each label column as independent. The model will train a logistic regression classifier for each of these columns separately and then use those models to predict whether the label appears or not for any given rows. After writing out our predictions to a CSV, we'll simulate submitting them to the competition and seeing what our score would be.
+
+4. Splitting the multi-class dataset
+In the supervised learning course, we talked about splitting our data into a training set and a test set. However, because of the nature of our data, the simple approach to a train-test split won't work. Some labels that only appear in a small fraction of the dataset. If we split our dataset randomly, we may end up with labels in our test set that never appeared in our training set. Our model won't be able to predict a class that it has never seen before! One approach to this problem is called StratifiedShuffleSplit, which is mentioned in the supervised learning course. However, this scikit-learn function only works if you have a single target variable. In our case, we have many target variables. To work around this issue, we've provided a utility function, multilabel_train_test_split, that will ensure that all of the classes are represented in both the test and training sets. We'll have a link to that code in the exercises if you're curious.
+
+5. Splitting the data
+First, we'll subset our data to just the numeric columns. NUMERIC_COLUMNS is a variable we provide that contains a list of the column names for the columns that are numbers rather than text. Then we'll do a minimal amount of preprocessing where we fill the NaNs that are in the dataset with -1000. In this case, we choose -1000, because we want our algorithm to respond to NaN's differently than 0. We'll create our array of target variables using the get_dummies function in pandas. Again, the get_dummies function takes our categories, and produces a binary indicator for our targets, which is the format that scikit-learn needs to build a model. Finally, we use the multilabel_train_test_split function that is provided to split the dataset in to a training set and a test set.
+
+6. Training the model
+Now we can import our standard LogisticRegression classifier from sklearn dot linear_model. We'll also import the OneVsRestClassifier from the sklearn dot multiclass module. OneVsRest let's us treat each column of y independently. Essentially, it fits a separate classifier for each of the columns. This is just one strategy you can use if you have multiple classes. Take a look at the scikit-learn documentation for other strategies you could consider. Now we can train that classifier by calling fit and passing our features in X_train and the corresponding labels that are in y_train.
+
+7. Let's practice!
+Now it's your turn to build a model and make some predictions!
+
+
+
+
+1. Making predictions
+Once our classifier is trained, we can use it to make predictions on new data. We could use our test set that we've withheld, but we want to simulate actually competing in a data science competition,
+
+2. Predicting on holdout data
+so we will make predictions on the holdout set that the competition provides. As we did with our training data, we load the holdout data using the read_csv function from pandas. We then perform the same simple preprocessing we used earlier. First, we select just the numeric columns. Then we use fillna to replace NaN values with -1000.Finally, we call the predict_proba method on our trained classifier. Remember, we want to predict probabilities for each label, not just whether or not the label appears. If we simply used the predict method instead, we would end up with a 0 or 1 in every case. Because log loss penalizes you for being confident and wrong, the score for this submission would be significantly worse than if we use predict_proba.
+
+3. Submitting your predictions as a csv
+In data science competitions, it's a standard practice to write your predictions as a CSV and then upload that CSV to the competition platform. From the competition documentation, we can see that the submission format for this competition expects a dataframe that has each of the individual labels as the column headers and probabilities for each of the columns. The to_csv function on a DataFrame, will take our predictions and write them out to a file. One quick note: you'll notice that our columns have the
+
+4. Submitting your predictions as a csv
+original column name separated from the value by two underscores. This is because some of the column names already contained single a underscore.
+
+5. Format and submit predictions
+The predictions that were generated by predict_proba is just an array of values. It doesn't have column names or an index like our submission format does. We'll fix this by turning those values into a DataFrame. To get the column names, we use get_dummies on our target variables and then borrow those column names for our new dataframe. Our index will be the same index that we read into pandas with read_csv, and the data is the predictions themselves. As we noted in the previous slide, we want to separate the original column names from the column values with a double underscore when we call get_dummies. To do this, we will use the keyword argument prefix_sep equals double underscore with the get_dummies function. Finally, we can call to_csv and pass the filename of the file we want to write out to disk. We can call the score_submission function that is provided to see how our submission would have scored in the competition!
+
+6. DrivenData leaderboard
+On the DrivenData website, you would submit this CSV file of predictions. We would generate a score for you on the holdout set and then post that score to the leaderboard. Here is an example of the leaderboard from this competition. As the competition proceeds, people make more and more submissions and their place on the leaderboard changes as they build better and better models.
+
+7. Let's practice!
+Now you'll get the chance to make some predictions and see what your score is.
+
+
+
+1. A very brief introduction to NLP
+Some of our data comes in the form or freefrom text. When we have data that is text, we often want to process this text to create features for our algorithms. This is called Natural Language Processing, or NLP. We'll cover a couple of basic techniques for processing text data.
+
+2. A very brief introduction to NLP
+Data for natural language processing can be text, as it is in our case, entire documents (for example, magazine articles or emails), or transcriptions of human speech (like the script I'm reading for this video!). The first step in processing this kind of data is called "tokenization". Tokenization is the process of splitting a long string into segments. Usually, this means taking a string and splitting it into a list of strings where we have one string for each word. For example, we might split the string "Natural Language Processing" into a list of three separate tokens: "Natural," "Language," and "Processing".
+
+3. Tokens and token patterns
+Let's take a look at an example of actual data from our school budget dataset. We have the full string "PETRO-VEND FUEL AND FLUIDS."
+
+4. Tokens and token patterns
+If we want to tokenize on whitespace, that is split into words every time there is a space, tab, or return in the text,
+
+5. Tokens and token patterns
+we end up with 4 tokens. The token
+
+6. Tokens and token patterns
+"PETRO-VEND," the token
+
+7. Tokens and token patterns
+"FUEL," the token
+
+8. Tokens and token patterns
+"AND," and the token
+
+9. Tokens and token patterns
+"FLUIDS." For some datasets, we may want to split words based on other characters than whitespace. For example, in this dataset we may observe that often we have words that are combined with a hyphen, like
+
+10. Tokens and token patterns
+"PETRO-VEND." We can opt in this case to tokenize on
+
+11. Tokens and token patterns
+whitespace and punctuation. Here we break into tokens every time we see a space or any mark of punctuation. In this case, we end up
+
+12. Tokens and token patterns
+with 5 tokens: The token
+
+13. Tokens and token patterns
+"PETRO," the token
+
+14. Tokens and token patterns
+"VEND," the token
+
+15. Tokens and token patterns
+"FUEL," the token
+
+16. Tokens and token patterns
+"AND," and the token
+
+17. Tokens and token patterns
+"FLUIDS." Now that we have our 5 tokens, we want to use them as part of our machine learning algorithm. Often,
+
+18. Bag of words representation
+the first way to do this is to simply count the number of times that a particular token appears in a row. This is called a "bag of words" representation, because you can imagine our vocabulary as a bag of all of our words, and we just count the number of times a particular word was pulled out of that bag. If you're following along closely, you may have noticed that this approach discards information about word order. That is, the phrase "red, not blue" would be treated the same as "blue, not red." A slightly more sophisticated approach is to create what are called
+
+19. 1-gram, 2-gram, …, n-gram
+"n-grams." In addition to a column for every token we see, which is called
+
+20. 1-gram, 2-gram, ..., n-gram
+a "1-gram," we may have a column for every ordered pair of two words. In that case, we'd have a column for
+
+21. 1-gram, 2-gram, …, n-gram
+"PETRO-VEND," a column for
+
+22. 1-gram, 2-gram, …, n-gram
+"VEND FUEL," a column for
+
+23. 1-gram, 2-gram, …, n-gram
+"FUEL AND," and a column for
+
+24. 1-gram, 2-gram, …, n-gram
+"AND FLUIDS." These are called
+
+25. 1-gram, 2-gram, …, n-gram
+2-grams (or bi-grams). N can be any number, for example, we may also include
+
+26. 1-gram, 2-gram, …, n-gram
+3-grams (or tri-grams) in this example. There are three columns for trigrams: one column for
+
+27. 1-gram, 2-gram, …, n-gram
+"PETRO-VEND FUEL," one for
+
+28. 1-gram, 2-gram, …, n-gram
+"VEND FUEL AND," and one for
+
+29. 1-gram, 2-gram, …, n-gram
+"FUEL AND FLUIDS."
+
+30. Let's practice!
+Now it's time for a little practice with tokenization and n-grams.
+
