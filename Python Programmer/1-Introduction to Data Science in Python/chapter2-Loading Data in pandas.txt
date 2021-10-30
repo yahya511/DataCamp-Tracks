@@ -1,0 +1,92 @@
+Got It!
+1. What is pandas?
+In the previous chapter, you learned about basic Python, including defining variables and loading modules. One of the modules that you loaded was called pandas. Pandas is a module for working with tabular data, or data that has rows and columns. Common examples of tabular data are spreadsheets or database tables. In this chapter, you'll learn the basics of Pandas, including how to load and inspect data.
+
+2. What can pandas do for you?
+Pandas gives you many tools for working with tabular data. You can load tabular data from multiple sources (like spreadsheets or databases), search for particular rows or columns in your loaded data, calculate aggregate statistics (like averages or standard deviations), and combine data from multiple sources.
+
+3. Tabular data with pandas
+You already know two data types: floats and strings. Pandas introduces a new, more powerful data type: the DataFrame, which represents tabular data. Loading data into a DataFrame is the first step in using Pandas.
+
+4. CSV files
+One of the easiest ways to create a DataFrame is by using a CSV file. CSV stands for comma-separated values, and is a common way of storing tabular data as a text-only file. You can download a CSV version of data from an Excel spreadsheet, a SQL database, or a Google Sheet.
+
+5. Loading a CSV
+Before we can start using Pandas, we have to import the pandas module. Recall that we always import Pandas under the alias "pd". Next, we create our first DataFrame from a CSV. Turning a CSV into a DataFrame is easy. We use a function: pd-dot-read_csv. This function takes one argument, the name of a CSV file as a string. In this example, the name of the file is ransom-dot-csv.
+
+6. Displaying a DataFrame
+Notice that we saved this DataFrame to a variable called "df". We can display this variable by using the "print" function, which we learned about in a previous lesson. When we print a DataFrame, we get to see every row in the DataFrame. In this example, the DataFrame is so large that it doesn't entirely fit on the slide!
+
+7. Inspecting a DataFrame
+Usually, we don't want to print an entire DataFrame to inspect it; we just want to view the first few lines. We can do this by using head. head behaves slightly differently than the functions we've learned about previously. Rather than coming at the beginning of a line of code, this function "belongs" to the DataFrame variable and comes at the end of the line, after a period. We call this type of function a "method". The .head method just selects the first five rows of "df". In order to display then, we need to put df-dot-head inside of the print function. Printing the first few lines of a DataFrame using .head is much easier to read than printing the entire DataFrame.
+
+8. Inspecting a DataFrame
+Another way of learning about a DataFrame is using the info method. Like head, we type the variable name of the DataFrame (in this case "df"), followed by a period, and then followed by our method dot-info. Again, in order to display the output, we put the whole statement inside of a print function. Let's take a closer look at the output of info.
+
+9. Inspecting a DataFrame
+Notice that we can see the names of the columns, the number of rows, and data types for each column. This method is particularly useful for DataFrames with many columns that are difficult to display using head.
+
+10. Let's practice!
+Now that you know what a DataFrame is, how to load data with a CSV, and how to inspect a DataFrame, let's continue to solve the mystery of Bayes' kidnapping.
+
+
+Got It!
+1. Selecting columns
+Now that we've loaded data from a CSV into a DataFrame, we're going to want to access that data. The first way we'll use that data is by selecting columns. This means we'll be getting all values from a particular column in a DataFrame. In this lesson, we'll continue working with the credit card reports for our suspects in the kidnapping of Bayes, the Golden Retriever, as well as a few other pieces of evidence from the case.
+
+2. Why select columns?
+Why do we want to select columns? We might use them in a calculation. For example, this code selects the column "price" and then calls the method "sum" on that column to get the total amount of money spent by our suspects. We might also want to use the data as the input to a function. You might recognize this code from when we learned about functions. It will create a plot of the frequencies of each letter in the ransom note. The data comes from a DataFrame called "ransom" with columns "letter" and "frequency".
+
+3. Columns names are strings
+So how do we select columns? We know that we can view the column names for our data using either dot-head or dot-info. If we examine the credit_records DataFrame, we see that there are 5 columns: suspect, location, date, item, and price. Each of these column names is a string. Recall that a string is just a way of representing text in Python. In this case the strings are all single words, but strings can have spaces or special characters. That means that columns in DataFrames can also have spaces or special characters.
+
+4. Selecting with brackets and string
+We can use these column name strings to select a column. We type the name of the DataFrame, followed by an open square bracket, followed by the column string (in quotation marks), and closed with a second square bracket. If we print the column, we see all values for that particular column.
+
+5. Selecting with a dot
+There's a second way we can select columns from a DataFrame. If the columns string only contains letters, numbers, and underscores, we can use dot notation. For dot notation, we simply type the name of the variable, followed by a dot, followed by the name of the column. In this case, we don't use quotation marks around the column name.
+
+6. Common mistakes in column selection
+Let's go over some common errors you might encounter when selecting columns. Remember that when your column name contains spaces or special characters, you need to use bracket and string notation, and not dot notation to select the column. If you use dot notation, Python gets confused and thinks that you're referring to several different variables.
+
+7. Common mistakes in column selection
+Another common error is forgetting to put quotation marks around the column string when using brackets and string notation. If you forget the quotation marks, then Python thinks that the column name is actually a variable that hasn't been defined yet.
+
+8. Common mistakes in column selection
+Finally, remember that square brackets are not the same at parentheses. If you use parentheses, Python will think that you're using the DataFrame as a function, and will give a "TypeError".
+
+9. Let's practice!
+You've learned how to select columns from a DataFrame and you're ready to deal with any errors you might encounter. Let's practice!
+
+
+
+Got It!
+1. Select rows with logic
+Welcome back. Now that we know how to select columns of a DataFrame, let's learn how to select specific rows.
+
+2. Continuing the investigation
+We've collected credit card statements from all of our suspects into a DataFrame called "credit_records". If we can prove that some of these suspects made suspicious purchases, we can ask them for writing samples and match those samples to the ransom note found at the scene of the crime. In order to search for the suspicious purchases, we'll need to select rows from the DataFrame using logical statements.
+
+3. Logical statements in Python
+In Python, a logical statement checks for a relationship between two values (such as "equal to" or "greater than"), and returns True or False. For example, suppose we want to know if 12 times 8 is equal to 96. We can compare the variables "question" and "solution" using a double equals sign. This tests whether the two numbers are the same. In this case, Python returns "True" because 12 times 8 is equal to 96. That "True" that Python returns is a special data type called a "Boolean". There are only two Booleans: True and False. Recall that you've already learned three other data types: floats, strings, and DataFrames. We'll be using Booleans to select rows where the value of a column matches a specific value.
+
+4. Other types of logic
+We can make many types of comparisons in Python, such as greater than, greater than or equal to, less than, and less than or equal to. In this example, we ask if the variable "price" is greater than 5. Python returns False because 2-point-25 is not greater than 5. We can also check if two variables are not equal to each other. We do this using exclamation point followed by an equals sign. In this example, we see that lowercase "bayes" is not the same as title-case "Bayes".
+
+5. Using logic with DataFrames
+In the previous examples, we were just comparing two values. In a DataFrame we can compare one value to all values in a DataFrame. For example, we can compare if each purchase in our credit cared records had a price that was greater than $20. This returns an entire column of True or False.
+
+6. Using logic with DataFrames
+If we put that truth testing statement inside of brackets, we can select only the rows where the statement is True. Here, we select rows of credit_records where the price is greater than 20 dollars.
+
+7. Using logic with DataFrames
+Let's examine this line of code more closely. We start with the name of the DataFrame we want to select rows from. In this case, "credit_records". Next we have a set of square brackets. Inside of the square brackets we put our logical test. In this case, the logical test is whether the "price" column of "credit records" is greater than $20. This statement will select all rows of credit_records where the column price is greater than $20.
+
+8. Using logic with DataFrames
+Let's try another example. Suppose, we want to select all rows of credit_records where the "suspect" is equal to "Ronald Aylmer Fisher". Again, we have the name of the DataFrame, followed by square brackets. Inside of the brackets, we check if credit_records-dot-suspect is equal to "Ronald Aylmer Fisher". Note that we use the double equals sign to test equality.
+
+9. Let's practice!
+Great job! Let's practice.
+
+
+

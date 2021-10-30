@@ -1,0 +1,108 @@
+Got It!
+1. Making a scatter plot
+Previously, we learned how to make line plots using Matplotlib. In this chapter, we'll learn about several additional plot types, starting with scatter plots.
+
+2. Mapping Cell Phone Signals
+We now know that Freddie Frequentist is the one who kidnapped Bayes, the Golden Retriever. Now we need to learn where he is hiding. Our friends at the police station have acquired cell phone data, which gives some of Freddie's locations over the past three weeks. The locations are given as a set of x and y coordinates on a map. In order to visualize these coordinates, we'll use a scatter plot.
+
+3. What is a scatter plot?
+A scatter plot allows us to show where each data point sits on a grid. Line plots let us visualize ordered data points, but scatter plots are a great way of viewing un-ordered points.
+
+4. What is a scatter plot?
+For example, suppose we want to learn about how Golden Retrievers grow during their first year of life. We might measure the heights of many puppies of different ages. We could then plot the height of each puppy versus its age.
+
+5. Creating a scatter plot
+In matplotlib, we create scatter plots by using the command plt-dot-scatter. The first argument is the x-data (in this example, this is the age of the puppy). The second argument is the y-data (in this example, this is the height of the puppy). We can then add labels and use plt-dot-show, just as we would for a line plot.
+
+6. Keyword arguments
+Many of the same keyword arguments that we used in line plots will work in scatter plots. In this example, we use the keyword argument "color" to change the marker color to green, and the keyword argument "marker" to change the marker shapes to squares.
+
+7. Changing marker transparency
+If we try to plot many points on the same scatter plot, things can get chaotic. We can't see if we've plotted many layers of points or just a single layer. We can make it easier to read by using a new keyword: alpha. Alpha accepts a number between 0 and 1 and makes each marker transparent. The smaller the alpha parameter, the more transparent the dot. Now we know that the darker areas have many points, while the lighter areas have fewer points.
+
+8. Let's practice!
+We've learned a new function: plt-dot-scatter. We can use it to plot two-dimensional data. We can use many of the old keyword arguments that we learned for plt-dot-plot along with a new argument: alpha, which controls transparency. Let's practice!
+
+
+Got It!
+1. Making a bar chart
+Previously, you learned how to make a line plot and a scatter plot using matplotlib. In this lesson, you will learn how to make a bar chart.
+
+2. Comparing pet crimes
+Officer Deshaun wants to examine the average number of pet kidnappings per month across different precincts. The best way to visualize a comparison of categorical data is by using a bar chart. Creating a bar chart in matplotlib is simple. We simply provide two arguments to the function plt-dot-bar: the labels for each bar, and the height of each bar. Because the x-axis is labeled for us, we only need to add a label for the y-axis using plt-dot-ylabel.
+
+3. Horizontal bar charts
+We can also make a horizontal bar chart. We simply use the function plt-dot-barh instead of plt-dot-bar. When we have many bars, it can be easier to fit all of the labels in with a horizontal bar plot.
+
+4. Adding error bars
+In the previous exercises, we've been plotting the average number of pets kidnapped per month. Averages don't always tell the full story. Often, we'll want to show some sort of error associate with our average, such as the standard deviation or standard error of the mean. We can add error bars to our bar chart by using the keyword argument yerr after our the first two positional arguments in plt-dot-bar. In this case, we are filling in yerr with a column of our DataFrame called "error".
+
+5. Stacked bar charts
+We know that Cityville had more pet kidnappings than either Farmburg or Suburbia. Office Deshaun wonders if this is true for both cat and dog kidnappings. The best way to compare both cat and dog kidnappings while also displaying the total number of kidnappings is to use a stacked bar chart. In a stacked bar chart, we display two different sets of bars. The height of each blue bar represents the number of dogs kidnapped. The height of each orange bar represents the number of cats kidnapped. The total height of the blue and orange bars represents the total number of pets kidnapped.
+
+6. Stacked bar charts
+To create this stacked bar chart, we start by plotting dogs column as we normally would. Here we show just one of the columns, which starts at y equals 0 and has a height of 4.
+
+7. Stacked bar charts
+Next, we stack the cat bars on top of the dog bars by using the keyword "bottom". Normally, a bar chart will start each bar at 0, but if we add the keyword "bottom" to plt-dot-bar and feed in the heights of our bottom bars (in this case df-dot-dog), matplotlib will plot the second set of bars starting where the first set of bars ends. For this particular bar, the cat bar starts at a height of y equals 4 and ends at a height of y equals 10. The height of the orange bar alone is 6.
+
+8. Stacked bar charts
+This is our complete set of code for creating a bar plot. Notice that we also added the keyword argument "label" for each bar plot to create our legend, just like we did for our line plots.
+
+9. Let's practice!
+You've just learned how to create a bar chart, add errors bars, and stack bar charts to make comparisons. Let's practice!
+
+
+Got It!
+1. Making a histogram
+Previously, we learned how to make line plots, scatter plots, and bar charts. In this lesson, we'll learn how to make one last type of plot: a histogram.
+
+2. Tracking down the kidnapper
+Freddie Frequentist left a dirty shoe print at the scene of the kidnapping. In that shoe print, there were many tiny pieces of gravel. Our crime lab was able to give us a Pandas DataFrame with the radius of each piece of gravel. We want to compare the distribution of gravel radii to samples from the three sites where Freddie could be hiding Bayes. If the distributions match, then the gravel in the footprint came from that site, and Freddie is likely hiding there.
+
+3. What is a histogram?
+The best way of visualizing the distributions of gravel radii is by creating a histogram. A histogram visualizes the distribution of values in a dataset. To create a histogram, we place each piece of data into a bin. In this example, we have divided our data into four bins: 1 - 10 mm, 11 - 20 mm, 21 - 30 mm, and 31 - 40 mm. The histogram tells us how many pieces of data (or pieces of gravel) fall into each of those bins. When we look at a histogram, we can quickly understand the entire dataset. Plotting a histogram in matplotlib is easy.
+
+4. Histograms with matplotlib
+We simply use the command plt-dot-hist. This function takes just one positional argument: our dataset. The output is shown on the right. By default, matplotlib will create a histogram with 10 bins of equal size spanning from the smallest sample to the largest sample in our dataset. If we want to change the number of bins,
+
+5. Changing bins
+we can use the keyword argument "bins". Bins accepts one integer. In this case, we divide our histogram into 40 bins. This allows us to see more detail in our histogram. If we want to zoom in on a specific piece of our dataset,
+
+6. Changing range
+we can use the keyword "range" to set the minimum and maximum value for our histogram. Note that we give the minimum and maximum values inside of a second set of parenthesis, separated by a comma. In this case, the minimum value is 50 and the maximum value is 100. Suppose we wanted to compare the distributions of weights
+
+7. Normalizing
+of male and female puppies. For some reason, we were able to collect many more samples of male puppy weights than female puppy weights. When we plot both histograms on the same axes, we can't actually see the difference in the distributions. In this case, we don't actually care about the absolute number of male puppies with a given weight. Instead, we care about what proportion of the dataset has that weight. We can solve this problem with normalization. Normalization reduces the height of each bar by a constant factor so that the sum of the areas of each bar adds to one. This would make our two histograms comparable, even if the sample sizes are different. We can normalize our histogram by using the keyword argument density equals True. Now each bar represents a proportion of the entire dataset. If a bar from the male puppies has the same height as a bar from the female puppies, both bars represent the same proportion of each population. Now that you've learned how
+
+8. Let's practice!
+to create histograms, let's practice by identifying where Freddy Frequentist is hidding!
+
+
+
+Got It!
+1. Recap of the rescue
+Congratulations! You found that Freddy Frequentist kidnapped Bayes the Golden Retriever and was hiding him at the Shady Groves Campsite.
+
+2. You did it!
+Bayes was safely returned to his DataCamp family. Now that you've solved the mystery of Bayes' kidnapping, let's recap what you've learned.
+
+3. Modules and variables
+First, you learned about modules. Modules help group together related tools in Python. You can use a module by importing it at the top of a script file, before writing any other code. You also learned about variables as you filled out Bayes' missing puppy report. Variables store data. Two common types of variables are strings (which represent text like Bayes' fur color) and floats (which represent numbers like Bayes' age).
+
+4. Using functions
+Next, you learned about functions. Functions are like machines that turn inputs into outputs. They can take positional arguments, which must come in a specific order, or keyword arguments, which come at the end and can go in any order. You used a license plate lookup function to get your first list of suspects.
+
+5. Working with tabular data
+You narrowed your list of suspects by using Pandas to examine credit card records. Pandas is a module that uses tools like DataFrames to examine and modify tabular data. You investigated the credit reports using functions like head and info, and selected specific rows that corresponded to suspicious purchases using logic.
+
+6. Creating line plots
+After narrowing the suspect pool down to two people, you collected handwriting samples and analyzed them using line plots. Matplotlib is a module for creating charts and visualizations. You used the plt-dot-plot function to create line plots and used keyword arguments to modify the color and linestyle of your plot. You used functions like plt-dot-legend and plt-dot-title to add annotations to your line plots. Line plots of the handwriting samples helped you learn that Freddy Frequentist was the kidnapper.
+
+7. More plot types
+You learned to create several other plot types using matplotlib. You used a scatter plot to investigate cell phone data and narrow Freddy's location to three possible campsites. You used bar charts to track how Officer Deshaun and his friends used their time to solve the mystery. Finally, you used a histogram to investigate the distribution of gravel radii on Freddy's shoeprint. This helped you determine that Bayes was being kept at the Shady Groves Campsite.
+
+8. Great job!
+You learned a lot while solving this mystery. Now that you're familiar with the basics of data analysis in Python, you can start learning other skills like machine learning or data visualization. Good luck!
+
+

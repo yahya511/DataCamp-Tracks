@@ -1,0 +1,75 @@
+Got It!
+1. Creating line plots
+In this video, we'll learn how to create line plots using another Python module: matplotlib. You've seen matplotlib before in Chapter 1, when you learned about the function plt-dot-plot. Recall that plt is the alias that we use when importing matplotlib.
+
+2. The plot thickens
+We're close to solving the mystery of Bayes, the kidnapped golden retriever. Remember that a ransom note was found at the scene of the crime. In the previous chapter, we narrowed the list of suspects to Freddie Frequentist and Gertrude Cox. We've asked Freddie and Gertrude to give us writing samples to compare against the ransom note. We'll compare the letter frequencies in Freddie and Gertrude's samples to the note found at the scene of the crime. We'll do this by creating line plots.
+
+3. From DataFrame to Visualization
+We've stored the letter frequencies in a Pandas DataFrame. We'll need to transform that DataFrame into a two-dimensional line plot. A line plot uses a coordinate grid to plot a series of points and then connects each point using a line. In this case, the x-axis represents the letters of the alphabet and the y-axis represents the frequency of each letter.
+
+4. Introducing Matplotlib
+In order to create a line plot, we'll need to import the module matplotlib. Generally, Data Scientists only load in the submodule pyplot and use the alias plt. We do this by typing "from matplotlib import pyplot as plt". Once we've loaded our module, we can use the functions plt-dot-plot and plt-dot-show to create and display our line plot.
+
+5. Line Plot
+Let's examine the line plot function. We begin with the name of the function: plt-dot-plot Like all functions, we'll be putting the arguments inside of parentheses. The first argument is the x-values we want to plot. In this case, we use the letter column from the DataFrame ransom. Recall that we select a column by typing the name of the DataFrame, followed by a dot, followed by the column name. The second argument is the y-values we want to plot. In this case, we use the frequency column from the DataFrame ransom. Again, we type DataFrame name, then dot, then column name. Finally, we close the parentheses.
+
+6. Displaying the Results
+If we only type plt-dot-plot, nothing will show up. That's because Python wants to give us the opportunity to enter other commands. For example, we might want to add another line or a title for the plot. When we want to display everything that we've made, we use a second function: plt-dot-show. This function takes no arguments. You just type it, and then your plot will pop open in a new window.
+
+7. Multiple Lines
+If we want to plot multiple lines on the same axis, we can just add a second plt-dot-plot command before adding plt-dot-show. In this example, we plotted two different datasets: data1, which represents a straight line and data2, which represents a parabola. Matplotlib will automatically give the two lines different colors.
+
+8. Let's practice!
+Let's practice making line plots!
+
+
+
+Got It!
+1. Adding labels and legends
+In the previous video, we learned how to create a line plot using plt-dot-plot and how to display the plot using plt-dot-show. In this lesson, we'll explain our plot to potential viewers by adding labels and legends.
+
+2. What did we just plot?
+Previously, we plotted the frequency of each letter in the ransom note found at the scene of the kidnapping of Bayes. However, if we showed this plot to a judge without any context, she wouldn't know what we were trying to communicate. When we share our graphs with an audience, we must add labels to make it clear what we've plotted and why it's important.
+
+3. Axes and title labels
+First, let's add some axis labels. We can label the horizontal (or "x") axis using the command plt-dot-xlabel. This function takes one argument: a string that represents what we want the label to read. Similarly, we can label the vertical (or "y") axis using the command plt-dot-ylabel. Finally, we can give our plot a title by using plt-dot-title. With all three functions, it's important to remember that the argument must be a string. If we forget to put our string in quotes, we'll get a syntax error. We can add these labeling functions in any order and at any place in our code as long as they come before plt-dot-show.
+
+4. Legends
+If we have multiple lines in the same plot, we'll want to add a legend. There are two steps for adding a legend: First, we must add the keyword argument label to each instance of plt-dot-plot. The label will be a string that we want in our legend. By adding a label to each plt-dot-plot function, we make our code easier to read. Now, if someone looks at this code, they know what each line is plotting before ever looking at the result. If we just type plt-dot-show now, we still won't see a legend. In order to add a legend, we must add a final function: plt-dot-legend. Like plt-dot-show, plt-dot-legend does not take any arguments. It just tells Matplotlib to use the labels from our plt-dot-plot functions to create a legend.
+
+5. Arbitrary text
+Sometimes, we just want to add a quick note directly onto our plot. We can do this by using the function plt-dot-text. This function takes three arguments: the x-coordinate where we want to put the text, the y-coordinate where we want to put the text, and the text we want to display as a string. Suppose we wanted to add a note to our ransom diagram? If we want the note to appear at the coordinated (5, 9), we can use this command, to produce this image.
+
+6. Modifying text
+Whether we're adding labels, legends, or arbitrary text, we might want to modify the letters in some way. There are two easy keyword arguments that we can add to any of our functions to change the way that text is displayed. If we want to change the size of font, we can use the keyword argument fontsize and pass in a float. If we want to change the color of font, we can use the keyword argument color and pass in a string. For a list of allowed color names, we can visit Wikipedia and look up "web colors".
+
+7. Let's practice!
+Great job! Let's return to the data from Officer Deshaun and his friends, and add some labels.
+
+
+Got It!
+1. Adding some style
+Previously, we learned how to create line plots and add labels, legends, and text. Now, we're going to make those plots beautiful.
+
+2. And miles to go
+After his success in graphing productivity, Officer Deshaun wants to plot the miles driven by each office over the course of a day. He's including more officers in this plot, so it's becoming more difficult to read. Officer Deshaun will improve is plot by customizing the the style of each line.
+
+3. Changing line color
+The first change Officer Deshaun might want to make to a line is to change its color. He can do this by adding the keyword argument "color" to the plt-dot-plot command. In this case, we plot six different lines in six different colors. The color keyword will accept a string corresponding to a "web color". For a list of allowed color names, visit Wikipedia and look up "web colors". In this example, we plot six different lines, each with a different color. You can't see the code, but we've added a legend so that you can see what each color appears on our plot.
+
+4. Changing line width
+Officer Deshaun can also modify the width of a line. The default line width is 1, but you can increase it using the keyword argument linewidth. In this example, Officer Deshaun plotted seven dataset, each with a slightly thicker line than the previous one. Again, we've hidden the extra code, but are showing a legend so that you can see what each linewidth looks like. Increasing line width can make graphs easier to use or can emphasize one line in a multi-line plot.
+
+5. Changing line style
+Officer Deshaun can further modify a line by changing its style. He can create different types of dashed lines using the keyword argument linestyle. Linestyle accepts several strings which correspond to different types of dashing. In this example, we plot four datasets with four different values of linestyle: a single hyphen for a normal line, two hyphens for a dashed line, a hyphen followed by a dot for a dot/dash line, and colon for a dotted line.
+
+6. Adding markers
+Adding markers is a great way to distinguish between different lines or to emphasize the location of data points. Officer Deshaun can add a marker using the keyword marker, which accepts several different strings. For example, if he sets marker equal to the letter s, the plot will have square markers. If he sets marker equal to the letter d, the plot will have diamond-shaped markers. In this example, we plot six different datasets, each with a different marker. Again, we hid the legend code but you can use it to see which symbols make each type of marker.
+
+7. Setting a style
+Sometimes, we want to make more drastic change to our graph. We can change the background, colors, and fonts for our entire graph by setting a style. The function plt-dot-style-dot-use accepts several different strings which correspond to different plotting styles. Here we show the same graph plotted in four different styles: fivethirtyeight (from the famous news site), ggplot (from another plotting library), seaborn (from yet another plotting library), and default (which is the normal style in matplotlib). Which do you think is best?
+
+8. Let's practice!
+You now know how to make many modifications to your line chart. Let's practice them.
+
