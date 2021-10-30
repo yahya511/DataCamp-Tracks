@@ -1,0 +1,96 @@
+Got It!
+1. Designing for inheritance and polymorphism
+In this final chapter, we'll talk about some good practices of class design. We'll cover two main topics: efficient use of inheritance, and managing the levels of access to the data contained in your objects.
+
+2. Polymorphism
+Polymorphism means using a unified interface to operate on objects of different classes. We've already dealt with it in Chapter 2.
+
+3. Account classes
+We defined a bank account class, and two classes inherited from it: a checking account class and a savings account class. All of them had a withdraw method, but the checking account's method was executing different code.
+
+4. All that matters is the interface
+Let's say we defined a function to withdraw the same amount of money from a whole list of accounts at once. This function doesn't know -- or care -- whether the objects passed to it are checking accounts, savings accounts or a mix -- all that matters is that they have a withdraw method that accepts one argument. That is enough to make the function work. It does not check which withdraw it should call -- the original or the modified. When the withdraw method is actually called, Python will dynamically pull the correct method: modified withdraw for whenever a checking account is being processed,and base withdraw for whenever a savings or generic bank account is processed. So you, as a person writing this batch processing function, don't need to worry about what exactly is being passed to it, only what kind of interface it has. To really make use of this idea, you have to design your classes with inheritance and polymorphism - the uniformity of interface - in mind
+
+5. Liskov substitution principle
+There is a fundamental object-oriented design principle of when and how to use inheritance properly, called "Liskov substitution principle" named after the computer scientist Barbara Liskov: A base class should be interchangeable with any of its subclasses without altering any properties of the surrounding program. Using the example of our Account hierarchy, that means that wherever in your application you use a bankaccount object instance, substituting a checking account instead should not affect anything in the surrounding program. For example, the batch withdraw function worked regardless of what kind of account was used.
+
+6. Liskov substitution principle
+This should be true both syntactically and semantically. On the one hand, the method in a subclass should have a signature with parameters and returned values compatible with the method in the parent class. On the other hand, the state of objects also must stay consistent; the subclass method shouldn't rely on stronger input conditions, should not provide weaker output conditions, it should not throw additional exceptions and so on.
+
+7. Violating LSP
+Let's illustrate some possible violations of LSP - Liskov substitution principle - on our account classes: for example, the parent's -- or base's -- withdraw method could require 1 parameter, but the subclass method could require 2. Then we couldn't use the subclass's withdraw in place of the parent's. But if the subclass method has a default value for the second parameter, then there is no problem. If the subclass method only accepts certain amounts, unlike the base one, then sometimes the subclass could not be used in place of the base class, if those unsuitable amounts are used. If the base withdraw had a check for whether the resulting balance is positive, and only performed the withdrawal in that case, but the subclass did not do that, we wouldn't be able to use subclass in place of the base class, because it's possible that ambient program depends on the fact that the balance is always positive after withdrawal.
+
+8. Violating LSP
+There are other ways to violate LSP like changing attributes that weren't changed in the base class, or throwing additional exceptions that the base class didn't throw (because those new exceptions are guaranteed to be unhandled).
+
+9. No LSP - no inheritance
+The ultimate rule is that if your class hierarchy violates the Liskov substitution principle, then you should not be using inheritance, because it is likely to cause the code to behave in unpredictable ways somewhere down the road.
+
+10. Let's practice!
+In the exercises, you'll explore the circle-ellipse problem - a famous software design problem that shows how our notions of inheritance are flawed. Have fun!
+
+
+Got It!
+1. Managing data access: private attributes
+In the next two lessons, we'll talk about managing data access.
+
+2. All class data is public
+All class data in Python is technically public. Any attribute or method of any class can be accessed by anyone. If you are coming from a background in another programming language like Java, this might seem unusual or an oversight, but it is by design. The fundamental principle behind much of Python design "we are all adults here". It is a philosophy that goes beyond just code, and describes how the Python community interacts with each other: you should have trust in your fellow developers.
+
+3. Restricting access
+That said, there are a few ways to manage access to data. We can use some universal naming conventions to signal that the data is not for external consumption; then, there are special kinds of attributes called properties that allow you to control how each attribute is modified. Finally, there are special methods that you can override to change how attributes are used entirely. We'll cover the first two options in this chapter, and you are unlikely to ever need anything beyond that.
+
+4. Naming convention: internal attributes
+Let's start with naming conventions. The first and most important convention is using a single leading underscore to indicate an attribute or method that isn't a part of the public class interface, and can change without notice. This convention is widely accepted among Python developers, so you should follow it both as a class developer and as a class user. Nothing is technically preventing you from using these attributes, but a single leading underscore is the developer's way of saying that you shouldn't. The class developer trusts that you are an adult and will be able to use the class responsibly. This convention is used for internal implementation details and helper functions. For example, a pandas DataFrame has an underscore-is_mixed_type attribute that indicates whether the DataFrame contains data of mixed types, and the datetime module contains a _ymd2ord function that converts a date into a number containing how many days have passed since January 1st of year 1.
+
+5. Naming convention: pseudoprivate attributes
+Another naming convention is using a leading double underscore. Attributes and methods whose names start with a double underscore are the closest thing Python has to "private" fields and methods of other programming languages. In this case, it means that this data is not inherited - at least, not in a way you're used to, because Python implements name mangling: any name starting with a double underscore will be automatically prepended by the name of the class when interpreted by Python, and that new name will be the actual internal name of the attribute or method. The main use of these pseudo-private attributes is to prevent name clashes in child classes: you can't control what attributes or methods someone will introduce when inheriting from your class, and it's possible that someone will unknowingly introduce a name that already exists in you class, thus overriding the parent method or attribute! You can use double leading underscores to protect important attributes and methods that should not be overridden. Finally, be careful: leading AND trailing double underscores are only used for build-in Python methods like init, so your name should only start -- but not end! -- with double underscores.
+
+6. Let's practice!
+Head over to the exercises to review these conventions. In the next video, you'll learn how to add a little more control to how attributes are used.
+
+
+Got It!
+1. Properties
+Welcome back! In this last video, you'll learn about properties, which are a special kind of attribute that allow customized access.
+
+2. Changing attribute values
+In the beginning of Chapter 1, you worked with an Employee class where you defined methods like set_salary that were used to set the values for attributes. Later, you learned about using the constructor to initialize the attributes . You also learned that you can access and change the attributes directly by assignment. But this means that with a simple equality we can assign anything to salary: a million, a negative number, or even the word "Hello". Salary is an important attribute, and that should not be allowed.
+
+3. Changing attribute values
+So how do we control attribute access, validate it or even make the attribute read-only? We could modify the set_salary method, but that wouldn't help, because we could still use the dot syntax and assignment via equality.
+
+4. Restricted and read-only attributes
+There is a precedent for such attribute management with classes that you already know. For example, if you have a pandas DataFrame with two columns, you can set the columns attribute to a list of 2 strings -- new names for the columns. But if you try to set the attribute to a list of different length, you'd get an error. Or, consider the shape attribute -- it cannot be changed at all!
+
+5. @property
+We can implement similar behavior using the property decorator. Start by defining an "internal" attribute that will store the data. As we learned in the previous video, it is recommended to start the name with one leading underscore. Here, we defined a underscore-salary attribute. Next, we define a method whose name is the exact name we'd like the restricted attribute to have, and put a decorator "property" on it. In our case that method is called salary, without underscore, because that's how we'd like to refer to it. If we were writing a DataFrame class, this could be "columns", or "shape". The method just returns the actual internal attribute that is storing the data. To customize how the attribute is set, we implement a method with a decorator "attribute name"-dot-setter: salary-dot-setter in our case. The method itself is again named exactly the same as the property -- salary - and it will be called when a value is assigned to the property attribute. It has a self argument, and an argument that represents the value to be assigned. Here we raise an exception if the value is negative, otherwise change the internal attribute. So there are two methods called salary -- the name of the property -- that have different decorators. The method with property decorator returns the data, and the method with salary dot setter decorator implements validation and sets the attribute.
+
+6. @property
+How does this work in practice? We can use this property just as if it was a regular attribute (remember the only real attribute we have is the internal underscore-salary). Use the dot syntax and equality sign to assign a value to the salary property. Then, the setter method will be called. If we try to assign a negative value to salary, an exception will be raised.
+
+7. Why use @property?
+Properties are useful because the user of your class will not have to do anything special. They won't even be able to distinguish between properties and regular attributes. You, on the other hand, now have some control over the access.
+
+8. Other possibilities
+There are a few other things you can do with properties: if you do not define a setter method, the property will be read-only, like Dataframe shape. A method with an attribute-name-dot-getter decorator will be called when the property's value is just retrieved, and the method with the attribute-name-dot-deleter -- when an attribute is deleted.
+
+9. Let's practice!
+Alright! Time for you to create some properties by yourself.
+
+Got It!
+1. Congratulations!
+Congratulations on completing this course on introduction to object-oriented programming in Python. You've done a great job!
+
+2. Overview
+You learned how to think about your code in terms of classes and objects; how to create attributes and methods. You explored inheritance and polymorphism -- two ideas that allows you to leverage and customize existing code in powerful ways. You also learned the distinction between class-level data and instance-level data. What does it mean for two objects to be equal? Turns out, it can mean anything you want, as you learned in chapter 3. You defined custom equality functions, readable string representations, even built your own exceptions. Finally, you learned what makes a relationship between classes suitable for inheritance, how Python handles private vs public data, and how to use properties to manage data access.
+
+3. What's next?
+So, where can you go from here? You could start by expanding your knowledge of functionality available in Python. For example, learn about mix-in classes and multiple inheritance -- a highly debated feature of Python that isn't present in many other object-oriented languages. You could learn how to override more built-in operators, like arithmetic operators, or the length operator; how to customize attribute access even more using special methods; how to create your own iterator classes that you could use to index loops. You could learn about abstract base classes used to create interfaces, or how leverage dataclasses -- a new type of class that is especially suitable for data storage.
+
+4. What's next?
+Also consider learning more about object-oriented design, which is based on SOLID principles. Solid is an acronym, and you've already learned about the "L" is SOLID -- the Liskov substitution principle, but the other 4 letters are just as important. Finally, I encourage you to learn more about design patterns -- reusable solutions addressing most common problems in software design.
+
+5. Thank you!
+Thank you so much for taking this course, and good luck in you future coding adventures!
+

@@ -1,0 +1,316 @@
+Got It!
+1. Beyond assertion: setup and teardown
+Congratulations, you are now in the fourth and final chapter! In this lesson, we are going to look at functions whose tests require more than assert statements.
+
+2. The preprocessing function
+As an example, consider the function preprocess(), which accepts paths to a raw data file and a clean file as arguments. Let's say that the raw data file looks like this.
+
+3. The preprocessing function
+The function first applies row_to_list() on the rows. The second row has no tab separator,
+
+4. The preprocessing function
+so row_to_list() filters it out.
+
+5. The preprocessing function
+convert_to_int() is applied next. The fourth and fifth rows are dirty because the area and the price entry are missing commas respectively.
+
+6. The preprocessing function
+convert_to_int() filters them out.
+
+7. The preprocessing function
+For the two valid rows, convert_to_int() converts the comma separated strings into integers. The result is written to the clean file.
+
+8. Environment preconditions
+preprocess() is different from other functions because it has a precondition to work properly. The precondition is the presence of a raw data file in the environment.
+
+9. Environment modification
+Another difference is that when we call the function, it modifies the environment by creating a clean data file.
+
+10. Testing the preprocessing function
+We create a test called test_on_raw_data() for this function.
+
+11. Step 1: Setup
+We create the raw data file first. This step is called setup, and it is used to bring the environment to a state where testing can begin.
+
+12. Step 2: Assert
+Then we call the function, which creates the clean data file. We open that file, read it and assert that it contains the expected lines.
+
+13. Step 3: Teardown
+Afterwards, we need to remove the clean and raw data file so that the next run of the test gets a clean environment. This step is called teardown, and it cleans any modification to the environment and brings it back to the initial state.
+
+14. The new workflow
+To summarize, instead of a sequence of assert statements, we have to follow the workflow: setup, assert and teardown.
+
+15. Fixture
+In pytest, the setup and teardown is placed outside the test, in a function called a fixture. A fixture is a function which has the pytest.fixture decorator. The first section is the setup. Then the function returns the data that the test needs. The test can access this data by calling the fixture passed as an argument.
+
+16. Fixture
+But instead of using the return keyword, the fixture function actually uses the yield keyword instead. The next section is the teardown. This section runs only when the test has finished executing.
+
+17. Fixture example
+Let's see an example of how this works for the test test_on_raw_data().
+
+18. Fixture example
+We create a fixture called raw_and_clean_data_file(). In setup, we create the paths to the raw and clean data file. Next, we write the raw data to the raw data file. Finally, we yield the paths as a tuple. The test calls the fixture and gets the paths required to call the preprocess() function. Then we proceed to the assert statements. In the teardown section, we remove both raw and clean data file using the os.remove() function.
+
+19. The built-in tmpdir fixture
+There is a built-in pytest fixture called tmpdir, which is useful when dealing with files. This fixture creates a temporary directory during setup and deletes the temporary directory during teardown.
+
+20. tmpdir and fixture chaining
+We can pass this fixture as an argument to our fixture. This is called fixture chaining, which results in the setup of tmpdir to be called first, followed by the setup of our fixture. When the test finishes, the teardown of our fixture is called first, followed by the teardown of tmpdir. The tmpdir argument supports all os.path commands such as join. We use the join function of tmpdir to create the raw and clean data file inside the temporary directory. The rest of the setup looks identical. The awesome thing is: we can omit the teardown code in our fixture entirely, because the teardown of tmpdir will delete all files in the temporary directory when the test ends.
+
+21. Let's practice setup and teardown using fixtures!
+Let's get some practice with using fixtures in the exercises.
+
+Got It!
+1. Mocking
+In the previous lesson, we tested the preprocess() function.
+
+2. The preprocessing function
+preprocess() applies
+
+3. The preprocessing function
+row_to_list() and
+
+4. The preprocessing function
+convert_to_int() sequentially to the raw data file to create a clean data file.
+
+5. Test result depend on dependencies
+If the tests for preprocess() were to pass, row_to_list() and convert_to_int() must also work as expected.
+
+6. Test result depend on dependencies
+If any of them has a bug, the tests for preprocess() will not pass, even if preprocess() has no bugs.
+
+7. Test result depends on dependencies
+But the test results should be indicative of the bugs in the function under test, and not bugs in any of its dependencies.
+
+8. Mocking: testing functions independently of dependencies
+In this lesson, we will learn a trick which will allow us to test a function independently of its dependencies. This very useful trick is called mocking. To use mocking in pytest, we will need two packages. The first one is pytest-mock and we can install it using pip. The second one is a standard library package called unittest.mock.
+
+9. MagicMock() and mocker.patch()
+The basic idea of mocking
+
+10. MagicMock() and mocker.patch()
+is to replace potentially buggy dependencies such as row_to_list() with the object unittest.mock.MagicMock(), but only during testing. This replacement is done using a fixture called mocker, and calling its patch method right at the beginning of the test test_on_raw_data(), which we wrote in the last lesson.
+
+11. MagicMock() and mocker.patch()
+The first argument of the mocker.patch method is the fully qualified name of the dependency including module name, as registered by the function under test.
+
+12. MagicMock() and mocker.patch()
+preprocess() knows row_to_list() as data.preprocessing_helpers.row_to_list, so that's what we will use here. The mocker.patch method returns the MagicMock object which we store in the variable row_to_list_mock.
+
+13. Making the MagicMock() bug-free
+During the test, row_to_list_mock can be programmed to behave like a bug-free replacement of row_to_list(). We call the bug free version of row_to_list() as row_to_list_bug_free(). Note that this only needs to be bug-free in the context of the test, and therefore, can be much simpler than the actual row_to_list() function. In the test, we use the following raw data file, which we already saw in the last lesson. The row_to_list_bug_free() simply needs to return the correct result for these five rows. Therefore, we create a dictionary containing the correct results for these five rows and return the results from the dictionary. Then we set the side_effect attribute of the MagicMock() object to the bug-free version.
+
+14. Side effect
+We can also set the side_effect attribute by passing side_effect as a keyword argument to mocker.patch. mocker.patch treats any keyword argument that it does not recognize as an attribute of the returned MagicMock() object and sets the attribute value accordingly.
+
+15. Bug free replacement of dependency
+From this point on, when we call preprocess() in the test, the bug-free mock of row_to_list() will be used, and the test will not encounter any bugs.
+
+16. Checking the arguments
+We can also check if preprocess() is calling row_to_list() with the correct arguments. The call_args_list attribute is a list of all the arguments that row_to_list_mock was called with, wrapped in a convenience object called call().
+
+17. Checking the arguments
+This convenience object can be imported from unittest.mock, and we import it at the top of the test. In the test, we can assert that the call_args_list attribute is the expected list containing the five rows of the raw data file in the correct order.
+
+18. Dependency buggy, function bug-free, test still passes!
+We have prepared a scenario where row_to_list() contains a bug but preprocess() doesn't. If we run the tests for both functions, we see that the some tests for row_to_list() fail,
+
+19. Dependency buggy, function bug-free, test still passes!
+but the test for preprocess() passes. That's exactly the behavior we wanted!
+
+20. Let's practice mocking!
+Now let's practice some mocking magic in the exercises!
+
+
+Got It!
+1. Mocking
+In the previous lesson, we tested the preprocess() function.
+
+2. The preprocessing function
+preprocess() applies
+
+3. The preprocessing function
+row_to_list() and
+
+4. The preprocessing function
+convert_to_int() sequentially to the raw data file to create a clean data file.
+
+5. Test result depend on dependencies
+If the tests for preprocess() were to pass, row_to_list() and convert_to_int() must also work as expected.
+
+6. Test result depend on dependencies
+If any of them has a bug, the tests for preprocess() will not pass, even if preprocess() has no bugs.
+
+7. Test result depends on dependencies
+But the test results should be indicative of the bugs in the function under test, and not bugs in any of its dependencies.
+
+8. Mocking: testing functions independently of dependencies
+In this lesson, we will learn a trick which will allow us to test a function independently of its dependencies. This very useful trick is called mocking. To use mocking in pytest, we will need two packages. The first one is pytest-mock and we can install it using pip. The second one is a standard library package called unittest.mock.
+
+9. MagicMock() and mocker.patch()
+The basic idea of mocking
+
+10. MagicMock() and mocker.patch()
+is to replace potentially buggy dependencies such as row_to_list() with the object unittest.mock.MagicMock(), but only during testing. This replacement is done using a fixture called mocker, and calling its patch method right at the beginning of the test test_on_raw_data(), which we wrote in the last lesson.
+
+11. MagicMock() and mocker.patch()
+The first argument of the mocker.patch method is the fully qualified name of the dependency including module name, as registered by the function under test.
+
+12. MagicMock() and mocker.patch()
+preprocess() knows row_to_list() as data.preprocessing_helpers.row_to_list, so that's what we will use here. The mocker.patch method returns the MagicMock object which we store in the variable row_to_list_mock.
+
+13. Making the MagicMock() bug-free
+During the test, row_to_list_mock can be programmed to behave like a bug-free replacement of row_to_list(). We call the bug free version of row_to_list() as row_to_list_bug_free(). Note that this only needs to be bug-free in the context of the test, and therefore, can be much simpler than the actual row_to_list() function. In the test, we use the following raw data file, which we already saw in the last lesson. The row_to_list_bug_free() simply needs to return the correct result for these five rows. Therefore, we create a dictionary containing the correct results for these five rows and return the results from the dictionary. Then we set the side_effect attribute of the MagicMock() object to the bug-free version.
+
+14. Side effect
+We can also set the side_effect attribute by passing side_effect as a keyword argument to mocker.patch. mocker.patch treats any keyword argument that it does not recognize as an attribute of the returned MagicMock() object and sets the attribute value accordingly.
+
+15. Bug free replacement of dependency
+From this point on, when we call preprocess() in the test, the bug-free mock of row_to_list() will be used, and the test will not encounter any bugs.
+
+16. Checking the arguments
+We can also check if preprocess() is calling row_to_list() with the correct arguments. The call_args_list attribute is a list of all the arguments that row_to_list_mock was called with, wrapped in a convenience object called call().
+
+17. Checking the arguments
+This convenience object can be imported from unittest.mock, and we import it at the top of the test. In the test, we can assert that the call_args_list attribute is the expected list containing the five rows of the raw data file in the correct order.
+
+18. Dependency buggy, function bug-free, test still passes!
+We have prepared a scenario where row_to_list() contains a bug but preprocess() doesn't. If we run the tests for both functions, we see that the some tests for row_to_list() fail,
+
+19. Dependency buggy, function bug-free, test still passes!
+but the test for preprocess() passes. That's exactly the behavior we wanted!
+
+20. Let's practice mocking!
+Now let's practice some mocking magic in the exercises!
+
+
+Got It!
+1. Testing plots
+A data-science course without visualizations
+
+2. Pizza without cheese!
+is like a pizza without cheese.
+
+3. This lesson: testing matplotlib visualizations
+Therefore, in this lesson, we will add some cheese by testing visualizations generated by the plotting library matplotlib.
+
+4. The plotting function
+We have a Python package called visualization under the application directory src.
+
+5. The plotting function
+The package has a Python module called plots.py. The module contains a function called get_plot_for_best_fit_line(), which we are going to test. It takes the slope and the intercept of the best fit line as arguments.
+
+6. The plotting function
+Other arguments include x_array and y_array, which hold the housing area and prices data respectively, either from the training set or the testing set.
+
+7. The plotting function
+The final argument is the plot's title.
+
+8. The plotting function
+The function returns a matplotlib figure.
+
+9. Training plot
+After we have obtained the best fit line on the training set using the train_model() function, we will call the plotting function, as shown here. This produces the training plot.
+
+10. Testing plot
+We can also plot the best fit line on the testing set. This produces the testing plot.
+
+11. Don't test properties individually
+The return value of the plotting function is a matplotlib.figure.Figure() object. This object has tons of properties, for example, the axes and its configuration and style, the plotted data and its style, annotations and its style etc. Due to the sheer number of properties, it is not advisable to test each of them individually.
+
+12. Testing strategy for plots
+Instead, we will use a shortcut using the human eye.
+
+13. Testing strategy for plots
+The idea involves two steps - a one-time baseline generation and testing.
+
+14. One-time baseline generation
+To generate the one-time baseline, we decide on a set of test arguments for the plotting function.
+
+15. One-time baseline generation
+Then we call the plotting function with these test arguments
+
+16. One-time baseline generation
+and convert the returned matplotlib.figure.Figure() object into a PNG image.
+
+17. One-time baseline generation
+We inspect this image manually
+
+18. One-time baseline generation
+and verify that it looks as expected. If it does, we store this image as a baseline image.
+
+19. One-time baseline generation
+If it doesn't, we modify the function until it does.
+
+20. Testing
+The testing step involves generating a PNG image for the test arguments that we decided upon earlier
+
+21. Testing
+and comparing the image with the stored baseline image.
+
+22. pytest-mpl
+Since images generated on different operating systems look slightly different, we need to use a pytest plugin called pytest-mpl for image comparisons. This library knows how to ignore the operating system related differences and makes it easy to generate baseline images. We install it using pip.
+
+23. An example test
+To illustrate how this package works, we will write a test called test_plot_for_linear_data(). For this test, we have decided on a simple linear data set. Instead of an assert statement, the test returns the matplotlib figure returned by the function under test.
+
+24. An example test
+That's because we will use a marker called pytest.mark.mpl_image_compare, and this will do the image comparison and the baseline image generation under the hood.
+
+25. Generating the baseline image
+pytest expects baseline images to be stored in a folder called baseline relative to the test module test_plots.py. To generate the baseline image, we run the test with the command line argument --mpl-generate-path and enter the path to the baseline folder as argument. This will create the baseline image.
+
+26. Verify the baseline image
+Then we open the baseline image and confirm that it looks as expected.
+
+27. Run the test
+The next time we run the test, we must use the --mpl option with the pytest command. This will make pytest compare the baseline image with the actual one. If they are identical, then the test will pass.
+
+28. Reading failure reports
+If they are not identical, the test will fail and pytest will save the baseline image, the actual image and an image containing the pixelwise difference to a temporary directory. The paths to these images will be printed in the failures section of the test result report, as we see here. Looking at these images helps in debugging the function.
+
+29. Yummy!
+Yummy!
+
+30. Let's test plots!
+Let's practice testing plots in the exercises.
+
+Got It!
+1. Congratulations
+You have reached the finish line. Congratulations!
+
+2. Fireworks
+I can already hear the fireworks going off!
+
+3. You've written so many tests
+During the course, you have written not one,
+
+4. You've written so many tests
+not five,
+
+5. You've written so many tests
+not ten,
+
+6. You've written so many tests
+but twenty five tests.
+
+7. You learned a lot
+In the process, you have learned a lot of unit testing techniques and concepts.
+
+8. You learned a lot
+Most importantly, you now know that testing data science projects saves a lot of time and effort. You learned how to use the pytest package to test return values and exceptions, run tests and how to read the test result reports. Just being able to test is not enough. That's why you then learned how to test a function really well using the idea of normal, special and bad arguments. You also got familiar with Test Driven Development, which is the ultimate best practice in testing and where tests get written before implementation. When the number of tests start growing, it becomes a pain to manage them. That's why you then picked up test organization and management skills, with a focus on easy discovery of tests and keeping the test suite always green. Finally, you learned some pretty advanced techniques like setup, teardown and mocking. But that's not all. You also learned how to test the most complicated data science models using sanity tests. And to add the cherry to the cake, or should I say cheese to the pizza, you also learned how to test plots. With all these skills, you will be easily able to test real world data science projects.
+
+9. Code for this course
+Since this was a course on testing, you didn't always get to see how the functions under test were implemented. If you are interested about that, the entire code for this course is available in this GitHub repository.
+
+10. Icon sources
+And here is the list of image sources
+
+11. Image sources
+for the entire course.
+
+12. I wish you all the best!
+Thanks for going on this unit testing journey with me. I wish you all the best.
+

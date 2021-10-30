@@ -1,0 +1,339 @@
+Got It!
+1. How to organize a growing set of tests?
+Congratulations on finishing Chapter 2!
+
+2. What you've done so far
+You wrote about 16 unit tests for the functions row_to_list(), convert_to_int(), get_data_as_numpy_array() and split_into_training_and_testing_sets() in Chapter 1 and 2. Well done!
+
+3. What you've done so far
+As the number of
+
+4. What you've done so far
+unit tests
+
+5. What you've done so far
+keep growing
+
+6. Need a strategy to organize tests
+we would need a strategy to keep all these tests organized. Otherwise, we risk our unit tests looking like
+
+7. Need a strategy to organize tests
+this clothes cabinet. But don't worry, this lesson is going to provide us with a strategy.
+
+8. Project structure
+Assume that the four functions that you tested are present in the following project structure. There's a top level directory called src, which holds all application code.
+
+9. Project structure
+Inside, there's the data package. This package deals with functions that preprocess data.
+
+10. Project structure
+It has a Python module called preprocessing_helpers.py, containing the functions row_to_list() and convert_to_int().
+
+11. Project structure
+Then there's the features package, which deals with extracting features from the preprocessed data.
+
+12. Project structure
+It has a module called as_numpy.py, containing the function get_data_as_numpy_array().
+
+13. Project structure
+Finally, there's the models package, which deals with training and testing the linear regression model.
+
+14. Project structure
+It has a module called train.py. So far, it only contains one function split_into_training_and_testing_sets().
+
+15. The tests folder
+The developers of pytest recommend that we create a directory called tests at the same level as src. This directory is also called the test suite.
+
+16. The tests folder mirrors the application folder
+Inside this folder, we simply mirror the inner structure of src and create empty packages called data, features and models respectively.
+
+17. Python module and test module correspondence
+The general rule is that for each python module my_module.py, there should be a corresponding test module called test_my_module.py. For example, for the module preprocessing_helpers.py, we create a test module called test_preprocessing_helpers.py. Since preprocessing_helpers.py belongs to the data package, we put the corresponding test module in the mirrored package inside the tests directory. The mirroring in the directory structure and test module names ensure that if we know where to find application code, we can follow the same route inside the test directory to access corresponding tests. The test module test_preprocessing_helpers.py should contain tests for row_to_list() and convert_to_int().
+
+18. Structuring tests inside test modules
+We could just put the tests sequentially like this, but this is an organizational nightmare, because there's no way to tell where the tests for one function ends and another function begins.
+
+19. Test class
+pytest solves this problem using a construct called the test class.
+
+20. Test class is a container for a single unit's tests
+A test class is just a simple container for tests of a specific function.
+
+21. Test class: theoretical structure
+To declare a test class, we start with the class keyword
+
+22. Test class: theoretical structure
+and follow it up with the name of the class. The name of the class should be in CamelCase, and should always start with “Test”. The best way to name a test class is to follow the “Test” with the name of the function, for example, TestRowToList.
+
+23. Test class: theoretical structure
+A test class takes one argument, and this argument is always called object. To know more about this argument, check out the DataCamp course on object-oriented Python, but we don't really need to for testing purposes, as we will never use this argument anywhere else. Now put all tests for the function under the test class as follows.
+
+24. Test class: theoretical structure
+Note that, this time, all tests should receive a single argument called self. This also comes from object-oriented Python.
+
+25. Clean separation
+For the other function convert_to_int(), we create another test class TestConvertToInt, and put the tests for convert_to_int() inside that class. Then the tests for the two functions are nicely separated.
+
+26. Final test directory structure
+This procedure is then repeated for test_as_numpy.py, which would hold the test class TestGetDataAsNumpyArray and test_train.py, which would hold the test class TestSplitIntoTrainingAndTestingSets.
+
+27. Test directory is well organized!
+Now our tests or, should we say clothes, are well organized.
+
+28. IPython console's working directory is tests
+Before we move on to the exercises, note that the IPython console's working directory will be the tests directory from now on.
+
+29. IPython console's working directory is tests
+30. Let's practice structuring tests!
+Let's try all this out in the exercises.
+
+
+
+Got It!
+1. Mastering test execution
+In the last lesson, we learned how to organize tests.
+
+2. Test organization
+The centerpiece was the tests folder, which holds all tests for the project.
+
+3. Test organization
+The folder contains mirror packages, each of which contain a test module.
+
+4. Test organization
+The test modules contain many test classes.
+
+5. Test organization
+A test class is just a container for unit tests for a particular function.
+
+6. Running all tests
+pytest provides an easy way to run all tests contained in the tests folder.
+
+7. Running all tests
+We simply change to the tests directory and run the command pytest. This command automatically discovers tests by recursing into the subtree of the working directory. It identifies all files with names starting with “test_” as test modules. Within test modules, it identifies classes with names starting with “Test” as test classes. Within each test class, it identifies all functions with names starting with “test_” as unit tests. It collects these unit tests and runs them all.
+
+8. Running all tests
+Here is the result of the command. You wrote 16 tests so far, so the command ran all these 16 tests. 15 passed and 1 failed.
+
+9. Typical scenario: CI server
+A typical scenario to run this command is in a CI server after a commit is pushed to the code base.
+
+10. Binary question: do all unit tests pass?
+In this case, we are only interested in the binary question: do all unit tests pass after including the commit?
+
+11. The -x flag: stop after first failure
+In this case, adding the -x flag to the pytest command can save time and resources. This flag makes pytest stop after the first failing test, because a failing test already answers the binary question. In the report, we see that only 9 tests ran this time since execution stopped after the failing test test_on_one_tab_with_missing_value().
+
+12. Running tests in a test module
+Very often, we would only want to run a subset of tests. For example, we might want to just run tests contained in a particular test module, say, test_preprocessing_helpers.py. You already know how to do that since you did this several times in the exercises.
+
+13. Running tests in a test module
+Just type pytest followed by the path to the test module. This only runs the 13 tests contained in test_preprocessing_helpers.py, as we can see in the test result report.
+
+14. Running only a particular test class
+At other times, we want to be more specific. For example, when we are working on a particular function, say, row_to_list(), we only care about the test class TestRowToList.
+
+15. Node ID
+During automatic test discovery, pytest assigns a node ID to every test class and unit test that it encounters. The node ID of a test class is the path to the test module followed by the name of the test class, separated by two colons. The node ID of a unit test follows the same format, with the unit test name added to the end using another double colon separator.
+
+16. Running tests using node ID
+When we run the command pytest followed by the node ID of the test class TestRowToList, for example, it only runs the 7 tests contained in TestRowToList.
+
+17. Running tests using node ID
+When we run the command with the node ID of the unit test test_on_one_tab_with_missing_value(), it only runs a single test.
+
+18. Running tests using keyword expressions
+A faster and flexible way to do this is by using keyword expressions.
+
+19. The -k option
+To run tests using keyword expressions, use the -k option. This option takes a quoted string containing a pattern as the value.
+
+20. The -k option
+For example, we can specify a test class such as TestSplitIntoTrainingAndTestingSets as the pattern, and this will run only the 2 tests within that test class. We can also enter only part of the test class name, as long as that is unique. This saves a lot of typing and has the same outcome.
+
+21. Supports Python logical operators
+We can even use Python logical operators in the pattern to do more complex subsetting. For example, the following command will execute all tests in TestSplitIntoTrainingAndTestingSets except the unit test test_on_one_row(), which only leaves one test to run.
+
+22. Let's run some tests!
+Let's run some tests using these command line tricks in the exercises.
+
+
+
+Got It!
+1. Expected failures and conditional skipping
+In the last lesson, we learned the magic command pytest that runs all tests.
+
+2. Test suite is green when all tests pass
+If all tests pass, then our test suite is green. We can relax on the beach and drink a cocktail.
+
+3. Test suite is red when any test fails
+If any test fails, then our test suite is red. This means we better work and fix it, otherwise our users will be very angry. This is good in theory, but, sometimes, the red light can be a false alarm that will ruin our beach vacations! An example will make things clear.
+
+4. Implementing a function using TDD
+Let's say we are implementing this new function train_model(), which returns the best fit line on the training data. Since we are gonna use TDD, the first step is to write tests, so we create a test class TestTrainModel and add a test to it.
+
+5. The test fails, of course!
+If we run pytest, this test will fail because the function train_model() is not yet implemented. And this is just a result of using TDD, it does not indicate a problem with the code base.
+
+6. False alarm
+But the CI server does not know this and will set off a false alarm when that test fails. It would be nice to have a way to tell pytest that we expect this test to fail.
+
+7. xfail: marking tests as "expected to fail"
+We do that by using the xfail decorator. The decorator goes on top of a test, and it starts with the character @.
+
+8. xfail: marking tests as "expected to fail"
+This is followed by the name of the decorator pytest.mark.xfail. After adding the decorator, if we run pytest again, we see that one test is xfailed. But there are no reported errors,
+
+9. Test suite stays green
+which means that the test suite remains green.
+
+10. Expected failures, but conditionally
+At other times, we might know that the test fails only under certain conditions, and we don't want to be warned about them. Common situations are when some function won't work under a particular Python version or a particular platform. As an example, we have deliberately added the unicode() function in the failure message for the test test_with_no_comma() that we wrote earlier. This only works on Python 2.7 or lower.
+
+11. Test suite goes red on Python 3
+If we run pytest using Python 3, the test suite will go red.
+
+12. skipif: skip tests conditionally
+To tell pytest to skip running this test on Python versions higher than 2.7, we need the skipif decorator. The syntax is similar to xfail. The name of the decorator is pytest.mark.skipif.
+
+13. skipif: skip tests conditionally
+It takes a single boolean expression as an argument. If the boolean expression is True, then the test will be skipped.
+
+14. skipif when Python version is higher than 2.7
+To construct the boolean expression, import the built in module sys and use the attribute sys.version_info. This attribute can be compared against a tuple containing the major and minor Python version, in this case, 2 and 7.
+
+15. The reason argument
+We must also add the required reason argument, which states why the test is skipped.
+
+16. 1 skipped, 1 xfailed
+Running pytest again confirms that one test was xfailed and another one was skipped.
+
+17. Test suite stays green
+The test suite remains green. Perfect again!
+
+18. Showing reason in the test result report
+We can make the reason for skipping show in the report. For that, we can use the -r option.
+
+19. The -r option
+The -r option can be followed by any number of characters.
+
+20. Showing reason for skipping
+If we add the character s, it will show us tests that were skipped in the short test summary section near the end.
+
+21. Optional reason argument to xfail
+The xfail decorator also takes an optional reason argument.
+
+22. Optional reason argument to xfail
+For the test that we marked with xfail, we will add the reason “Using TDD, train_model() is not implemented”.
+
+23. Showing reason for xfail
+If we add the character x to the -r option, it will only show us tests that are xfailed along with the reason in the test summary info.
+
+24. Showing reason for both skipped and xfail
+We can show reasons for both by using the combination sx.
+
+25. Skipping/xfailing entire test classes
+If we are skipping and xfailing multiple tests, note that these decorators can be applied to entire test classes as well.
+
+26. Let's practice xfailing and skipping!
+Let's practice xfailing and skipping in the exercises!
+
+
+Got It!
+1. Continuous integration and code coverage
+In Chapter 1,
+
+2. Code coverage and build status badges
+We saw how NumPy increases user trust
+
+3. Code coverage and build status badges
+by adding code coverage
+
+4. Code coverage and build status badges
+and build status badges. In this lesson, we will learn to implement these badges for our own GitHub projects.
+
+5. The build status badge
+Let's start with the build status badge.
+
+6. The build status badge
+This badge uses a Continuous Integration server, which runs all tests automatically whenever we push a commit to GitHub. It shows whether tests are currently passing or failing.
+
+7. Build passing = Stable project
+To an end user, passing indicates a stable code base
+
+8. Build failing = Unstable project
+while failing indicates instability.
+
+9. CI server
+We will use Travis CI as our CI server.
+
+10. Step 1: Create a configuration file
+To integrate with Travis CI, we have to create a settings file called .travis.yml at the root of our repository.
+
+11. Step 1: Create a configuration file
+The file is arranged into sections. First, there's a language setting, and we set it to python. The python setting determines which Python version will be used to run the tests. We choose Python 3.6. The install setting is a list of commands to install our project and dependencies in the CI server. If we organized our tests in the recommended way, then we can use a local pip install using pip install -e dot. The script section lists the commands necessary to run the tests once everything is installed. We use pytest tests to run the test suite.
+
+12. Step 2: Push the file to GitHub
+We push this settings file to GitHub.
+
+13. Step 3: Install the Travis CI app
+Now we go to the GitHub profile page and click on MarketPlace.
+
+14. Step 3: Install the Travis CI app
+We search for Travis CI, click on it
+
+15. Step 3: Install the Travis CI app
+and install the app. It's free for public repositories.
+
+16. Step 3: Install the Travis CI app
+We allow the app access to the necessary repositories or organizations. Here, we are only allowing it access to the public repository univariate-linear-regression, which holds the example code for this course.
+
+17. Step 3: Install the Travis CI app
+We will be redirected to Travis CI, where we should login using our GitHub account. This will bring us to the Travis CI dashboard.
+
+18. Every commit leads to a build
+That's all the setup we need! From now on, whenever we push a commit to the GitHub repo, we should see a build appearing in the Travis CI dashboard.
+
+19. Step 4: Showing the build status badge
+When the build finishes, the badge appears here. We click on the badge,
+
+20. Step 4: Showing the build status badge
+choose Markdown from the dropdown
+
+21. Step 4: Showing the build status badge
+and paste the markdown code in the README file on GitHub. This adds the badge to the GitHub repo.
+
+22. Code coverage
+We will add the code coverage badge next. The code coverage badge indicates the percentage of our application code that gets run when we run the test suite. High percentages indicate a well tested code base.
+
+23. Codecov
+This badge comes from a service called Codecov that integrates seamlessly with GitHub and Travis CI.
+
+24. Step 1: Modify the Travis CI configuration file
+First, we will modify the .travis.yml to enable code coverage reports.
+
+25. Step 1: Modify the Travis CI configuration file
+In the install setting, pip install pytest-cov and codecov, as they are necessary to generate and upload coverage reports.
+
+26. Step 1: Modify the Travis CI configuration file
+The usual pytest command to run the tests should be modified by adding a command line flag --cov which points to the application directory src. This new command will not only run the tests, but also produce a coverage report.
+
+27. Step 1: Modify the Travis CI configuration file
+Finally, add a setting called after_success and add the command codecov. This makes Travis CI push the code coverage results to Codecov after every build.
+
+28. Step 2: Install Codecov
+To enable Codecov for our repository, we install the Codecov app in the GitHub marketplace in the same way we installed Travis CI.
+
+29. Commits lead to coverage report at codecov.io
+From now, when we push a new commit, the code coverage report should show up in Codecov, accessible at codecov.io, after Travis CI completes the build.
+
+30. Step 3: Showing the badge in GitHub
+Go to the badge section in settings and paste the Markdown code to the GitHub README file.
+
+31. Step 3: Showing the badge in GitHub
+And that adds the code coverage badge.
+
+32. Let's practice CI and code coverage!
+Let's practice some of these concepts in the exercises. It is also recommended that you go through these steps for a GitHub repository that you own.
+
+
+

@@ -1,0 +1,80 @@
+Got It!
+1. Operator overloading: comparison
+Fantastic work on inheritance! By now, you've learned enough about classes and objects to start effectively using them in your applications. In this chapter, you'll learn how to make your objects seamlessly integrate with standard Python operations.
+
+2. Object equality
+Have you tried to compare two custom objects? Here are two objects of the Customer class that have the same data. If we ask Python if these objects are equal, the answer is "no". In this situation, it might make sense: we can have two customers with the same name and account balance.
+
+3. Object equality
+But what if each customer has a unique ID number? Then two customers with the same ID should be treated as equal.. but they aren't The reason why Python doesn't consider two objects with the same data equal by default has to do with how the objects and variables representing them are stored.
+
+4. Variables are references
+If we try to just print the value of a customer object, we'll see "Customer at" and a string (which is actually a number in hexadecimal). Behind the scenes, when an object is created, Python allocates a chunk of memory to that object, and the variable that the object is assigned to actually contains just the reference to the memory chunk. In this code, we tell Python: allocate a chunk of memory for a customer object, and label it customer1. Then, allocate another chunk, and label it customer2. When we compare variables customer1 and customer2, we are actually comparing references, not the data. Because customer1 and customer2 point to different chunks in memory, they are not considered equal.
+
+5. Custom comparison
+But it doesn't have to be that way! You might have noticed that, for example, numpy arrays are compared using their data. Here, we initialize two numpy arrays with the same data, and Python considers them equal. Same with pandas DataFrames, and many other objects. So how can we enforce this for our custom classes?
+
+6. Overloading __eq__()
+We can define a special method for this. Remember the __init__ constructor that is implicitly called when an object is created? The underscore-underscore-eq-underscore-underscore method is implicitly called whenever two objects of the the same class are compared to each other. We can re-define this method to execute custom comparison code. The method should accept two arguments, referring to the objects to be compared. They are usually called self and other by convention. It should always return a Boolean value -- True or False. Here, we have a basic Customer class with id and name attributes, and we redefine the eq method to return True if the values of all the attributes are equal. We also added a diagnostic printout for illustration.
+
+7. Comparison of objects
+Now, if we create two objects containing the same data and try to compare them using double equality sign, we see from the diagnostic printout that the eq method is called, and the comparison returns "True". On the other hand, if we create two objects with different id values, the comparison will return "False"
+
+8. Other comparison operators
+Python allows you to implement all the comparison operators in your custom class using special methods like eq. When you use a "not equal" operator -- that is, exclamation point followed by the equality sign -- Python will automatically attempt to use the equality method, if it exists, and then negate the result, but if you'd like to have a custom "not equals" method, you could implement __ne__. You could also implement, for example, "ge" for greater than or equal operator, or "lt" for less than. Finally, there is a hash method that allows you to use your objects as dictionary keys and in sets. It is beyond the scope of this course, but briefly, it should assign an integer to an object, such that equal objects have equal hashes, and the object hash does not change through the object's lifetime.
+
+9. Let's practice!
+Now, let's practice defining custom equality functions!
+
+
+Got It!
+1. Operator overloading: string representation
+Great job with comparison! Let's continue to improve the integration of our custom classes with Python's built-in operators.
+
+2. Printing an object
+In the last video, we discovered that calling print on an object of a custom class returns the object's address in memory by default. But there are plenty of classes for which the printout is much more informative. For example, if we print a numpy array or a DataFrame, we'll see the actual data contained in the object.
+
+3. str vs repr
+There are two special methods that we can define in a class that will return a printable representation of an object. The double-underscore-str-double-undersrore method is executed when we call print or str on an object, and the repr method is executed when we call repr on the object, or when we print it in the console without calling print explicitly. The difference is that str is supposed to give an informal representation, suitable for an end user, and repr is mainly used by developers. The best practice is to use repr to print a string that can be used to reproduce the object -- for example, with numpy array, this shows the exact method call that was used to create the object. If you only choose to implement one of them, chose repr, because it is also used as a fall-back for print when str is not defined.
+
+4. Implementation: str
+Let's start by implementing the str method. It shouldn't accept any arguments besides self, and it should return a string. Here, the string representation of a customer will consist of the word Customer, then on the next line , name, colon, followed by the customer's name, then balance, colon, and the customer's balance. Just a quick reminder: the triple quotes are used in Python to define multi-line strings, and the format method is used on strings to substitute values inside curly brackets with variables. If we create a customer object now and call print on that object, we will see a user-friendly output.
+
+5. Implementation: repr
+Similarly, we can implement the repr method, which also accepts one argument self and returns a string. Following best practices, we make sure that repr returns the string that can be used to reproduce the object, in this case, the exact initialization call. Then if we try to print the object in the console, we'll see the the output of repr. Moreover, in this class we didn't define the str method, so repr will be used as a fallback for the actual print method as well. Notice the single quotes around the name in the return statement. Without the quotes, the name of the customer would be substituted into the string as-is, but the point of repr is to give the exact call needed to reproduce the the object, where the name should be in quotes. Notice also that we can use single quotes inside double quotes and vice versa.
+
+6. Let's practice!
+Now, head over to the exercises and try it out yourself!
+
+
+
+Got It!
+1. Exceptions
+Welcome back! Let's talk about exceptions. We'll start with a brief recap, and then learn how to define custom exceptions.
+
+2. Errors are exceptions
+Some statements in Python will cause an error when you try to execute them, for example dividing by zero, combining objects of incompatible types, and many others. These errors are called exceptions. Many exceptions have special names, like ZeroDivisionError or TypeError that you see here. If exceptions not handled correctly, they will stop the execution of your program entirely. This often makes sense -- for example, if I'm trying to use a variable that I never defined, something must have gone very wrong with my script -- but other times it's undesirable. For example, a division by zero error might be caused by missing data, which isn't always a good reason to terminate the program.
+
+3. Exception handling
+Instead, you might want to execute special code to handle this case. To catch an exception and handle it, use the try-except-finally code: wrap the code that you're worried about in a try block, then add an except block, followed by the name of the particular exception you want to handle, and the code that should be executed when the exception is raised. Then if this particular exception does happen, the program will not terminate, but execute the code in the except block instead. You can also have multiple exception blocks. And finally, you can use the optional "finally" block that will contain the code that runs no matter what. This block is best used for cleaning up like, for example, closing opened files.
+
+4. Raising exceptions
+Sometimes, you want to raise exceptions yourself, for example when some conditions aren't satisfied. You can use the raise keyword, optionally followed by a specific error message in parentheses. The user of the code can then decide to handle the error using try/except.
+
+5. Exceptions are classes
+In Python, exceptions are actually classes inherited from built-in classes BaseException or Exception. Here's a glimpse into the huge built-in exception class hierarchy. For example, there's a general class of arithmetic errors, of which zero division error is a subclass.
+
+1 https://docs.python.org/3/library/exceptions.html
+6. Custom exceptions
+You can define your own exceptions in Python! Custom exception classes are useful because they can be specific to your application and can provide more granular handling of errors. To define a custom exception, just define a class that inherits from the built-in Exception class or one of its subclasses. The class itself can be empty - inheritance alone is enough to ensure that Python will treat this class as an exception class. For example, let's define a BalanceError class that inherits from Exception. Then, in our favorite customer class we raise an exception if a negative balance value is passed to the constructor.
+
+7. Exception in constructor
+If we attempt to create a customer with a negative account balance, the BalanceError exception is raised. In the first chapter, we dealt with this situation by merely printing a message, and then creating an object with zero balance. Handling it with exceptions is better, because in this case, the constructor terminates, and the customer object is not created at all, instead of being implicitly created with account balance set to zero, despite the error. This sends a clear signal to the user of the Customer class that something went wrong. The user, on their side,
+
+8. Catching custom exceptions
+can decide to handle this exception using try-except block if they want, but we, the author of the code, do not make this decision for them. For example here, the BalanceError is caught in the except block and if that occurs, a customer is instead created with zero balance.
+
+9. Let's practice!
+In the exercises, you'll explore creating and handling whole hierarchies of custom exceptions. Have fun!
+
+

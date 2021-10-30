@@ -1,0 +1,115 @@
+
+Got It!
+1. Adding Classes to a Package
+So far you've been able to create a fully portable Python package, and you've even added functionality to your package by utilizing functions.
+
+2. Object oriented programming
+We'll now look at how you can use classes to strengthen your package's functionality. Object Oriented Programming, or OOP, is a great way to write modular code, and reap the benefits of modularity such as easily understood and extensible code. We'll cover some aspects of OOP, but if you want a deeper dive I recommend the dedicated DataCamp courses. Let's jump into some code.
+
+3. Anatomy of a class
+In python, OOP can be utilized by writing classes. Here we see a minimal class implementation. To start we use the keyword class followed by the name of our class. According to PEP8, our class name should be written in camel case, that is, our name should start with a capital letter and every word in the name should have a capital letter as well. Unlike function and package names, class names should never contain underscores. Next, is some documentation that will appear when a user calls help on our class. We'll cover the details of this particular documentation formatting later in the course. Last, we see a function with a familiar name, __init__. Similarly to your package's __init__.py file, this will initialize everything when a user wants to leverage your class. You might have noticed we use a variable named self, we'll get back to this in a couple slides.
+
+4. Using a class in a package
+To make our class easily accessible we can add it to our init file just like we've done with functions before. We use relative import syntax to import MyClass from the 'my class' dot py file in the same directory, we can now import the package and access MyClass easily. Now let's create what's known as an instance of MyClass. To do this we call MyClass like a function and supply a string to the value parameter. Calling our class like this tells Python that we want to create an instance of our class by using the init method. Recall that MyClass's init method set the contents of value to a variable we referenced as self dot attribute. Users can access this attribute by referencing my underscore instance dot attribute. Note, nowhere in this script do we see the self-object that we used when defining our class.
+
+5. The self convention
+Let's look more in depth at the use of self in our class's init method. Self is, in essence, a way to refer to a class instance even though we don't know what the user is actually going to name their instance. When defining typical class instance methods, like __init__, self is the first argument. However, if you recall creating an instance of MyClass, when using __init__, the user doesn't need to pass a value to this self argument; this is done automatically behind the scenes. Once in the method body, we can use self to access or define attributes. The user can then access these attributes by using their class's name in place of self, like we did in our script. Technically we can use a different word than self, but this a very strong PEP8 convention and not abiding by it will make your code very hard to read by your collaborators.
+
+6. Let's Practice
+We've covered how to add a minimal class to our package and leverage its functionality by importing our package. Additionally, we touched on the role of the self convention in writing classes. Let's jump into some exercises to practice.
+
+
+Hide Transcript
+
+Got It!
+1. Leveraging Classes
+In our last lesson, we created a Document class that currently only serves as a container for our text.
+
+2. Extending Document class
+Let's look at our current definition of Document and talk about how we can improve its functionality. Right now the class is just a container for the user provided text; this doesn't add much value for our user. In order for our Document class to be more useful, we can add more attributes & methods besides __init__. For example, let's say that in our workflow we always want to tokenize our documents as a first step. Tokenization is a common step in text analysis, it is the process of breaking up a document into individual words, also known as tokens.
+
+3. Current document class
+As we've learned, __init__ is what's called when a user wants to create an instance of Document. This would be a convenient location to put a tokenization step. Placing the tokenization process inside of __init__ will ensure our Document is tokenized as soon as it is created, and this will save your user's the trouble of thinking about this step.
+
+4. Revising __init__
+Our new __init__ method might look something like this. You can see that we added a line that calls self dot underscore tokenize and dumps the output into an attribute named tokens. So where does underscore tokenize come from? and why does it have an underscore in front of it?
+
+5. Adding _tokenize() method
+Let's first answer the question of where the method came from. Since this course isn't focused on teaching text analytics, we aren't going to cover the tokenization function implementation; we'll simply import a function to do it for us. In a way, this demonstrates the beauty of modularity and python's community. Often times there are functions already written by someone in the community, and all you need to do is find out where they are and import them for your own use case. Moving on to the definition of underscore tokenize. We only pass one parameter to the function, the prescribed self convention that will represent an instance of the Document object. Since the tokenize function is already written, all that's left to do is call it on the text attribute. And voila! The tokenization process will now be completed automatically as soon as a user creates a Document instance. So why did we use a leading underscore when naming _tokenize?
+
+6. Non-public methods
+The reason we added the tokenization process to the __init__ method is that we wanted tokenization to happen immediately without the user having to think about it. Because of this, the user doesn't need to call underscore tokenize themselves; in other words, this method doesn't need to be 'public' to the user. According to PEP 8, non-public methods should be named with a single leading underscore. This signifies to the user that the method is intended for internal use only. Users can still use non-public methods in their own workflow, but they must do so at their own risk since the developer did not intend for them to do so.
+
+7. The risks of non-public methods
+The risks of using a non-public method in your own workflow include: little or no documentation and the function's input or output might change without warning when the developer updates their package.
+
+8. Let's Practice
+You've now seen how we can add more functionality to our Document class. In the upcoming exercises, you'll add additional methods to streamline our text analytics workflow; you'll even write your first non-public method!
+
+
+Hide Transcript
+
+Got It!
+1. Classes and the DRY principle
+Great work on the exercises, your package now has a handy Document class that can be used to analyze any generic text. What if we wanted to specialize this functionality to focus on the social media data we've been analyzing?
+
+2. Creating a SocialMedia Class
+To do this let's make a SocialMedia class that performs the same functions as the Document class, but can additionally analyze social media specific things like hashtags. However, when making this SocialMedia class we want to preserve the Document class as is to be used for more general analysis. So, how can we do this? A first guess might be to copy-paste the contents of the Document class. This violates what is known as the DRY principle in Software Engineering.
+
+3. The DRY principle
+The DRY principle is a great rule that, if followed, can help you write modular, readable code. DRY stands for:
+
+4. The DRY principle
+Don't.
+
+5. The DRY principle
+Repeat.
+
+6. The DRY principle
+Yourself. There are many ways to follow this rule such as writing re-usable functions, classes, and packages. The benefits of staying DRY are not only saving time by reusing code, but also if you copy-paste code, and later find a bug, you have to remember everywhere you've pasted the buggy code and fix each instance individually. If you stay DRY you only need to fix the bug once.
+
+7. Intro to inheritance
+In the case of extending the Document class to be a SocialMedia class, we can stay DRY by using the Object Oriented Programming concept of inheritance. With inheritance, we start with a parent class and we pass on it's functionality to a child class. The child class inherits all the methods and attributes of its parent, and we're able to add additional functionality without affecting the parent class.
+
+8. Inheritance in Python
+So how do we leverage inheritance in Python? To start let's see how the child SocialMedia class fits into the package structure. It will live as a single file named after the SocialMedia class at the same level as the rest of the package's code.
+
+9. Inheritance in Python
+Now let's see how to actually write a child class that uses inheritance. You'll be writing the code for the SocialMedia class, so we'll stick to a generic example. First, we import the ParentClass for use in defining our ChildClass. To let Python know we're using inheritance, we pass the ParentClass as an argument in our class statement. Last, we call our ParentClass's __init__ method. Remember, __init__ builds an instance of a class and it also accepts self as its first argument. With this call, we're building an instance of ParentClass and storing it right back into self. This means that self now has all the methods and attributes that an instance of ParentClass would. We can now use self as normal to build in additional functionality unique to ChildClass. Here, we just add an attribute. With our definitions, we can now create an instance of our new ChildClass as we've seen before, and then access attributes from both the parent and the child. Using inheritance like this can lead to short, easy to read definitions of children classes that are jam-packed with the functionality of their parents.
+
+10. Let's Practice
+We just covered the important concepts of DRY and class inheritance. You'll now use both of these concepts by building a custom SocialMedia class that extends the Document class you've already written. Good luck!
+
+
+Hide Transcript
+
+Got It!
+1. Multilevel inheritance
+Great job on creating the SocialMedia class for your package. Thanks to the Document class and inheritance you were able to quickly build up the class for a more specific task, but what if we wanted to go even more specific.
+
+2. Creating a Tweet class
+The SocialMedia class has some general functionality dealing with hashtags and mentions that works across multiple social media platforms. If we wanted to include functionality about retweets, it wouldn't be appropriate to include in the general class; instead, we can create a Tweet class. So how can we do this without losing the benefits of both the Document and SocialMedia classes? With inheritance again of course!
+
+3. Multilevel inheritance
+We've seen before that a child class can inherit from a parent class. We can continue the family tree again with inheritance. With multilevel inheritance, our child class is all grown up and can its functionality onto its children.
+
+4. Multilevel inheritance
+Thanks to inheritance we pass along the traits of all prior classes in the family tree. Note, that in the graphic we only have one inheriting class at each level, but we are by no means limited to this. Multiple classes can inherit from the same parent.
+
+5. Multiple inheritance
+In fact, one child class can inherit from multiple parents. This more advanced OOP concept is known as 'multiple inheritance'. We won't be covering it in this course, but it's good to familiarize yourself with the definition in case you hear of it out in the wild.
+
+6. Multilevel inheritance and super
+Let's code up an example of multilevel inheritance. We'll start with the inheritance pattern we've seen before. Here we define a Parent and Child class that inherits from the Parent. We could do this differently, by using the super function. Instead, of directly calling the __init__ method of Parent we use the super function. This makes no functional difference in our code here but it has some advantages in maintainability and when implementing multiple inheritance. However, there are some 'gotchas' that can arise with super and multiple inheritance; you can check out this companion DataCamp tutorial to learn more about it.
+
+7. Multilevel inheritance and super
+Let's continue the family tree, to create a Grandchild class that inherits from SuperChild we use the same super syntax in its __init__ method, and voila. If we create an instance of Grandchild we can see from the output that each __init__ method in the family tree was called.
+
+8. Keeping track of inherited attributes
+If you're using inheritance it's sometimes hard to remember what attributes and methods your class has at the end of it all. If you're using an IDE, then generally you can use tab complete to get a list of suggestions. However, if you want to get the info from the console, you can use either help or the dir function. help is a good option in most cases, but it will only include public methods in it's output. Using dir will print a fairly exhaustive list of what your class has under the covers. The list includes methods that come with our class object by default. Near the end of the list, you see all the methods and attributes that you personally programmed into the SocialMedia class. dir can definitely come in handy, but a warning from the documentation, "dir is supplied primarily as a convenience for use at an interactive prompt." So it's not advised to use it in your scripts.
+
+9. Let's Practice
+We just learned more about how powerful inheritance can be. In the exercises, you'll use multilevel inheritance to create a new Tweet class.
+
+
+

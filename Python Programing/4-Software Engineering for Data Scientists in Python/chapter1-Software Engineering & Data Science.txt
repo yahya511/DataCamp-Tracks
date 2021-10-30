@@ -1,0 +1,96 @@
+Got It!
+1. Python, data science, & software engineering
+Welcome to the course "Software Engineering for Data Scientists in Python". My name's Adam Spannbauer. I’m a data scientist from Tennessee who likes to code in both R & Python. In this course, we'll be covering software engineering concepts that can revolutionize your Data Science workflow.
+
+2. Why software engineering?
+So why should a Data Scientist care about the principles of Software Engineering?
+
+3. Why software engineering?
+Many Data Scientists, like myself, start in the world of math & statistics.
+
+4. Why software engineering?
+And soon after, you learn that communicating these technical ideas is just as important as understanding them yourself.
+
+5. Why software engineering?
+However, many Data Scientists are self-taught programmers who see coding as a means to an end; it's just a step to create a model or run a simulation.
+
+6. Why software engineering?
+But in reality, Software Engineering is a valuable skill that needs to be learned and practiced. This course will help build your software engineering skills by introducing some very important concepts.
+
+7. Software engineering concepts
+Three topics in particular that we'll cover are modularity, documentation, and testing. Another topic worth mentioning is Version Control. We won't be covering it in this course, but I recommend checking out the dedicated DataCamp course to learn more about this powerful tool. Let's define each of these concepts that we'll be covering.
+
+8. Benefits of modularity
+First was modularity. To introduce modular code lets start by defining what it's not. Non-modular code can take the form of long, complicated, hard to read scripts and functions. Programming becomes less complex when your code is divided into shorter functional units, and this is the whole idea behind modularity. With modular code, not only does code become more readable but it becomes easier to fix when something breaks. Additionally, modular code is easier to take along with you to your next project; which allows you to save time by avoiding re-solving problems you've already solved in a previous project.
+
+9. Modularity in python
+We can write modular code in python by leveraging packages, classes, and methods. In this example code, we import the pandas package. We create a new object using the powerful DataFrame class from pandas. Finally, we use the convenient plot method that comes built into the DataFrame class. Later in this course, you'll write a fully functional python package using all these concepts to perform text analysis.
+
+10. Benefits of documentation
+If you work on a team or if you ever publish a project, then other people will need to read your code, and sometimes, the other person is just future you. Both future you and other people will have an easier time reading your project if you use good documentation practices. In this course, we'll cover how to use comments, docstrings, and self-documenting code to document your Data Science python projects. A project using all these techniques can save a lot of confusion and frustration for everyone who touches the code.
+
+11. Benefits of automated testing
+The last software engineering concept we'll touch on is testing. One thing everyone learns is that people make mistakes. That's why pencils have erasers, why computers have spellcheck, and why software needs tests. Often times data scientists will write some code, test it in the console once, and then never test it again. It's definitely worthwhile to perform these manual tests, but leveraging tools like the pytest package can automatically run and re-run your tests to ensure your code is working as intended even after adding new functionality.
+
+12. Let's Review
+Ok, we went over some pretty big topics. Let's do some exercises to review.
+
+Got It!
+1. Introduction to Packages & Documentation
+You've now learned some important software engineering concepts. We're now going to look at how beneficial these concepts can be as a user of python open source software.
+
+2. Packages and PyPi
+Namely, we're going to investigate packages. We'll cover how to install packages from the 'Python Package Index', and we'll see how these packages leverage software engineering concepts we've covered. Later in the course, we'll talk more about the 'Python Package Index', or PyPi for short, but for now, all you need to know is that PyPi gives us an easy platform to leverage published packages.
+
+3. Intro to pip
+Thanks to packages being modular, we can easily install them from PyPi using a tool called pip. pip is actually a recursive acronym that stands for 'Pip Installs Packages', and it does just that.
+
+4. Intro to pip
+The practice of leveraging pip install can save a lot of time and lets us avoid reworking problems that have already been solved and packaged by some smart members of the python community.
+
+Got It!
+1. Conventions and PEP 8
+Great work on those exercises. In our short time together we've seen how helpful the Python community can be. Not only have they provided some excellent packages for us to use, but they've also provided documentation to help us use them.
+
+2. What are conventions?
+Something you probably know from real life is that different cultures and communities follow different guidelines that help them run smoothly. For example, this can be seen in different greetings, depending on which community setting you're in it might make sense to say hello by shaking hands, bowing, or bumping fists. These unwritten rules are known as social conventions. The world of software engineering also has conventions that differ based on the language and community.
+
+3. Introducing PEP 8
+Luckily for Pythonistas, these conventions aren't unwritten. We can turn to Python Enhancement Protocol 8, or PEP 8. PEP 8 is the defacto Style Guide for Python Code. It lets us know how to format our code to be as readable as possible, and to quote PEP 8, 'code is read much more often than it is written'. So readability is not something that should be overlooked.
+
+4. Violating PEP 8
+Let's see an example. Here we have some code that violates PEP 8 best practices. To put it simply, the code here is hard to the read. A few problems are: The module import isn't at the top of the file, the spacing and indentation is inconsistent, and the lack of line breaks makes it difficult to tell when one idea finishes and the next begins. Even without knowing the specific PEP 8 rules being broken, you can probably tell this isn't the most readable chunk of code.
+
+5. Following PEP 8
+Let's see what the same chunk of code looks like after being rewritten to conform to PEP 8. Much better. By following the agreed-upon rules in PEP 8 and using whitespace appropriately, this code became much more readable despite accomplishing the same exact task.
+
+6. PEP 8 Tools
+So how is it possible to keep up with the many rules defined in PEP 8? Thankfully for you and me, there are tools that can check your code for you just like a spellchecker. Personally, I use an IDE that flags violations as soon as I write a bad line of code, but there are other options. One in particular that you'll be exposed to in this course is the pycodestyle package. pycodestyle can check code in multiple files at once and it outputs descriptions of the violations along with information to let you know exactly where you need to go to fix the issue.
+
+7. Using pycodestyle
+Here is some example code on how to install and use pycodestyle from the shell. As you'll see in the exercises later you can also run pycodestyle from a python script. Here we use the command line interface to check the contents of the file dict to array dot py that contains our poorly formatted code from before. Note that the output we see on this slide has been truncated.
+
+8. Output from pycodestyle
+The output shows us the exact location of any violations by showing the file name, line number, and column number where the problem occurred. Note that the output does not use zero based indexing. Additionally, pycodestyle outputs a human readable description of the PEP 8 violation and an error code. A complete list of pycodestyle's possible error codes can be seen in the package's documentation.
+
+9. Let's Practice
+OK, we've covered the importance of PEP 8 and how it can improve your code's readability. Let's move on to some exercises to get some hands on experience.
+
+
+
+5. Using pip to install numpy
+If we wanted to install the popular package numpy we conveniently use the command pip install numpy. Barring any unexpected issues we now have numpy installed and we can leverage all the benefits that come with this powerful package. Note that pip will also install a package's dependencies as long as they're on PyPi. However, in some cases, a package's dependencies might require a little extra work.
+
+6. How do we use numpy?
+So how do we leverage numpy's features? Again thanks to good software engineering, numpy has excellent documentation available both on the web and in the package itself. Here we'll focus on the documentation shipped with the package.
+
+7. Reading documentation with help()
+Let's say we want to count the number of work days in the year 2020. numpy provides the function, busday_count, that can help us accomplish this, but how do we use it? To view a function's documentation we can use the function, help. Here is the syntax we can use to learn more about numpy's busday_count method. And here's the response to our call for help. Note that the output has been truncated. From this documentation, we see a description of the function, its parameters, and what we can expect as output. Additionally, we see an example that perfectly matches our described use case.
+
+8. Reading documentation with help()
+We just saw that we can use help to see a method's documentation, but we can also call help on any object in python. We can call help on the numpy package to see some high-level documentation on what functionality it provides. And here we call help on a number. From the output, we can read up on python's integer class. As you can probably tell, having this documentation can be invaluable to users like you and me. But sometimes you might call help on an object and see that there isn't any documentation. It's up to the developer to include these helpful tidbits. Including documentation for your packages, classes, and methods will make using your code much easier. It's important to remember that future-you is also a user who will benefit from this documentation. Believe me, documenting your code, even if you're the only user, can save a lot of wasted time and headaches. I've personally suffered through relearning how to use code that I wrote, but this is totally preventable with good documentation.
+
+9. Let's Practice
+Ok, we covered how to pip install packages and how to read documentation using help. In the following exercises you'll get to practice both of these invaluable skills. Good luck!
+
+

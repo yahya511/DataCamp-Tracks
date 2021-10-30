@@ -1,0 +1,110 @@
+Got It!
+1. Instance and class data
+Congratulations! Now you know the basics of creating classes. You might be asking: classes are neat, but how exactly do they help me make my code better? In this chapter, you'll learn about
+
+2. Core principles of OOP
+namely, Inheritance and Polymorphism, that, together with encapsulation, form the core principles of OOP. But before we get into it,
+
+3. Instance-level data
+you need to learn how to distinguish between instance-level data and class level data. Remember the employee class you defined in the previous chapter. It had attributes like name and salary, and we were able to assign specific values to them for each new instance of the class. These were instance attributes. We used self to bind them to a particular instance.
+
+4. Class-level data
+But what if you needed to store some data that is shared among all the instances of a class? For example, if you wanted to introduce a minimal salary across the entire organization. That data should not differ among object instances. Then, you can define an attribute directly in the class body. This will create a class attribute, that will serve as a "global variable" within a class. For example,
+
+5. Class-level data
+we can define min_salary, and set it to 30000. We can use this attribute inside the class like we would use any global variable, only prepended by the class name: for example, here we check if the value of salary attribute is greater than MIN_SALARY in the init method. Note that we do not use self to define the attribute, and we use the class name instead of self when referring to the attribute.
+
+6. Class-level data
+This min_salary variable will be shared among all the instances of the employee class. We can access it like any other attribute from an object instance, and the value will be the same across instances. Here we print the MIN_SALARY class attribute from two employee objects.
+
+7. Why use class attributes?
+So, the main use case for class attributes is global constants that are related to class, for example min/max values for attributes -- like the min_salary example -- or commonly used values: for example,if you were defining a Circle class, you could store pi as a class attribute.
+
+8. Class methods
+What about methods? Regular methods are already shared between instances: the same code gets executed for every instance. The only difference is the data that is fed into it. It is possible to define methods bound to class rather than an instance, but they have a narrow application scope, because these methods will not be able to use any instance-level data. To define a class method, you start with a classmethod decorator, followed by a method definition. The only difference is that now the first argument is not self, but cls, referring to the class, just like the self argument was a reference to a particular instance. Then you write it as any other function, keeping in mind that you can't refer to any instance attributes in that method. To call a class method, we use class-dot-method syntax, rather than object-dot-method syntax.
+
+9. Alternative constructors
+So why would we ever need class methods at all? The main use case is alternative constructors. A class can only have one init method, but there might be multiple ways to initialize an object. For example, we might want to create an Employee object from data stored in a file. We can't use a method, because it would require an instance, and there isn't one yet! Here we introduce a class method from_file that accepts a file name, reads the first line from the file that presumably contains the name of the employee, and returns an object instance. In the return statement, we use the cls variable -- remember that now cls refers to the class, so this will call the init constructor, just like using Employee with parentheses would when used outside the class definition.
+
+10. Alternative constructors
+Then we can call the method from_file by using class-dot-method syntax, which will create an employee object without explicitly calling the constructor.
+
+11. Let's practice!
+That was a lot! Now head over to the exercises to practice
+
+Got It!
+1. Class inheritance
+Welcome back! Now that you got the basics of classes and instances down, we'll get to the essence of OOP.
+
+2. Code reuse
+Object-oriented programming is fundamentally about code reuse. There are millions of people out there writing code, so there's a good chance
+
+3. Code reuse
+that someone has already written code that solves a part of your problem! Modules like numpy or pandas are a great tool that allows you to use code written by other programmers. But what if that code doesn't match your needs exactly? For example, you might want to modify the to_csv method of a pandas DataFrame to adjust the output format. You could do that by importing pandas and writing a new function, but it will not be integrated into the DataFrame interface. OOP will allow you to keep interface consistent while customizing functionality.
+
+4. Code reuse
+You will also often find yourself reusing your own code over and over. For example, when building a website with a lot of graphical elements like buttons and check boxes, no matter what the element is, the basic functionality is the same: you need to be able to draw it and click on it. There are a few details that differ based on the type of the element, but a lot of the code will be the repeated. Should you copy-paste the basic code for draw and click for every new element?
+
+5. Code reuse
+Wouldn't it be better to have a general data structure like GUIelement that implements the basic draw and click functionality only once?
+
+6. Inheritance
+We can accomplish this with inheritance. Class inheritance is mechanism by which we can define a new class that gets all the the functionality of another class plus maybe something extra without re-implementing the code.
+
+7. Example hierarchy
+Let's say you have a basic bank account class that has a balance attribute and a withdraw method. In your company, you work with several types of accounts.
+
+8. Example hierarchy
+For example, a SavingsAccount also has an interest rate and a method to compute interest, but it will also still have a balance, and you definitely should be able to withdraw from it. By inheriting methods and attributes of SavingsAccount from BankAccount, you'll be able to reuse the code you already wrote for the BankAccount class.
+
+9. Example hierarchy
+You could have a CheckingAccount class, that also has a balance, and a withdraw method, but maybe that method is slightly different:
+
+10. Example hierarchy
+it modifies the amount to be withdrawn to include a fee. With inheritance, we'll be able to customize the withdraw method to first adjust the amount if necessary, and then use the method from the BankAccount class -- again, without rewriting it.
+
+11. Implementing class inheritance
+How do we implement this? Declaring a class that inherits from another class is very straightforward: you simply add parentheses after the class name, and then specify the class to inherit from. Here, we define a rudimentary BankAccount class and a seemingly empty SavingsAccount class inherited from it.
+
+12. Child class has all of the the parent data
+"Seemingly" because SavingsAccount actually has exactly as much in it as the BankAccount class. For example, we can create an object -- even though we did not define a constructor -- and we can access the balance attribute and the withdraw method from the instance of SavingsAccount, even though these features weren't defined in the new class.
+
+13. Inheritance: "is-a" relationship
+That's because inheritance represents "is-a" relationship: a savings account is a bank account, just with some extra features. This isn't just theoretical -- that's how Python treats it as well. Calling isinstance function on a savingsaccount object shows that Python treats it like an instance of both savingsaccount and BankAccount classes, which is not the case for a generic BankAccount object. Right now, though, this class doesn't have anything that the original account class did not have.
+
+14. Let's practice!
+We'll start adding features and customizing the class the next video, but for now, head over to the exercises to test your understanding of inheritance.
+
+
+Got It!
+1. Customizing functionality via inheritance
+Great job so far! In the previous video, you learned that inheritance allows us to encode is-a relationships between classes.
+
+2. Hierarchy
+For example, a SavingsAccount is a special kind of BankAccount that has all the bankaccount functionality, but also contains additional properties like an interest rate and a method to compute interest.
+
+3. What we have so far
+Here's where we stopped in the last video. We could already create SavingsAccount objects, but they did not have any functionality that bank account did not have. Let's start customization by
+
+4. Customizing constructors
+adding a constructor specifically for SavingsAccount. It will take a balance parameter, just like BankAccount, and an additional interest_rate parameter. In that constructor, we first run the code for creating a generic bankaccount by explicitly calling the init method of the bankAccount class. Notice that we use BankAccount-dot-init to tell Python to call the constructor from the parent class, and we also pass self to that constructor. Self in this case is a SavingsAccount -- that's the class we're in -- but remember that in Python, instances of a subclass are also instances of the parent class. so it is a BankAccount as well, and we can pass it to the init method of BankAccount. Then we can add more functionality, in this case just initializing an attribute. You actually aren't required to call the parent constructor in the subclass, or to call it first -- you can use new code entirely -- but you'll likely to almost always use the parent constructor.
+
+5. Create objects with a customized constructor
+Now when we create an instance of the SavingsAccount class, the new constructor will be called, and in particular, the interest_rate attribute will be initialized.
+
+6. Adding functionality
+In the exercises, you saw you can add methods to a subclass just like to any other class. In those methods you can use data from both the child and the parent class. For example here, we add a compute_interest method that returns the amount of interest in the account.. Don't worry about the exact formula, just notice that we multiply the balance attribute - which was inherited from the BankAccount parent - by an expression involving the interest_rate attribute that exists only in the child SavingsAccount class.
+
+7. Customizing functionality
+Now let's talk about customizing functionality. SavingsAccount inherits the withdraw method from the parent BankAccount class. Calling withdraw on a savings instance will execute exactly the same code as calling it on a generic bank account instance. We want to create a CheckingAccount class, which should have a slightly modified version of the withdraw method: it will have a parameter and adjust the withdrawal amount.
+
+8. Customizing functionality
+Here's an outline of what that could look like. Start by inheriting from the parent class, add a customized constructor that also executes the parent code, a new deposit method, and a withdraw method, but we add a new argument to withdraw - fee, that specifies the additional withdrawal fee. We compare the fee to some fee limit, and then call the parent withdraw method, passing a new amount to it -- with fees subtracted. So this method runs almost the same code as the BankAccount's withdraw method without re-implementing it - just augmenting. Notice that we can change the signature of the method in the subclass by adding a parameter, and we again, just like in the constructor, call the parent version of the method directly by using parent-class-dot syntax and passing self.
+
+9. Comparison
+Now when you call withdraw from an object that is a CheckingAccount instance, the new customized version will be used, but when you call it from regular BankAccount, the basic version will be used. The interface of the call is the same, and the actual method that is called is determined by the instance class. This is an application of polymorphism, and we'll learn more about it later in the course. Another difference is that for a CheckingAccount instance, we could call the method with 2 parameters. But trying this call for a generic BankAccount instance would cause an error, because the method defined in the BankAccount class was not affected by the changes in the subclass.
+
+10. Let's practice!
+Now, let's go customize some methods!
+
+

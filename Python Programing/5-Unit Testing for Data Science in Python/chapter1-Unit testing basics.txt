@@ -1,0 +1,263 @@
+Got It!
+1. Why unit test?
+Hello and welcome to Unit Testing for Data Science in Python! My name is Dibya. I am a Test Automation Engineer and I will be your instructor for this course.
+
+2. How can we test an implementation?
+Consider this question. Suppose we have just implemented a Python function. How can we test whether our implementation is correct? The easiest way is to open an interpreter, test the function on a few arguments and check whether the return value is correct. If correct, we can accept the implementation and move on. Right? While testing on the interpreter is easy, it is actually very inefficient. This will become clear if we think about the big picture of a function's life cycle in a data science project.
+
+3. Life cycle of a function
+The life cycle of a function typically looks like this. We implement the function
+
+4. Life cycle of a function
+and then test it.
+
+5. Life cycle of a function
+If the tests pass, we accept the implementation.
+
+6. Life cycle of a function
+If the tests fail, we fix any bugs that we found and test again.
+
+7. Life cycle of a function
+Later, we might get a new feature request or we may be asked to refactor the function.
+
+8. Life cycle of a function
+So we implement the new feature or refactor the code, and then test it again.
+
+9. Life cycle of a function
+Alternatively, someone might discover a previously unseen bug.
+
+10. Life cycle of a function
+In that case, we fix that bug and test again. Notice how many times a function needs to be tested during the life cycle. Every time we modify the function, either to fix bugs or to implement new features, we have to test it.
+
+11. Life cycle of a function
+If the project continues for a few years, we might be testing the function about a hundred times, maybe more.
+
+12. Example
+Let's look at an example function. It's called row_to_list(). It takes a single argument, which is a Python string. The string is a single row in a data file which contains data on housing area and market price of the house.
+
+13. Data format
+The string contains the housing area in square feet, followed by a single tab, followed by the housing price in dollars and ending with a newline character. If the string follows this format, the function returns a list of length 2, containing the housing area and the housing price.
+
+14. Data isn't clean
+But this data file is not clean, and some rows in this data file do not follow this format. The third row has missing area,
+
+15. Data isn't clean
+while the penultimate row is missing the tab between the area and price. For these invalid rows, the function should return None.
+
+16. Time spent in testing this function
+To test this function, we will have to try all the arguments that we listed and check if the function returns the correct value.
+
+17. Time spent in testing this function
+Remembering that a function needs to be tested about 100 times in its life cycle,
+
+18. Time spent in testing this function
+and assuming it takes 5 minutes to test each time, we will spend 8 hours just testing this function on the interpreter.
+
+19. Manual testing vs. unit tests
+Unit tests automate this repetitive and tedious testing process. Unit tests will reduce the testing time over the life cycle of a single function to 1 hour instead of 8. Now imagine how much time we would save when we unit test all the functions in a project! This makes unit testing a must-have skill for productive data scientists.
+
+20. Learn unit testing - with a data science spin
+This course will teach you how to write unit tests. We have created an example data science project which predicts prices from the housing area using linear regression, as we can see in the plot.
+
+21. GitHub repository of the course
+The complete code for this project, including actual implementations for functions like row_to_list(), is available in a public GitHub repository. We will share the link to the repository at the end of the course.
+
+22. Develop a complete unit test suite
+Here is the folder structure of this project.
+
+23. Develop a complete unit test suite
+During this course, we are going to write a complete unit test suite for this example project. It's going to be fun and exciting. This will prepare you to write unit tests for your own projects.
+
+24. Let's practice these concepts!
+Sounds good? Then let's get started by practicing the concepts covered in this lesson.
+
+Got It!
+1. Write a simple unit test using pytest
+In the last exercise, you went through a function's life cycle.
+
+2. Testing on the console
+At every step, you tested it by calling row_to_list() on different arguments and checked if the return values are correct. This was repetitive, tedious and time consuming. In this lesson, we will learn to write unit tests and improve this process.
+
+3. Python unit testing libraries
+There are many Python libraries for writing unit tests such as pytest, unittest, nosetests, and doctest. We will use pytest for this course, because pytest has all essential features, is easiest to use, and is the most popular testing library in Python.
+
+4. Step 1: Create a file
+To start unit testing with pytest, we will first create a file called test_row_to_list.py. When pytest sees a filename starting with "test_", it understands that this is not an usual Python file, but a special one containing unit tests. We must make sure to follow this naming convention. Files holding unit tests are also called test modules, and we just created our first test module.
+
+5. Step 2: Imports
+In the test module, we first import pytest. Then we import the function under test.
+
+6. Step 3: Unit tests are Python functions
+A unit test is written as a Python function, whose name starts with a "test_", just like the test module. This way, pytest can tell that it is a unit test and not an ordinary function.
+
+7. Step 3: Unit tests are Python functions
+The unit test usually corresponds to exactly one entry in the argument and return value table for row_to_list(). The unit test checks whether row_to_list() has the expected return value when called on this particular argument. This particular argument is a clean row, so we call the unit test test_for_clean_row().
+
+8. Step 4: Assertion
+The actual check is done via an assert statement, and every test must contain one.
+
+9. Theoretical structure of an assertion
+The assert statement has a required first argument, which can be any boolean expression. If the expression is True, the assert statement passes, giving us a blank output. If the expression is False, it raises an AssertionError.
+
+10. Step 4: Assertion
+In this case, we want to check if row_to_list() returns the correct list when called on the clean row. The expression we use is row_to_list() called on the argument equal equals the correct list. If the function works, this will evaluate to True and the assert statement will pass. This will make the test pass. If the function has a bug, it will evaluate to False, the assert statement will raise an AssertionError, and the test will fail.
+
+11. A second unit test
+For the second row in the table, we create a unit test called test_on_missing_area() because the argument has missing area data. Then we assert that the return value for this argument is None.
+
+12. Checking for None values
+Note that the correct way to check if a variable's value is None is to use the boolean expression var is None and not var equal equals None.
+
+13. A third unit test
+For the third row in the table, we create a unit test called test_for_missing_tab(), because the argument is missing the tab separating area and price. The assert statement is similar to the second test.
+
+14. Step 5: Running unit tests
+To test whether row_to_list() is working at any time in its life cycle, we simply run the test module. The standard way to run tests is to open a command line and type pytest followed by the test module name.
+
+15. Running unit tests in DataCamp exercises
+In the DataCamp exercises, we can't create files directly. So you will define the unit tests in the script.py area, which is highlighted here.
+
+16. Running unit tests in DataCamp exercises
+In the next step or next exercise, we will write the tests to a test module in the background and tell you its file path. This is highlighted in this slide.
+
+17. Running unit tests in DataCamp exercises
+Once you know the test module's file path, you can run the tests in the IPython console at the bottom, which is highlighted here.
+
+18. Running unit tests in DataCamp exercises
+You can run any command line expression in the IPython console by adding an exclamation mark before the expression. For example, to run the pytest command, you have to use exclamation pytest, as shown in the picture.
+
+19. Next lesson: test result report
+Running this command will output the test result report, which contains information about bugs in the function, if any. We will cover the test result report in the next video lesson.
+
+20. Let's write some unit tests!
+But now, let's practice writing some simple unit tests using pytest.
+
+Got It!
+1. Understanding test result report
+In this lesson, we will take a deeper look at the output generated when we run tests. This output is called the test result report and contains information that will help us fix bugs.
+
+2. Unit tests for row_to_list()
+As an example, we will use the test module test_row_to_list.py, which we saw in the previous video lesson. It contains three unit tests for the row_to_list() function. The unit tests check if row_to_list() returns the correct return values for clean rows, rows missing area data and rows missing the tab separator respectively.
+
+3. Test result report
+Running the tests in the IPython console produces lot of output. So much output that we had to truncate it in this slide. This is called the test result report. We will break this down into smaller pieces and understand them individually.
+
+4. Section 1: general information
+The first section provides information about the operating system, Python version, pytest package versions, the working directory and pytest plugins. There is not much to say about this section, so let's move ahead.
+
+5. Section 2: Test result
+The next bit is important. The output says "collected 3 items", which means that pytest found three tests to run. This is accurate as the test module test_row_to_list.py contains three unit tests. The next line contains the test module name, which is test_row_to_list.py, followed by the characters dot, capital F and dot. Each character represents the result of a unit test.
+
+6. Section 2: Test result
+The character capital F stands for failure. A unit test fails if an exception is raised when running the unit test code.
+
+7. Section 2: Test result
+This happens most often when the assert statement raises an AssertionError. This means that the function has a bug and we should fix it.
+
+8. Section 2: Test result
+A unit test may also fail if a different exception is raised while running the unit test code. In this case, execution will stop before the assert statement is run. For example, if we wrote None with a small n, this would raise a NameError. Since the assert statement did not run, we cannot conclude anything about the function under test from the capital F result. In this case, we should fix the unit test so that it can actually run the assert statement.
+
+9. Section 2: Test result
+Dot means that the unit test passed. This means no exceptions were raised by the assert statement or any other part of the unit test. For the test module test_row_to_list.py, the first test passed, the second failed and the third passed.
+
+10. Section 3: Information on failed tests
+The next section contains detailed information about failed tests. We can see that the unit test test_on_missing_area() failed. The line raising the exception is marked by a greater than sign on the left. In this case, it is the assert statement.
+
+11. Section 3: Information on failed tests
+The following lines marked with capital E on the left contains details of the exception. In this case, the assert statement raised an AssertionError.
+
+12. Section 3: Information about failed tests
+The lines which contain the word "where" displays any return values that were calculated when running the assert statement. In this case, it shows that the actual return value of row_to_list() is a list containing an empty string and the string "293,410". The expected return value is, of course, None. The mismatch between the expected and actual value will be our starting point for debugging. We would have to figure out why row_to_list() returns a list instead of None in this case.
+
+13. Section 4: Test result summary
+The final line is a test result summary, saying that "1 test failed, and 2 passed". Additionally, we also find out that the test took 0.03 seconds to run. That's really fast compared to the time we would need to test using the interpreter.
+
+14. Let's practice reading test result reports
+Now, let's practice reading test result reports.
+
+
+Got It!
+1. More benefits and test types
+In a previous lesson, we learned that unit tests save a lot of time. But the benefits of unit testing goes beyond time savings.
+
+2. Unit tests serve as documentation
+The unit tests that we wrote for row_to_list() also serve as documentation. If a collaborator didn't know this function's purpose,
+
+3. Unit tests serve as documentation
+they could recreate the argument and return value table on the right by looking at the boolean expressions used in the assert statements. The table would give them a good hint about what row_to_list() does, helping them understand the function's code faster.
+
+4. Guess function's purpose by reading unit tests
+To mimic this real life situation, some exercises may ask you to guess a function's job by looking at a test module. In this case, just type exclamation cat followed by the test module name in the IPython console
+
+5. Guess function's purpose by reading unit tests
+to see the unit tests.
+
+6. More trust
+Unit tests also increase trust in a package, as users can run the unit tests and verify that the functions work. In the picture, we see NumPy's Github page.
+
+7. More trust
+This highlighted badge shows how much of the code base is unit tested
+
+8. More trust
+and this other badge shows whether the tests are passing. Users trust NumPy more because of these badges. We should implement these badges for our projects too, because user trust is important, and we will learn how to do that later in the course.
+
+9. Reduced downtime
+Unit tests can also reduce downtime for a productive system.
+
+10. Reduced downtime
+Suppose we make a mistake
+
+11. Reduced downtime
+and push bad code to a productive system.
+
+12. Reduced downtime
+This will bring the system down and annoy users.
+
+13. Reduced downtime
+We can cure this by setting up Continuous Integration or CI. CI runs all unit tests when any code is pushed,
+
+14. Reduced downtime
+and if any unit test fails, it rejects the change, preventing downtime.
+
+15. Reduced downtime
+It also informs us that the code needs to be fixed. If we run productive systems that many people depend upon, we must write unit tests and setup CI. We will see an example of this later in the course.
+
+16. All benefits
+All of these benefits make the case stronger for writing unit tests! In this course, we will write unit tests for all functions in the example linear regression project.
+
+17. Tests we already wrote
+We already wrote tests for row_to_list()
+
+18. Tests we already wrote
+and convert_to_int().
+
+19. Data module
+They are part of the data module, which creates a clean data file from raw data on housing area and price.
+
+20. Feature module
+Very soon, we will see functions from the feature module, which compute features from the clean data.
+
+21. Models module
+Later in the course, we will meet the models module, which will output a model for predicting housing price from the features.
+
+22. Unit test
+The tests that we wrote are called unit tests because they test a unit, such as row_to_list().
+
+23. What is a unit?
+A unit is any small independent piece of code, and could be a Python function or class.
+
+24. Integration test
+In contrast, integration tests check if multiple units work well together when they are connected, and not just independently. For example, we could check if the data and the feature module work well when connected. Here, the argument will be the raw data, and the return values to check would be the features.
+
+25. End to end test
+End to end tests check the whole software at once.. They start from one end, which is the unprocessed data file, goes through all the units till the other end, and checks whether we get the correct model.
+
+26. This course focuses on unit tests
+This course is focused on unit tests as this is really the best way to learn about pytest.
+
+27. In Chapter 2...
+In Chapter 2, we will dig much deeper into pytest and write more advanced unit tests for the features and models module. Exciting!
+
+28. Let's practice these concepts!
+But for now, let's practice the concepts in this lesson.
+
