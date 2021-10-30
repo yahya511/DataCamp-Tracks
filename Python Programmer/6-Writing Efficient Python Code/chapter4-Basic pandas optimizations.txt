@@ -1,0 +1,120 @@
+Got It!
+1. Intro to pandas DataFrame iteration
+So far, we've focused on Python's built-in data structures. Now, we'll shift gears and focus on one of the most popular data analytics tools: the pandas DataFrame.
+
+2. pandas recap
+You should be familiar with pandas before continuing with this course. If not, consider refreshing your pandas knowledge with the great overview provided in the DataCamp course listed here. Just to recap, pandas is a library used for data analysis. The main construct of pandas is the DataFrame, a tabular data structure with labeled rows and columns. This chapter will focus on the best approaches for iterating over a DataFrame. Let's begin by analyzing a Major League Baseball dataset.
+
+3. Baseball stats
+We've collected team stats for each Major League Baseball team from the year 1962 to 2012, which are stored in a pandas DataFrame named baseball_df.
+
+4. Baseball stats
+The Team column is each baseball team's abbreviated name. The first team, ARI, represents the Arizona Diamondbacks.
+
+5. Baseball stats
+All other columns in this DataFrame represent specific statistics for each team in a given Year or season. We'll cover what the RS, RA, and Playoffs columns mean in later exercises. For now, we'll focus on the W column, which specifies the number of wins a team had in a season and the G column that contains the number of games a team played in a season.
+
+6. Calculating win percentage
+One popular statistic used to evaluate a team's performance for a given season is the team's win percentage. This metric is calculated by dividing a team's total wins by number of games played. We've written a simple function to perform this calculation. If a team wins 50 out of 100 games, we see that our function returns the correct result.
+
+7. Adding win percentage to DataFrame
+We'd like to create a new column in our baseball_df DataFrame that stores each team's win percentage for a season. To do this, we'll need to iterate over the DataFrame's rows and apply our calc_win_perc function. First, we create an empty win_perc_list to store all the win percentages we'll calculate. Then, we write a loop that will iterate over each row of the DataFrame. Notice that we are using an index variable (i) that ranges from zero to the number of rows that exist within the DataFrame. We then use the dot-iloc method to lookup each individual row within the DataFrame using the index variable. Now, we grab each team's wins and games played by referencing the W and G columns. Next, we pass the team's wins and games played to calc_win_perc to calculate the win percentages. Finally, we append win_perc to win_perc_list and continue the loop. We create our desired column in the DataFrame, called WP, by setting the column value equal to the win_perc_list.
+
+8. Adding win percentage to DataFrame
+Printing the first five rows of our DataFrame, we see that the win percentage column now appears.
+
+9. Iterating with .iloc
+Looping over the DataFrame with dot-iloc gave us our desired output, but is it efficient? When estimating the runtime, the dot-iloc approach took 183 milliseconds, which is pretty inefficient.
+
+10. Iterating with .iterrows()
+pandas comes with a few efficient methods for looping over a DataFrame. The first method we'll cover is the dot-iterrows method. This is similar to the dot-iloc method, but dot-iterrows returns each DataFrame row as a tuple of (index, pandas Series) pairs. This means each object returned from dot-iterrows contains the index of each row as the first element and the data in each row as a pandas Series as the second element. Notice that we still create the empty win_perc_list, but now we don't have to create an index variable to look up each row within the DataFrame. dot-iterrows handles the indexing for us! The remainder of the for loop stays the same to create a new win percentage column within our baseball_df DataFrame.
+
+11. Iterating with .iterrows()
+Using dot-iterrows takes roughly half the time dot-iloc takes to iterate over our DataFrame. We'll explore more efficient ways to loop over a DataFrame later on in the chapter. But for now, we know that using dot-iloc is not efficient and shouldn't be used to iterate over a DataFrame.
+
+12. Practice DataFrame iterating with .iterrows()
+Now, let's practice iterating over a DataFrame using dot-iterrows!
+
+
+Got It!
+1. Another iterator method: .itertuples()
+In the previous lesson, we covered how to iterate over a pandas DataFrame row by row using the dot-iterrows method. pandas also comes with a similar iteration method called dot-itertuples that is often more efficient that dot-iterrows. Let's continue using our baseball dataset to compare these two methods.
+
+2. Team wins data
+Suppose we have a pandas DataFrame called team_wins_df that contains each team's total wins in a season.
+
+3. Iterating with .iterrows()
+If we use dot-iterrows to loop over our team_wins_df DataFrame and print each row's tuple, we see that each row's values are stored as a pandas Series. Remember, dot-iterrows returns each DataFrame row as a tuple of (index, pandas Series) pairs, so we have to access the row's values with square bracket indexing.
+
+4. Iterating with .itertuples()
+But, we could use dot-itertuples to loop over our DataFrame rows instead. The dot-itertuples method returns each DataFrame row as a special data type called a namedtuple. A namedtuple is one of the specialized data types that exist within the collections module we've discussed previously. These data types behave just like a Python tuple but have fields accessible using attribute lookup. What does this mean? Notice in the output that each printed row_namedtuple has an Index attribute and each column in our team_wins_df as an attribute. That means we can access each of these attributes with a lookup using a dot method. Here, we can print the last row_namedtuple's Index using row_namedtuple-dot-Index. We can print this row_namedtuple's Team with row_namedtuple-dot-Team, Year with row_namedtuple-dot-Year and so on.
+
+5. Comparing methods
+When we compare dot-iterrows to dot-itertuples, we see that there is quite a bit of improvement! The reason dot-itertuples is more efficient than dot-iterrows is due to the way each method stores its output. Since dot-iterrows returns each row's values as a pandas Series, there is a bit more overhead.
+
+6. Attribute lookup caveat
+One more quick note about the differences between these methods. When using dot-iterrows, we can use square brackets to reference a column within our team_wins_df DataFrame. Here, we are printing the Team column for each row in our DataFrame. If we use the same syntax with dot-itertuples, we get a TypeError. This is due to the fact that namedtuples don't support square brackets like a pandas Series does. When looking up an attribute within a namedtuple, we must use a dot to reference the attribute. So anytime we use dot-itertuples we have to use a dot when referring to a column within our DataFrame. If we replace our square bracket notation with a dot, we see that the Teams are correctly printed out.
+
+7. Let's keep iterating!
+Now, let's put our new skill to the test and practice efficiently looping over rows of a DataFrame using dot-itertuples.
+
+
+Got It!
+1. pandas alternative to looping
+We've been looping over DataFrames row-by-row with ease in the past two lessons. But remember, in order to write efficient code, we want to avoid looping when possible. In this lesson, we'll explore an alternative to using dot-iterrows and dot-itertuples to perform calculations on a DataFrame.
+
+2. Revisit run differentials
+We'll continue using our baseball dataset and revisit the calc_run_diff function we've used in the past. This function calculates a team's run differential for a given year by subtracting the team's total number of runs allowed from their total number of runs scored in a season.
+
+3. Run differentials with a loop
+We'd like to create a new column in our baseball_df DataFrame called RD that stores each team's run differentials over the years. In previous lessons, we did this with a for loop using either dot-iterrows or dot-itertuples. Here, we'll use dot-iterrows as an example. Notice that we are iterating over baseball_df with a for loop, passing each row's RS and RA columns into our calc_run_diff function, and then appending each row's result to our run_diffs_iterrows list. This gives us our desired output, but it is not our most efficient option.
+
+4. pandas .apply() method
+One alternative to using a loop to iterate over a DataFrame is to use pandas' dot-apply method. This function acts like the map function we've used in the past. It takes a function as an input and applies this function to an entire DataFrame. Since we are working with tabular data, we must specify an axis that we'd like our function to act on. Using a zero for the axis argument will apply our function on columns while using a one for the axis will apply our function on all rows. Just like the map function, pandas' dot-apply method can be used with anonymous functions or lambdas. Let's walk through how'd we'd use the dot-apply method to calculate our run differentials. First, we call dot-apply on the baseball_df DataFrame. Then, we use a lambda function to iterate over the rows of the DataFrame. Notice that our argument for lambda is row (since we are applying to each row of the DataFrame). For every row, we grab the RS and RA columns and pass them to our calc_run_diff function. Lastly, we specify our axis to tell dot-apply that we want to iterate over rows instead of columns.
+
+5. Run differentials with .apply()
+When we use the dot-apply method to calculate our run differentials, we don't need to use a for loop. We can collect our run differentials directly into an object called run_diffs_apply. After creating our new column and printing the DataFrame, we see that our results are identical to the dot-iterrows approach. But, was using dot-apply more efficient?
+
+6. Comparing approaches
+When timing the dot-iterrows approach, we see that it took about 87 milliseconds to complete.
+
+7. Comparing approaches
+But, using the dot-apply method took only 30 milliseconds. A definite improvement!
+
+8. Let's practice using pandas .apply() method!
+Now, let's practice using dot-apply with some coding examples!
+
+
+Got It!
+1. Optimal pandas iterating
+We've come a long way from our first dot-iloc approach for iterating over a DataFrame. Each approach we've discussed has really improved performance. But, these approaches focus on performing calculations for each row of our DataFrame individually. In this lesson, we'll explore some pandas internals that allow us to perform calculations even more efficiently.
+
+2. pandas internals
+As you know, we should try to stay away from loops when writing Python code - and working with pandas is no exception. In the previous lessons, we were iterating over a DataFrame row by row in order to perform a calculation. pandas is a library that is built on NumPy. This means that each pandas DataFrame we use can take advantage of the efficient characteristics of NumPy arrays that we learned in Chapter 1. Do you remember an array's broadcasting functionality? Broadcasting allows NumPy arrays to vectorize operations, so they are performed on all elements of an object at once. This allows us to efficiently perform calculations over entire arrays. Just like NumPy, pandas is designed to vectorize calculations so that they operate on entire datasets at once (not just on a row by row basis). Let's explore this concept with some examples.
+
+3. DataFrame columns as arrays
+We'll continue to use the baseball_df DataFrame we have been using throughout the chapter. Since pandas is built on top of NumPy, we can grab any of these DataFrame column's values as a NumPy array using the dot-values method. Here, we are collecting the W column's values into a NumPy array called wins_np. When we print the type of wins_np, we see that it is, in fact, a NumPy array. We can see the contents of the array by printing it and verifying that it is the same as the W column from our DataFrame.
+
+4. Power of vectorization
+The beauty of knowing that pandas is built on NumPy can be seen when taking advantage of a NumPy array's broadcasting abilities. Remember, this means we can vectorize our calculations, and perform them on entire arrays all at once! Instead of looping over a DataFrame, and treating each row independently, like we've done with dot-iterrows, dot-itertuples, and dot-apply, we can perform calculations on the underlying NumPy arrays of our baseball_df DataFrame. Here, we gather the RS and RA columns in our DataFrame as NumPy arrays, and use broadcasting to calculate run differentials all at once!
+
+5. Run differentials with arrays
+When we use NumPy arrays to perform our run differential calculations, we can see that our code becomes much more readable. Here, we can explicitly see how our run differentials are being calculated. After creating our new column and printing the DataFrame, we see that our results are identical to all other approaches. But, just how much more efficient is using NumPy arrays?
+
+6. Comparing approaches
+When we time our NumPy arrays approach, we see that our run differential calculations take microseconds! All other approaches were reported in milliseconds. Our array approach is orders of magnitude faster than all previous approaches!
+
+7. Let's put our skills into practice!
+It's clear that using a DataFrame's underlying NumPy arrays to perform calculations can help us gain some massive efficiencies. Let's practice with a few coding exercises.
+
+
+Got It!
+1. Congratulations!
+Congratulations on completing the course! Now, you have the necessary tools to start writing efficient Python code!
+
+2. What you have learned
+Over the four chapters of this course, you have learned what writing efficient code truly means, and that writing Pythonic code often yields efficient code. You've explored Python's Standard Library and practiced using built-in functions like range, enumerate, and map. You know the power of NumPy arrays and can use them for fast, efficient calculations. You're a whiz at using magic commands like %timeit and know how to profile your code with the line_profiler and memory_profiler packages. You've also applied more advanced techniques to gain efficiencies by using built-in functions like zip, built-in modules like itertools and collections, and a branch of mathematics called set theory. Finally, you explored looping patterns in Python and why they are not always the most efficient approach to solving problems. You successfully eliminated loops in your code and even learned how to efficiently iterate over pandas DataFrames.
+
+3. Well done!
+Well done! It has been an absolute pleasure working with you! Thank you for taking the course, and I hope to see you again in the future!
+

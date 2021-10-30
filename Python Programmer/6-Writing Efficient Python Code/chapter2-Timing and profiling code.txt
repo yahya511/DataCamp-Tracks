@@ -1,0 +1,160 @@
+Got It!
+1. Examining runtime
+In this lesson, we'll learn how to examine the runtime of our code. As mentioned in the previous chapter, runtime is an important consideration when thinking about efficiency.
+
+2. Why should we time our code?
+Comparing runtimes between two code bases, that effectively do the same thing, allows us to pick the code with the optimal performance. By gathering and analyzing runtimes, we can be sure to implement the code that is fastest and thus more efficient.
+
+3. How can we time our code?
+To compare runtimes, we need to be able to compute the runtime for a line or multiple lines of code. IPython comes with some handy built-in magic commands we can use to time our code. Magic commands are enhancements that have been added on top of the normal Python syntax. These commands are prefixed with the percentage sign. If you aren't familiar with magic commands, don't worry, take a moment to review the documentation using the provided link. We won't be using all the magic commands listed in the docs, but it's helpful to know what magic commands are at your disposal.
+
+4. Using %timeit
+Consider this example: we want to inspect the runtime for selecting 1,000 random numbers between zero and one using NumPy's random-dot-rand function. Using %timeit just requires adding the magic command before the line of code we want to analyze. That's it! One simple command to gather runtimes. Magic indeed!
+
+5. %timeit output
+One advantage to using %timeit is the fact that it provides an average of timing statistics.
+
+6. %timeit output
+Notice that the output provides a mean, and standard deviation, of time.
+
+7. %timeit output
+We also see that multiple runs and loops were generated. %timeit runs through the provided code multiple times to estimate the code's execution time. This provides a more accurate representation of the actual runtime rather than relying on just one iteration to calculate the runtime. The mean and standard deviation displayed in the output is a summary of the runtime considering each of the multiple runs.
+
+8. Specifying number of runs/loops
+The number of runs represents how many iterations you'd like to use to estimate the runtime. The number of loops represents how many times you'd like the code to be executed per run. We can specify the number of runs, using the -r flag, and the number of loops, using the -n flag. Here, we use -r2, to set the number of runs to two and -n10, to set the number of loops to ten. In this example, %timeit would execute our random number selection 20 times in order to estimate runtime (2 runs each with 10 executions).
+
+9. Using %timeit in line magic mode
+Another cool feature of %timeit is its ability to run on single or multiple lines of code. When using %timeit in line magic mode, or with a single line of code, one percentage sign is used.
+
+10. Using %timeit in cell magic mode
+Similarly, we can run %timeit in cell magic mode (or provide multiple lines of code) by using two percentage signs.
+
+11. Saving output
+We can save the output of %timeit into a variable using the -o flag.
+
+12. Saving output
+This allows us to dig deeper into the output and see things like the time for each run, the best time for all runs, and the worst time for all runs. Let's try using %timeit with some of Python's built-in data structures.
+
+13. Comparing times
+In a previous chapter, we mentioned some of Python's built-in data structures called lists, dictionaries, and tuples. Python allows us to create these data structures using either a formal name, like list, dict, and tuple spelled out, or a shorthand called literal syntax.
+
+14. Comparing times
+If we wanted to compare the runtime between creating a dictionary using the formal name and creating a dictionary using the literal syntax, we could save the output of the individual %timeit commands as shown here. Then, we could compare the two outputs.
+
+15. Comparing times
+For simplicity, let's look at just the output of both the %timeit commands to see which was faster. Here, we can see that using the literal syntax to create a dictionary is faster than using the formal name without writing code to do the analysis for us.
+
+16. Off to the races!
+Now that we've learned how to use %timeit, we can compare different coding approaches to select the most efficient one. It's off to the races!
+
+
+Got It!
+1. Code profiling for runtime
+We've covered how to time our code using the magic command %timeit, which works well with bite-sized code. But, what if we wanted to time a large code base or see the line-by-line runtimes within a function? In this lesson, we'll cover a concept called code profiling that allows us to analyze code more efficiently.
+
+2. Code profiling
+Code profiling is a technique used to describe how long, and how often, various parts of a program are executed. The beauty of a code profiler is its ability to gather summary statistics on individual pieces of our code without using magic commands like %timeit. We'll focus on the line_profiler package to profile a function's runtime line-by-line. Since this package isn't a part of Python's Standard Library, we need to install it separately. This can easily be done with a pip install command. Let's explore using line_profiler with an example.
+
+3. Code profiling: runtime
+Suppose we have a list of superheroes along with each hero's height (in centimeters) and weight (in kilograms) loaded as NumPy arrays.
+
+4. Code profiling: runtime
+We've also developed a function called convert_units that converts each hero's height from centimeters to inches and weight from kilograms to pounds.
+
+5. Code profiling: runtime
+If we wanted to get an estimated runtime of this function, we could use %timeit. But, this will only give us the total execution time. What if we wanted to see how long each line within the function took to run?
+
+6. Code profiling: runtime
+We would have to use %timeit on each individual line of our convert_units function. But, that's a lot of manual work and not very efficient.
+
+7. Code profiling: line_profiler
+Instead, we can profile our function with the line_profiler package. To use this package, we first need to load it into our session. We can do this using the command %load_ext followed by line_profiler. Now, we can use the magic command %lprun, from line_profiler, to gather runtimes for individual lines of code within the convert_units function. %lprun uses a special syntax. First, we use the -f flag to indicate we'd like to profile a function.
+
+8. Code profiling: line_profiler
+Next, we specify the name of the function we'd like to profile. Note, the name of the function is passed without any parentheses.
+
+9. Code profiling: line_profiler
+Finally, we provide the exact function call we'd like to profile by including any arguments that are needed.
+
+10. %lprun output
+The output from %lprun provides a nice table that summarizes the profiling statistics.
+
+11. %lprun output
+First, a column specifying the line number followed by a column displaying the number of times that line was executed (called the Hits column).
+
+12. %lprun output
+Next, the Time column shows the total amount of time each line took to execute.
+
+13. %lprun output
+This column uses a specific timer unit that can be found in the first line of the output. Here, the timer unit is listed in microseconds using scientific notation.
+
+14. %lprun output
+We see that line three took 13 timer units, or, roughly 13 microseconds to run.
+
+15. %lprun output
+The Per Hit column gives the average amount of time spent executing a single line. This is calculated by dividing the Time column by the Hits column.
+
+16. %lprun output
+Notice that line 9 was executed three times and had a total run time of three microseconds, one microsecond per hit.
+
+17. %lprun output
+The % Time column shows the percentage of time spent on a line relative to the total amount of time spent in the function. This can be a nice way to see which lines of code are taking up the most time within a function.
+
+18. %lprun output
+Finally, the source code is displayed for each line in the Line Contents column.
+
+19. %lprun output caveats
+You may notice that the Total time reported when using %lprun and the time reported from using %timeit do not match. Remember, %timeit uses multiple loops in order to calculate an average and standard deviation of time, so the time reported from each of these magic commands aren't expected to match exactly.
+
+20. Let's practice your new profiling powers!
+With great power comes great responsibility! Let's put your new profiling power to good use by profiling some code.
+
+
+Got It!
+1. Code profiling for memory usage
+We've defined efficient code as code that has a minimal runtime and a small memory footprint. So far, we've only covered how to inspect the runtime of our code. In this lesson, we'll cover a few techniques on how to evaluate our code's memory footprint.
+
+2. Quick and dirty approach
+One basic approach for inspecting memory consumption is using Python's built-in module sys. This module contains system specific functions and contains one nice method, dot-getsizeof, that returns the size of an object in bytes. sys-dot-getsizeof is a quick and dirty way to see the size of an object. But, this only gives us the size of an individual object. What if we wanted to inspect the line-by-line memory footprint of our code? You guessed it! We'll have to use a code profiler!
+
+3. Code profiling: memory
+Just like we've used code profiling to gather detailed stats on runtimes, we can also use code profiling to analyze the memory allocation for each line of code in our code base. We'll use the memory_profiler package that is very similar to the line_profiler package. It can be downloaded via pip and comes with a handy magic command (%mprun) that uses the same syntax as %lprun.
+
+4. Code profiling: memory
+One drawback to using %mprun is that any function profiled for memory consumption must be defined in a file and imported. %mprun can only be used on functions defined in physical files, and not in the IPython session. In this example, the convert_units function was placed in a file named hero_funcs-dot-py. Now, we simply import our function from the hero_funcs file and use the magic command %mprun to gather statistics on its memory footprint.
+
+5. %mprun output
+%mprun output is similar to %lprun output. Here, we see a line-by-line description of the memory consumption for the function in question.
+
+6. %mprun output
+The first column represents the line number of the code that has been profiled.
+
+7. %mprun output
+The second column (Mem usage) is the memory used after that line has been executed.
+
+8. %mprun output
+Next, the Increment column shows the difference in memory of the current line with respect to the previous one. This shows us the impact of the current line on the total memory usage.
+
+9. %mprun output
+The last column (Line Contents) shows the source code that has been profiled.
+
+10. %mprun output
+Profiling a function with %mprun allows us to see what lines are taking up a large amount of memory and possibly develop a more efficient solution. Before moving on, I want to draw your attention to a few things.
+
+11. %mprun output caveats
+First, the memory is reported in mebibytes. Although one mebibyte is not exactly the same as one megabyte, for our purposes, we can assume they are close enough to mean the same thing.
+
+12. %mprun output caveats
+Second, the heroes list, hts array, and wts array used to generate this output are not the original datasets we've used in the past. Instead, a random sample of 35,000 heroes was used to create these datasets in order to clearly show the power of using the memory_profiler.
+
+13. %mprun output caveats
+If we had used the original datasets, the memory used would have been too small to report. Don't worry too much about this - the main take away is that small memory allocation may not show up when using %mprun and that is a perfectly fine result. The random sample of 35,000 heroes was used solely to show typical %mprun output when the memory was large enough to report.
+
+14. %mprun output caveats
+Finally, the memory_profiler package inspects memory consumption by querying the operating system. This might be slightly different from the amount of memory that is actually used by the Python interpreter. Thus, results may differ between platforms and even between runs. Regardless, the important information can still be observed.
+
+15. Let's practice!
+Now that you've got the tools to evaluate memory consumption, put your skills to the test. Let's start using the memory_profiler!
+
+
+
