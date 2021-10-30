@@ -1,0 +1,101 @@
+Got It!
+1. Preparing Flight Delay Data
+Now we're going to put our Dask skills together for a more detailed analysis.
+
+2. Case study: Analyzing flight delays
+You'll look for correlations between weather data and delayed flight data with Dask DataFrames.
+
+3. Limitations of Dask DataFrames
+First, remember that Dask DataFrames can be constructed from a single file or from many files using glob. We should be aware of some limitations. There's currently no native Dask support for Excel, gzip & some other useful file formats (at least as of version 0.15); Cleaning files independently when globbing is tricky; and `glob` can be greedy with files scattered within nested subdirectories.
+
+4. Sample account data
+As an example, suppose the accounts folder has CSV files of account holder transactions like Alice-dot-csv andBob-dot-csv. Notice that the account-holder's name is part of the filename but is not recorded within the file itself.
+
+5. Reading/cleaning in a function
+We want to build a large DataFrame combining these files that preserves the account-holder's name. We start by importing pandas and delayed from dask. We then create a function pipeline decorated by delayed. This function reads the CSV file given by filename and adds a column for the account name before returning the final DataFrame.
+
+6. Using dd.from_delayed()
+Once the pipeline function is defined, we iterate over the three account holders, say, Bob, Alice, & Dave. Within the loop, we construct a filepath and use pipeline to accumulate a list delayed_dfs of delayed Pandas DataFrames. We import dask-dot-dataframe as dd and use the function dd-dot-from_delayed to concatenate the delayed DataFrames into a larger Dask DataFrame. Finally, we compute the average transaction amount across all three accounts. Remember, we need to use the compute method to make the computation happen.
+
+7. Flight delays and weather
+You will use this pipeline strategy in the exercises with flight-delay and daily weather data. You'll have to replace zeros with NaNs in the flight-delay data. With the daily weather data, you'll also have to coerce text characters into numbers & add an airport code to. All this pre-processing is required prior to merging.
+
+8. Flight delays data
+Let's introduce the flight-delays dataset you'll be using. Monthly flight information has been downloaded from the Bureau of Transportation Statistics. Each file has 23 columns of flight information. They include information about the flight, like time & date, origin, destination, & other data. You are interested primarily in the 'WEATHER_DELAY' column that tells the number of minutes by which flight was delayed due to weather.
+
+9. Flight delays data
+Examining the last five rows, there are many NaNs and a single zero; we'll both interpret there to mean that the flights were not delayed due to weather.
+
+10. Replacing values
+Let's quickly see how the Series method dot-replace works. Here's a Pandas series with random integers ranging from 0 to 10. Using series-dot-replace(6, np-dot-nan), every entry that contained the value 6 previously now contains NaN. Note this operation creates a new Pandas series. In the exercises, you'll use dot-replace to clean the 'WEATHER_DELAY' column for each CSV file from the flight-delays data set.
+
+11. Let's practice!
+Now you can concatenate a collection of delayed & cleaned Pandas Dataframes into a single dask dataframe in the exercises.
+
+
+Got It!
+1. Preparing Weather Data
+Now that you've got a dataframe prepared for the flight delays, you can get the weather data ready to merge in.
+
+2. Daily weather data
+We start with daily weather data from 2016 for 5 US airports: Atlanta, Denver, Dallas Fort Worth, Orlando, & Chicago O'Hare. Loading a DataFrame for Denver, we see that it has 23 columns of daily measurements including temperature, humidity, precipitation, windspeed, & cloud cover. You will focus on two columns - Precipitation & Events - in the exercises. You'll build a delayed function to read and clean the data in these columns (just like you did with the flight data).
+
+3. Daily weather data
+To see why, we examine these columns from the last 5 days of March 2016 at the Denver airport. We see numerical values for the Preciptation column and a mixture of strings & nans for the Events column.
+
+4. Examining PrecipitationIn & Events columns
+The values displayed in the Precipitation column are misleading. If we extract one of the entries, we see it is in fact a string, not a number. When we extract the DataFrame using the Precipitation & Events columns only, the info method displays its properties. The Precipitation column is of type object. This is because the column contains a mixture of numeric and non-numeric values. Thus, we need to clean this column prior to other work.
+
+5. Converting to numeric values
+As an example, consider this series with some numeric & non-numeric values. Notice that the dtype of this series is object. Pandas includes a function to_numeric that can convert a series to floating-point values. The option errors equals 'coerce' is required here to force the non-numeric characters to be translated to nans. You'll mend the PrecipitationIn column in the exercises.
+
+6. Let's practice!
+Try the exercises now to prepare the weather data for further analysis.
+
+
+Got It!
+1. Merging & Persisting DataFrames
+With two delayed DataFrames ready - one of weather data, one of flight-delays - it's time to merge them together for deeper analysis.
+
+2. Merging DataFrames
+Recall that merging or joining is a convenient way to stitch together DataFrames with overlapping columns. Pandas has a merge function and both Pandas & Dask DataFrames have a merge method.
+
+3. Merging example
+To illustrate, here are two sample DataFrames left_df and right_df. Both have value & category columns with suffixes _left & _right appended for clarity.
+
+4. Merging example
+We can merge these together applying left_df-dot-merge to right_df. We need three important keyword arguments in this case - left_on - a list of columns from left_df; right_on, a list of columns from right_df, and how; we specify 'inner' for an inner join. Remember that inner join is actually the default for the merge function. As we expect, the inner join preserves only values common to both original joining columns (b, c, & d). You'll do an inner join like this with the weather event & flight-delay dataframes using airport code & date.
+
+5. Dask DataFrame pipelines
+This is a short summary of steps to prepare the flight-delay analysis. You will have to read, clean, & merge Dask dataframes for further work.
+
+6. Dask DataFrame pipelines
+Notice that steps 1 & 3 can be particularly slow because they involve reading from disk. This leads to some interesting challenges.
+
+7. Repeated reads & performance
+As an illustration, let's read all 12 flight-delay CSV files into a single DataFrame without any cleaning. We use a glob pattern with an asterisk for filenames to match multiple filenames. We next compute the mean of the WEATHER_DELAY column. Remember, this involves reading all the files, concatenating them into a DataFrame, and them computing the mean of a single column. This takes about 1.6 seconds. Notice we use the %time IPython utility for this timing experiment; it's the Wall time that we need here. We can compute the standard deviation next which also takes about 1.6s
+
+8. Repeated reads & performance
+and finally we count the non-null entries from the column which takes about the same time. The bottleneck in these three computations is in repeatedly reading the data from disk every time we execute the compute() method. If the data is too large to fit in memory, these repeated reads are unavoidable.
+
+9. Using persistence
+When the DataFrame does fit in memory, Dask DataFrames have a method persist to keep the intermediate state of the DataFrame in memory. We assign df-dot-persist to persisted_df and find this computation alone takes roughly 1-point-6 s. This is simply reading the data from disk. Now, when we compute the mean of the WEATHER_DELAY column from persisted_df, it takes only 19 ms!
+
+10. Using persistence
+Similarly, computing the standard deviation of the same column also takes about 30 ms and counting the non-null rows is about 9 ms. To repeat, when the data required actually fits in memory, using persistence allows significant performance improvements (about a factor of 100 in this case!) In fact, persisted Dataframe computations can also be executed in parallel (unlike with Pandas DataFrames).
+
+11. Let's practice!
+With these pieces in place, you can now complete the last exercises by merging the data together and using persistence.
+
+
+Got It!
+1. Final thoughts
+Congratulations on making it to the end of this course, *Parallel Computing with Dask*.
+
+2. What you've learned
+You've learned a great deal about computing with lots of data. You can now deal knowledgeably with structured & unstructured data with Dask data structures and delayed functions. You can import data from numerous sources and set up data analysis pipelines with computation deferred to use resources carefully. Along the way, you've honed your skills using real datasets pulled from varied application contexts.
+
+3. Next steps
+4. Congratulations!
+Well done!
+

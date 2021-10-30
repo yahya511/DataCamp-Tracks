@@ -1,0 +1,128 @@
+Got It!
+1. Chunking Arrays in Dask
+Let's now learn about Dask Arrays, a common data structure in Dask.
+
+2. What we've seen so far...
+Up to now, we've seen how to quantify memory usage within a Python session; how to parse large files in smaller pieces; how to manage iteration over large volumes of data with generators; and how to postpone computation explicitly with a pipeline of Dask delayed functions instead. The Dask library actually has many tools beyond the delayed decorator.
+
+3. Working with Numpy arrays
+We'll look first at Dask *arrays* as extensions of Numpy arrays. To start, we create a one-dimensional Numpy array a of 10,000 random numbers uniformly distributed between 0 & 1. Remember, Numpy arrays resemble lists, but are homogeneous in data type. They also have many attributes & convenient methods for numeric processing. Here, we print the array shape & data type. The shape is a singleton tuple with entry 10,000, & the datatype is float64 (a 64-bit floating-point number). We can also compute its sum & mean using appropriately-named methods.
+
+4. Working with Dask arrays
+We can import the module dask.array with alias da to use Dask arrays. The function from_array constructs a Dask array from a Numpy array. It requires an argument chunks; this is the number elements in each piece of a. The chunk-size here is the length of a divided by 4 (2,500 in this case). The Dask array attribute chunks is a tuple; all four chunks of a_dask have 2,500 elements.
+
+5. Aggregating in chunks
+Let's compute the sum using four chunks explicitly in Numpy. We use integer division to determine chunk_size from the length of the original array. The variable result is used to accumulate the sum. Within a loop, we need to slice each chunk explicitly by finding its offset (the actual index where each chunk begins). We then apply the sum method to that chunk and add it to result. Notice each loop iteration is independent (so, they can be executed in parallel if possible). At the end, the accumulated sum can be printed.
+
+6. Aggregating with Dask arrays
+We'll redo the previous sum using a Dask array instead. To start, create a Dask array with an appropriate chunk-size. A single call to sum yields an unevaluated Dask object. Notice we don't need to compute offsets or slice chunks explicitly; the Dask array method does so for us. Calling .compute() forces evaluation of the sum (in parallel if possible). We can also view the associated Task Graph using visualize(). The option rankdir='LR' forces a horizontal layout.
+
+7. Task graph
+The four rectangles in the middle represent our chunks of data. As data flows from left to right, the sum method is invoked on each chunk. The Dask scheduler can assign work to multiple threads or processes concurrently if available.
+
+8. Dask array methods/attributes
+Dask arrays share many attributes & methods with Numpy arrays. We've seen `shape` & `dtype` already, but there are more common attributes. Most Numpy array aggregations are also available for Dask arrays; these all yield a task graph similar to the previous one. Dask array transformations like reshaping, stacking, & transposing are also available. And, of course, many Numpy mathematical operations and universal functions also work with Dask arrays.
+
+9. Timing array computations
+Let's time a sizeable computation. We import the h5py and time modules. The h5py module is for reading data from a relatively large HDF5 file. We'll learn more using about HDF5 later; for now, recognize it's a common format for sharing scientific data, particularly when it's big. We construct a Dask array dist_dask8 using 8 chunks and then time computation of its mean. We do this by calling time.time before & after the computation. Notice we execute these commands separated by semicolons within a single IPython cell to ensure immediate interactive execution. The difference of the two times rescaled by 1,000 is the time elapsed in milliseconds.
+
+10. Let's practice!
+Now you've seen some examples with Numpy & Dask arrays, do some exercises to get some practice.
+
+
+Got It!
+1. Computing with Multidimensional Arrays
+Arrays are often multidimensional, so it's important to remember the rules for reshaping, aggregating, & broadcasting from Numpy. Let's review these now because they're the same in Dask.
+
+2. A Numpy array of time series data
+We start by loading time series data of daily temperature measurements for 3 weeks with the loadtxt function. The Numpy array time_series has data type 64-bit integer. Its shape is a singleton tuple (21,). The ndim attribute is the array's dimension (the length of the shape).
+
+3. Reshaping time series data
+When we display this time_series, we may want to reshape it as, say, a table with successive daily values across the rows & successive weeks down the columns. The reshape method does this, using the tuple (3,7) for the new shape. By default, reshape reshapes arrays row-wise.
+
+4. Reshaping: Getting the order correct!
+If we reshape time_series with shape (7,3) to get a column-wise layout, the data is arranged incorrectly! The option order='F' forces column-wise ordering (with successive days down the columns & successive weeks along the rows correctly this time).
+
+5. Using reshape: Row- & column-major ordering
+The default for reshape is row-major order or C-ordering with the outermost index changing fastest. The opposite is column-major order or FORTRAN -ordering with the innermost index changing fastest. The cryptic options order='C' & order='F' allude to the C & FORTRAN programming languages respectively.
+
+6. Indexing in multiple dimensions
+We can index `table` using brackets. Remember, Numpy arrays index from zero. Notice indexing multi-dimensional arrays requires only one set of brackets. The same slicing conventions hold as for Python lists. (for instance, slicing from Week 1, Days 2 through but excluding 5
+
+7. Indexing in multiple dimensions
+or every second week & every third day...) Notice skipping an outermost index is equivalent to taking a full slice in that dimension.
+
+8. Aggregating multidimensional arrays
+Numpy array methods compute statistics easily. For instance, applying mean() returns the mean of all entries. Applying mean() with axis=0 averages over the rows
+
+9. Aggregating multidimensional arrays
+(in particular the averages for days). Using axis=1 gives the mean summing on the columns (the averages for particular weeks). Finally, using axis=(0,1) means going over the rows, and then over the columns. The axis option is standard with aggregations like max, std, mean and so on. Notice also that aggregating a two-dimensional array on one axis yields a one-dimensional array.
+
+10. Broadcasting arithmetic Operations
+Subtracting daily_means from table gives a 3 by 7 matrix with each day's temperature difference from that day's average over three weeks. When we try the same thing with the weekly_means, a ValueError results. This is consistent with Numpy's rules for broadcasting arithmetic.
+
+11. Broadcasting rules
+"Broadcasting" is arithmetic works with dissimilar but compatible Numpy arrays. For arrays with the same number of dimensions, Compatibility means all dimensions match or are 1; if one array is lower-dimensional, prepend the shape with ones & check for compatibility. If array shapes are compatible, values are broadcast into the same shape, and arithmetic proceeds elementwise.
+
+12. Broadcasting rules
+The rules for broadcasting are more easily understood through this figure by Jake Vanderplas. Compatibility is checked, array values are broadcast to fill missing dimensions, and do arithmetic elementwise. Broadcasting arithmetic is done efficiently by Numpy (much more so than using explicit Python loops).
+
+13. Broadcasting with table & its means
+We can see now why our subtractions worked as they did...table & daily_means are compatible, but table & weekly_means are not. We can, however, reshape weekly_means to be compatible with table so broadcasting arithmetic works.
+
+14. Connecting with Dask
+What does this have to do with Dask? We've reviewed Numpy conventions that work for Dask. Let's load a bigger Numpy array data with 4 columns of temperature-related data for a year. We can convert data to a Dask array, specifying a tuple for a chunksize. At this point, the dask.array interface to, say, compute a standard deviation is identical to that in Numpy. However, the computation is deferred until we invoke compute.
+
+15. Let's practice!
+Now it's your turn to complete some exercises using multidimensional Dask arrays.
+
+
+Got It!
+1. Analyzing Weather Data
+Let's now put Dask arrays to work with some actual data.
+
+2. A sample slice from NOAA
+We have weather data from the US National Oceanic and Atmospheric Administration. This plot shows the maximum daily temperature averaged from the month of June 2008 sampled at 10 km resolution over the continental United States.
+
+3. HDF5 format
+The data is bundled in an HDF5 file. HDF5 is a hierarchical file format for storing and managing data.
+
+4. Using HDF5 files
+First, we'll load data into Dask arrays. The Python h5py package provides tools for us to create an h5py File object called data_store. The object data_store is an open file handle with a dictionary-like interface. Iterating over the keys(), we find a solitary key called tmax.
+
+5. Extracting Dask array from HDF5
+We bind the value data_store['tmax'] to data. The object data appears to be of type h5py Dataset. We find data has array-like properties; in particular, it is three-dimensional with shape 12 by 444 by 922. We then wrap data in a Dask Array with three-dimensional chunks of size 1 by 444 by 922, one for each month. Again, no data is actually read yet.
+
+6. Aggregating while ignoring NaNs
+Let's acquire some statistics. Applying the min() method returns an unevaluated Dask Array. We can force evaluation using the compute() method. Unfortunately, this yields nan (or "Not-a-Number") due to missing values.
+
+7. Aggregating while ignoring NaNs
+Both Numpy & Dask have nan-aware aggregation utilities; for instance, the function nanmin returns the minimum array entry, ignoring nan values. Thus, we can capture minimum & maximum values from data_dask (excluding nans) using nanmin & nanmax; apparently, the values range from minus 22 to about plus 48.
+
+8. Viewing all slices of data_dask
+Let's visualize the array data_dask. It is effectively 12 stacked images, one for each month, each of megapixel resolution. The 444 by 922 array values are the maximum daily temperatures averaged over a month from the continental United States. The numerical entries in each slice translate to colors illustrated by the common colorbar on the right. The many nan values (away from land) are ignored.
+
+9. Producing a visualization of data_dask
+Here's the code to produce the preceding image. We import pyplot & create a 4 by 3 grid of subplots called panels. We loop over panels.flatten, each time slicing from data_dask & plotting the slice with imshow. The arguments vmin=lo & vmax=hi ensure a common colormap scale. We also call set_title, axis, suptitle, & colorbar to improve the plot.
+
+10. Stacking arrays
+Finally, let's illustrate stacking numpy arrays; you'll have to stack dask arrays in your analysis and the interface is the same. We create three simple one-dimensional arrays a, b, & c and print them out separated by newlines.
+
+11. Stacking one-dimensional arrays
+Calling the Numpy function stack with the list [a, b] stacks these two one-dimensional arrays into a two-dimensional 2 by 3 array. This is equivalent to calling stack with the argument axis=0 (the default). Using axis=1 makes a 3 by 2 array instead with the one-dimensional arrays along columns rather than rows.
+
+12. Stacking one-dimensional arrays
+Let's build up 2D arrays using the one-dimensional arrays a, b, & c say, X, Y, & Z, of shape 2 by 3.
+
+13. Stacking two-dimensional arrays
+We can stack the 2D matrices X, Y, & Z to make a three-dimensional array of shape 3 by 2 by 3.
+
+14. Stacking two-dimensional arrays
+The axis option controls reshaping when stacking along a new axis. For instance, we can stack along axis=1, yielding a three-dimensional array of shape 2 by 3 by 3.
+
+15. Putting array blocks together
+Conceptually, our three-dimensional dask_array data_dask is built this way: by stacking 12 two-dimensional arrays along axis 0. In the exercises, you'll combine three-dimensional arrays to build a four-dimensional array.
+
+16. Let's practice!
+You'll also reshape a Dask Array and use NaN-aware aggregations in your analysis... Get started on that now!
+

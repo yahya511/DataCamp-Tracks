@@ -1,0 +1,141 @@
+Got It!
+1. Understanding Computer Storage & Big Data
+Hello and welcome to Parallel Computing with Dask. I'm Dhavide Aruliah. This course is about the Python library Dask that helps data scientists scale their analyses painlessly.
+
+2. What is "big data"?
+First, let's ask what "Big Data" means. Roughly, speaking, it's more data than a single machine can accommodate. To understand that *precisely*, we need to discuss computer storage.
+
+3. Storage units: bytes, kilobytes, megabytes, ...
+First, let's clarify storage units. In conventional metric units, prefixes like kilo-, mega-, giga-, & tera- denote factors of 1000. For instance, kiloWatt, megaWatt, gigaWatt, & teraWatt mean 10^3, 10^6, 10^9, and 10^{12} Watts respectively. Computers, however, use in binary or base 2 notation,not base 10. The base unit of data storage is the binary digit or bit. Eight bits make one byte of data. So, with data, it's conventional to use kilo-, mega-, giga- & tera- to scale units up by $2^{10}$ or 1,024 (because that's almost 1000). Then a kilobyte is 2^10 bytes, a megabyte is 2^20 bytes, a gigabyte is 2^30 bytes and so on.
+
+4. Hard disks
+Hard disks are used for permanent storage... ...Current, hard disks can accommodate terabyes of data but require milliseconds to access data.
+
+5. Random Access Memory (RAM)
+Computers use Random Access Memory (RAM) for temporary storage. Data in RAM vanishes when shut down. Data can be retrieved from RAM in nanoseconds to microseconds, but the largest RAM configurations are a handful of gigabytes at best today.
+
+6. Time scales of storage technologies
+This table (modified from a table by Brendan Gregg) tells the story. These are data transfer times from RAM, hard-disks, and the internet, (say, from San Francisco to New York). What matters is relative time scales - nanoseconds to microseconds to milliseconds. If we pretend transfer from RAM takes one second. Then, transfer from a solid state disk takes 7 to 21 minutes, transfer from a rotational hard disk takes two and half hours to a full day, and transfer from the internet takes almost 4 days.
+
+7. Big data in practical terms
+This is what big data really means. When data overflows from RAM to harddisk or the cloud, the relative processing time effectively jumps from seconds to minutes or days.
+
+8. Querying Python interpreter's memory usage
+With that in mind, let's examine memory usage on my laptop. We need tools from the psutil & os modules, so we import those. We then define a custom function memory_footprint() to return how much memory (in MB) the Python process uses. We don't have to understand its inner workings, but notice the result returned is rescaled from bytes to megabytes.
+
+9. Allocating memory for an array
+We import NumPy and we call memory footprint before doing any work. We then create a NumPy array x that requires 50 MB of storage and then call memory footprint again to see the memory usage after. Sure enough, the process pulled roughly another 50 MB from the operating system to create x.
+
+10. Allocating memory for a computation
+We then compute `x` squared & again compute memory use before & after. We find an additional 50 MB of RAM is acquired for this computation (even though the computed result `x**2` is not actually bound to an identifier).
+
+11. Querying array memory Usage
+We can use a numpy array's `nbytes` attribute to find out its actual memory requirements. The result is given in bytes. Dividing by 1024^2 gives the size in megabytes (a more readable number).
+
+12. Querying DataFrame memory usage
+We can also create a Pandas DataFrames `df` using `x`. The Dataframe has an attribute `memory_usage()` that returns an Integer Series summarizing its memory footprint in Bytes. As before, we can divide by 1024^2 to get the memory footprint in megabytes.
+
+13. Let's practice!
+So, before we dive into Dask, try some exercises to make sure you know how much memory you're using.
+
+
+Got It!
+1. Thinking about Data in Chunks
+We've seen that available memory & storage restricts datasets that can be analyzed. A common strategy is to subdivide datasets into smaller parts.
+
+2. Using pd.read_csv() with chunksize
+We'll use a 200,000-line file summarizing New York City cab rides from the first two weeks of 2013. Then, using read_csv() with the parameter chunksize=50000, the function returns an object we can iterate over. The loop variable `chunk` takes on the values of four DataFrames in succession, each having 50,000 lines except the last (because the first line in the file is the header line).
+
+3. Examining a chunk
+The loop variable chunk has standard DataFrame attributes like shape. So the last chunk has almost 50,000 rows & 14 columns. Calling the info() method shows the column names like trip_time_in_secs & trip_distance.
+
+4. Filtering a chunk
+We can construct a logical Series is_long_trip that is True wherever the trip time exceeds 1200 seconds (or 20 minutes). Recall we can use the dot-loc[] accessor with the boolean Series is_long_trip to filter rows where this condition holds. The shape attribute reveals about 5,500 taxi-rides longer than 20 minutes in duration in this chunk of 50,000 trips.
+
+5. Chunking & filtering together
+Let's embed this filtering logic within a function filter_is_long_trip that accepts a DataFrame as input & returns a DataFrame whose rows correspond to trips over 20 minutes. Next, we make a list of DataFrames called chunks by iterating over the output of read_csv, this time using chunks of 1,000 lines. Rather than initializing an empty list chunks and appending elements within a loop, we can also use a list comprehension to build the list. Remember, this list comprehension is equivalent to the preceding for loop. In both cases, each chunk is filtered as it is read from disk.
+
+6. Using pd.concat()
+We can use another list comprehension called lengths to see that the dataframes in the list chunks each have around 100 to 200 rows (rather than 1,000 rows in the unfiltered chunks). The Pandas function pd.concat() accepts this list of DataFrames with common column labels and stacks them vertically. The resulting DataFrame long_trips_df has almost 22,000 rows (much fewer than the original 200,000).
+
+7. Plotting the filtered results
+Finally, we can visualize these trips; the result looks something like this.
+
+8. Plotting the filtered results
+We generate the last plot with this code. We start by importimg matplotlib dot pyplot, & constructing a scatter plot using plot dot scatter. We apply labels and display the plot with plot dot show. Remember, we used filtering or logical indexing to extract the small subset of relevant data in manageable chunks; the entire dataset was never in memory at one time.
+
+9. Let's practice!
+Take some time now to practice reading & filtering files in chunks in the exercises.
+
+
+
+Got It!
+1. Managing Data with Generators
+We've seen that breaking files into chunks can alleviate problems caused by large datasets. Before introducing Dask, let's see how to use generators to help.
+
+2. Filtering in a list comprehension
+Recall our work from before: we iterated over 1,000-line chunks of lines extracted from a CSV file of taxi-ride data. We then filtered the individual chunks applying a function within a list comprehension.
+
+3. Filtering & summing with generators
+If we replace the enclosing brackets with parentheses in a list comprehension, the result is a generator expression. Generator expressions resemble comprehensions, but use lazy evaluation. This means elements are generated one-at-a-time, so they are never in memory simultaneously This is extremely helpful when operating at the limits of available memory. We can quickly build another generator distances whose elements are totals of the trip_distance column from each chunk. No actual computation is done until we iterate over the chained generators explicitly (in this case, by applying the function sum to distances). To reiterate - no reading or work is done until the very last step.
+
+4. Examining consumed generators
+The generators chunks & distances persist after the computation. However, they have been consumed at this point. That is, trying to next function on either produces a StopIteration exception (which tells users that the generator is exhausted).
+
+5. Reading many files
+Let's use generators now to read many files. We use a slightly different collection of CSV files that describe Yellow Cab rides in New York City. We use the string format() method and a generator filenames to generate names of CSV files for each month of 2015. Imagine here that, rather than having one large file to read in chunks, we have many large individual files that cannot fit in memory simultaneously.
+
+6. Examining a sample DataFrame
+Let's examine one of the CSV files using `pd.read_csv`. We force columns 1 & 2 to be read as datetime objects. For this data, we have to calculate the trip duration explicitly.
+
+7. Examining a sample DataFrame
+We embed this calculation within a function `count_long_trips` that filters trips longer than 20 minutes, and counts the total number of trips and long trips. These two values are returned in a DataFrame with one row.
+
+8. Aggregating with Generators
+With the function count_long_trips in place, we can organize our work into a pipeline using generators. We recreate filenames, this time as a list comprehension (it's just a list of 12 strings so a generator is not required). We create a generator dataframes to load the files listed in filenames one-by-one. We create another generator totals that applies count_long_trips to each DataFrame from dataframes. Finally, the actual computation takes about 13.4 seconds on my laptop. For now, notice all computation are deferred until we compute sum(totals). Using the builtin sum function consumes the generator.
+
+9. Computing the fraction of long trips
+The computed DataFrame annual_totals has two columns, n_long and n_total. Their ratio, then, is the fraction of trips over 20 minutes in duration over the year 2015 (roughly 20%).
+
+10. Let's practice!
+Okay, now it's time for you to experiment with generators yourself in the exercises.
+
+
+Got It!
+1. Delaying Computation with Dask
+We've introduced generators to defer computation & control memory use. Let's use Dask to simplify this process.
+
+2. Composing functions
+We'll get to real data soon, but we'll start with simple function composition. We define three ordinary functions f, g, & h with the def keyword as usual. Each takes a single numerical input & returns a single numerical output. We then perform a sequence of computations, assigning intermediate computations to x, y, z, and, the final result, w. This is, of course, equivalent to nesting function calls without labeling intermediate results.
+
+3. Deferring computation with `delayed`
+We repeat this computation using delayed from the dask library. This is a higher-order function or a decorator function that maps an input function to another modified output function. The value w, then, is delayed of f of delayed of g of delayed of h of 4. If we examine w, it is a dask Delayed object rather than a numerical value. The delayed decorator stalls computation until the method compute() is invoked.
+
+4. Visualizing a task graph
+The Dask Delayed object has another method visualize() that displays a task graph in some IPython shells. This linear graph shows the execution sequence & flow of data for this computation.
+
+5. Renaming decorated functions
+Let's repeat our computation, this time reassigning the identifiers f, g, and h. The result is the same, but the functions f, g, & h are now decorated permanently by delayed. This means they always return Delayed objects that defer computation until the compute() method is called.
+
+6. Using decorator @-notation
+To recap, we can define a function like f and rebind the label f to the new function obtained after applying the decorator delayed to the original f. The @ symbol here is an equivalent shorthand notation to decorate functions in this manner. Here, the @ symbol means "apply the decorator function delayed to the function described below and bind that decorated function to the name`f".
+
+7. Deferring Computation with Loops
+As another example, let's use the delayed decorator with some new functions increment, double, & add. This calculation involves repeated function evaluations within a loop. The dependencies are a little trickier - c depends on a & b within each iteration and its computed value is appended to the list output.
+
+8. Deferring computation with loops 2
+The final result `total` is a `Delayed` object and `output` is a list of intermediate `Delayed` objects. The `visualize` method displays the sequence of evaluations needed to compute `total`.
+
+9. Visualizing the task graph
+This is where Dask helps significantly. Dask uses a variety of heuristic schedulers for complicated execution sequences like this. The scheduler automatically assigns tasks in parallel to extra threads or processes. In particular, Dask users do not have to decompose computations themselves.
+
+10. Aggregating with delayed Functions
+To bring this together, let's repeat the Yellow Cab ride data analysis using Dask instead of generators. As before, we start with a list of 12 filenames for the CSV files. We define function count_long_trips as before, this time adding the @delayed decorator. We also define a @delayed function read_file.
+
+11. Computing fraction of long trips with `delayed` functions
+We construct a pipeline, starting with a list comprehension of Delayed objects called totals. We accumulate the sum of totals in annual_totals. We invoke the compute method of the Delayed object annual_totals. The result takes about 10 seconds & yields a Pandas DataFrame with a single row & two columns. Notice this is all done with a straightforward use of Dask delayed functions rather than generators. Finally, the final result yields the fraction of trips over 20 minutes as before.
+
+12. Let's practice!
+There's a lot to absorb here, so take some time to get used to the delayed decorator from Dask in these exercises.
+
+

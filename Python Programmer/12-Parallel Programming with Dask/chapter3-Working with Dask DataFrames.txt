@@ -1,0 +1,75 @@
+Got It!
+1. Using Dask DataFrames
+Let's examine Dask DataFrames now. The Dask dataframe is a delayed version of the Pandas DataFrame, just as the Dask array is a delayed version of the Numpy Array.
+
+2. Reading CSV
+By convention, dask-dot-dataframe is imported with the alias dd. There is substantial overlap in using Dask & Pandas DataFrames. For instance, the Dask read_csv function is like the Pandas read_csv function. It can read one or many files at once using an asterisk wildcard to match filename patterns & concatenate DataFrames. The function dd-dot-read_csv does not actually read files until the DataFrame dot-compute method is invoked (just as we saw earlier with dask-dot-delayed objects). As such, Dask DataFrames can contain more data than fits in available memory.
+
+3. Reading multiple CSV files
+Let's look at an example of reading multiple files into a dask-dot-dataframe. The working directory has four CSV files of quarterly transaction records from 2016. We call dd-dot-read_csv & bind the result to transactions. The input string asterisk-dot-c-s-v is called a glob pattern. The asterisk is a wildcard character that matches zero or more valid filename characters (in this case, quarter1, quarter2, quarter3, & quarter4. The data from all four files is automatically concatenated into a single Dask dataframe. The resulting dask dataframe has many methods in common with a Pandas DataFrame; for instance, head and tail. Notice that dot-head and dot-tail do not require that we invoke dot-compute. This is deliberate because, in most cases, no parallelism is needed to examine the leading or trailing rows from a Dask DataFrame. Most other Dask DataFrame methods, however, do need the compute method for evaluation.
+
+4. Building delayed pipelines
+Let's build a delayed pipeline to determine Wendy's total changes in account balance for the year. We start by making a Boolean Dask series is_wendy comparing the 'names' column to the string 'Wendy'. The dot-loc[] accessor can use the series is_wendy to filter the rows corresponding to Wendy's transactions and the amount column from the Dask DataFrame transactions. The result wendy_amounts is a Dask Series of type int64 that remains unevaluated until dot-compute is invoked.
+
+5. Building delayed pipelines
+We can then add up Wendy's individual transactions for 2016 using the Series dot-sum method. The result wendy_diff is the change in Wendy's balance since the start of 2016. This is a Dask Scalar; when dot-compute is called, the result is a single NumPy int64. We can visualize a *task graph* summarizing this entire pipeline with the visualize method.
+
+6. Visualizing pipelines
+The output is a *directed acyclic task graph* describing flow of data - the rectangles - through functions-the circles- from left to right. The four left-most circles correspond to reading each of the four CSV files. The filtering operations are independent, so all work across the four main channels can be executed in parallel by the Dask scheduler. The channels coalesce into the rightmost circle where the sum is aggregated to return the final integer value.
+
+7. Compatibility with Pandas API
+Be aware that some features Pandas DataFrames are not available with Dask DataFrames. For instance, Excel files & some compressed file formats are not supported as of version 0.15. Other tasks like sorting are genuinely hard to do in parallel. On the other hand, we've already seen that the dot-loc[] accessor works just as in Pandas. The same is true of setting & resetting the index. We've also used the dot-sum() method; other aggregations are similarly available. Many other parts of the Pandas DataFrame API carry over to Dask, for instance groupbys and datetime conversions.
+
+8. Let's practice!
+Now is a good time to do some exercises to get some practice with the Dask DataFrame API.
+
+Got It!
+1. Timing DataFrame Operations
+Now let's critically analyze the effectiveness of Dask Dataframes with large datasets.
+
+2. How big is big data?
+There are two questions you need to ask. Does your data fit within random access memory (or RAM) on a single machine? Does your data fit within hard disk storage on a single machine? These questions determine minimal hardware requirements. Remember, data transfer from disk is punitively slower than from RAM. Many laptops & desktops have 8, maybe 16 gigabytes of RAM. By contrast, modern hard drives store up to a few terabytes. For data larger than, say, 10 terabytes, specialized hardware is needed (like RAID arrays or clustered filesystems). We'll focus on data strictly the first two cases, that fits on one machine.
+
+3. Taxi CSV files
+Let's illustrate this concretely with a sample computation. We'll use taxi ride data from New York City in 12 CSV files, one file for each month of 2015. The full dataset fills over 20 GB. Dask dataframes are very useful here because my laptop has only 16 GB of RAM.
+
+4. Timing I/O & computation: Pandas
+It took almost 45 seconds just to read a two gigabyte file into a Pandas DataFrame in memory. We won't wait that long in this video, but it's how long it took. By contrast, once the DataFrame is in memory, aggregating a mean barely took 18 milliseconds. This contrast highlights the significant bottleneck of disk access compared to in-memory data motion. It also shows the importance of constructing timed experiments carefully. Had we lumped the call to pd.read_csv in the same cell as the call to mean(), we would not have noticed an additional few milliseconds. Remember that two calls to time.time are required for timing experiments in Python scripts. We'll shortly see a shortcut for timing in IPython sessions.
+
+5. Timing I/O & computation: Dask
+We'll try this again using a Dask dataframe. This time, we read all 12 files into a single Dask dataframe using dd-dot-read_csv. There is an asterisk character in the filename that acts as a wildcard character in a glob pattern. This simply means that all matching files are loaded. We'll learn more about glob patterns later. The actual call takes about 400 milliseconds to construct the required task graph. Remember, no disk I/O happens until we call the dot-compute method. Also remember that these files cannot fit in memory at once. Extracting a column & calling the dot-mean method takes only 2 milliseconds. Again, no computation has been done yet.
+
+6. Timing I/O & computation: Dask
+When we do invoke dot-compute(), this computation takes almost three & a half minutes. This is amazing considering this dataframe does not fit in memory and reading one twelfth of the data took 45 seconds!
+
+7. Timing in the IPython shell
+Notice, we have been timing computations by calling time.time twice. An alternative we could use the simpler IPython %time magic to get the Wall clock Time in one call.
+
+8. Is Dask or Pandas appropriate?
+A natural question, then, is whether to use Dask or Pandas for analysis. As we've seen, this depends largely on problem size and on available hardware (that is, memory size and whether multiple processes can work concurrently). It also depends on the computations needed. Remember, some Pandas methods are unsupported in Dask, so you may have to use Pandas. Also, is the computation I/O-bound or CPU-bound; that is, is most of the time spent reading from disk versus doing actual computation? In general, Pandas is faster for problems that fit in memory. Using Dask is better when it uses parts of Pandas API supported by Dask; and when your data is at the limits of your available storage and you want your code to scale to much larger problems.
+
+9. Let's practice!
+For now, you can try some exercises to practice timing Dask dataframe operations.
+
+Got It!
+1. Analyzing NYC Taxi Rides
+Let's use Dask dataframes to analyze a full year's taxi rides.
+
+2. The New York taxi dataset
+For this study, you have a set of CSV files that summarize rides in yellow taxis in New York City in 2015; we've used this earlier in this course. You'll want to look for correlations (if any) between the percentage of the total fare that passengers paid as a tip and the hour of day.
+
+3. Taxi CSV files
+There are 12 CSV files filling over 20 GB in total. You'll use a much smaller subset of this dataset in the exercises. This makes computation times shorter, but the code you develop should work on the full dataset.
+
+4. Taxi data features
+We can examine one of the original files by reading it into a Pandas DataFrame. There are almost 1.3 million rows & 19 columns. Each row corresponds to an individual taxi ride. The column labels describe features of each ride. These include pick-up & drop-off times, pick-up & drop-off map coordinates, total amount paid, tip amount, taxes & tolls paid, number of passengers, and so on.
+
+5. Amount paid
+There are several columns related to how much money the passenger paid: the columns fare_amount, tolls_amount, & extra tell the base cost of the ride with additional charges. The tip_amount is the gratuity recorded from credit card transactions. The total_amount column is the total value that the passenger paid. You will use those two columns to compute a tip fraction or percentage.
+
+6. Payment type
+The NYC web-site documentation tells us that the tip amount is recorded only for credit card transactions. These transactions have the code one in the payment_type column. We can use the method value_counts to find how many transactions there are of each type. Almost 8 million of the rides are paid for with credit cards. That's still only 61% of all the rides; there's another 37% paid in cash, but we don't have tip amounts recorded for those. In the exercises, you'll filter for payment type one to avoid skewing the results with zero values.
+
+7. Let's practice!
+Get started now using Dask to analyze this taxi ride dataset.
+

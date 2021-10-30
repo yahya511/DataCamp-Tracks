@@ -1,0 +1,108 @@
+
+Got It!
+1. Building Dask Bags & Globbing
+Up to now, we've used Dask arrays & dataframes to work with structured, rectangular data. But not all data is structured. A Dask.bag is a convenient, heterogeneous, list-like data structure.
+
+2. Sequences to bags
+To construct a Dask Bag, let's start with a Python list containing other containers: lists, dictionaries, and strings. Notice some are empty. Now we'll import dask-dot-bag as db and convert the nested containers to a Dask Bag using the function from_sequence. Using the Dask Bag's member method count, we can count the number of elements of the bag. The methods any and all evaluate to True or False exactly as the corresponding Numpy methods would.
+
+3. Reading text files
+The Dask Bag is designed to work with messy or unstructured files, most often raw ascii text files. The read_txt function reads a single file or a collection of files line-by-line into a dask bag. Here, we're reading "the Zen of Python" by Tim Peters. We can use the take method to inspect the contents of the bag. Invoking take(1) returns a tuple.
+
+4. Reading text files
+Examining the tuple, we see it has a single element, the first line of the file. Invoking take with input 3, then, pulls a tuple with 3 elements, the first 3 lines of the file.
+
+5. Glob expressions
+We'll come back to Dask Bags later, first let's learn a little about *glob patterns* (or glob expression). The Dask functions dask-dot-bag-dot-read_txt and dask-dot-dataframe-dot-read_csv both accept glob inputs to load from many files at once, so understanding this will help our analysis from many files later. As a reminder, earlier, we used the *glob pattern* taxi/*.csv to match all filenames within the taxi directory that end in dot csv. The slash character here is a directory separator. The asterisk is a wildcard character that matches 0 or more characters. Thus, this glob expression matches all the filenames yellow_tripdata_2015-01.csv through yellow_tripdata_2015-12.csv. It also matches any other filenames ending in dot-csv that happen to be in the directory taxi (even that's not our intention).
+
+6. Using Python's glob module
+Let's imagine a directory listing obtained with the IPython %ls magic command. Notice there are a number of files & directories within the working directory. We can import a Python module called glob that allows us to use glob expressions. The function glob-dot-glob returns a list of strings that are filenames or directories in the working directory that match the glob pattern. For instance, assigning glob-dot-glob('*.txt') to txt_files returns the list of all filenames that end in dot-txt. This includes all filenames that start with a or b & end with dot-txt in the current directory.
+
+7. More glob patterns
+By mixing filename characters and wildcard characters, we can match more specialized patterns. . For instance, globbing b*.txt returns the list of filenames b05.txt through b11.txt The question mark is also a wildcard character but it matches exactly one character. So, globbing b?.txt returns an empty list. Finally, brackets can be used to provide ranges of character values. In this case, the pattern ?0[1-6].txt returns filenames that any character followed by zero, followed by a character between 1 & 6, followed by dot-txt. The result matches 'a01.txt', 'a02.txt', 'a03.txt', 'a04.txt', 'a05.txt', 'b05.txt', & 'b06.txt'.
+
+8. More glob patterns
+Globbing ??[1-6].txt returns the same list as before with the filename 'b11.txt' as well.
+
+9. Permissible glob patterns
+To summarize, when using glob patterns, any character that can be in a filename can be in a glob pattern. An asterisk is wildcard characters matching 0 or more characters greedily (that is, the largest match possible). A question mark is a wildcard character matching exactly 1 character. And character ranges are specified within brackets (notice they can be any alphanumeric ranges).
+
+10. Let's practice!
+Try some exercises now to get used to Dask Bags and glob patterns.
+
+Hide Transcript
+
+Got It!
+1. Functional Approaches using Dask Bags
+We've learned a little about Dask bags so far. Let's look now at functional programming approaches for processing data with Dask bags.
+
+2. Functional programming
+In functional programming, functions are first-class data. In particular, higher-order functions can accept functions as input or return functions as output, treating functions as data. This lets us use functions to replace loops. Three particular ways to do so are mapping, filtering, & reduction (also known as aggregation).
+
+3. Using map
+For instance, here's a function squared that returns a number multiplied by itself. We use the builtin Python map function to apply squared to every element of a list. The output of map uses lazy evaluation, so we construct a list to examine it. Again, the higher-order function map treats any input function as data.
+
+4. Using filter
+To illustrate filtering, we construct a logical predicate called is_even. This is a boolean-valued function that is True or False according to whether its input is even. The higher-order filter function, then, pulls only even elements from this list. Similarly, filtering squares with is_even extracts the even squares.
+
+5. Using dask.bag.map
+Map operations also work with Dask Bags. For instance, we instantiate a Dask Bag using the function dot-from_sequence. We can then reproduce results from before using the bag dot-map method. The method uses squared as an argument. No computing occurs until dot-compute is invoked. Notice the computed result is a list, not a Dask Bag, so we should be wary of limits of available memory.
+
+6. Using dask.bag.filter
+Filtering also extends to Dask Bags. We can use the dot-filter method with the predicate is_even to extract the even elements from the bag numbers. Again, nothing is evaluated until the dot-compute method is called. We can also chain the filter method after the map method (with appropriate arguments) to get the even squares.
+
+7. Using .str & string methods
+As a more typical mapping example, let's read a text file into a dask bag. Dask bags, like Pandas Dataframes, have a convenient dot-str accessor method for mapping string methods over bags. So, by calling dot-str-dot-upper, we make a dask bag in which all the strings are upper-case. Using dot-take(1), we can inspect the first line of the transformed text. We can alternatively do this using the map method, but it's more verbose & less efficient.
+
+8. A bigger example I
+As a larger example, let's make a function load that accepts an integer input & reads a DataFrame of taxi ride data from disk. We also construct functions average & total that accept a DataFrame as input & compute statistics from the total_amount column. To start, then, we build a bag of DataFrames by mapping load onto the integers from one to twelve.
+
+9. A bigger example II
+We can then make two new Dask bags totals & averages by mapping total & average respectively onto data. We compute each of these using their dot-compute methods. Notice the final computed lists of length twelve fit in memory even if all the intermediate DataFrames do not.
+
+10. Reductions (aggregations)
+Finally, the sum & mean methods used in the preceding examples are reductions or aggregations. Dask Bags include many reductions as member methods: sum, minimum, maximum, mean, & standard deviation among others. All yield a Dask Bag when invoked. If we call the bag dot-compute methods in sequence, the IPython %time magic shows us this takes about 4-point-6 seconds. That's because the CSV files are loaded repeatedly to evaluate each of the five Dask task graphs.
+
+11. Reductions (aggregations)
+By contrast, a single call to dask-dot-compute takes about 850 ms because Dask can optimize disk reads and schedule parallel graph execution.
+
+12. Let's practice!
+Now it's your turn to practice mapping, filtering, & using reductions with Dask Bags in the exercises.
+
+
+Hide Transcript
+
+Got It!
+1. Analyzing Congressional Legislation
+Let's complete this chapter with an analysis of patterns in US Congressional Legislation..
+
+2. JSON data files
+First, we need to know a little bit about JavaScript Object Notation (or JSON) because our congressional data is stored using JSON. JSON is a common format for semi-unstructured or nested data. The goal of the JSON format is to represent data structures using plain human-readable ASCII text that can be transferred easily between computers on the web. The json format also translates easily to Python containers.
+
+3. Sample JSON FIle: items.json
+For instance, this file items-dot-json is in JSON format but is also parseable Python code with lists & dictionaries denoted using square brackets & curly braces respectively.
+
+4. Using json module
+We'll can parse this sample JSON file using the json module from the Python standard library. The function json-dot-load can read the contents of an open file into a Python object called items. We examine items to see it is a Python list. The elements of items are dictionaries, possibly nested. Thus, by chaining Python square brackets, we can select values nested at arbitrary depth inside items (for instance, the value 1 is associated with the key 'b' within the dictionary with key 'content' from the second dictionary of items).
+
+5. JSON Files into Dask Bags
+JSON objects are often stored as individual lines in a single large file, like this file in which there is a dictionary on each line. This format is not pure JSON in that the json module must parse each line as separate JSON objects & combine them into a list. Dask Bags handle such files efficiently because the read_text function already reads the file line-by-line into a Dask Bag of strings.
+
+6. JSON Files into Dask Bags
+To convert the raw text to Python objects, we map the function json-dot-loads onto the Bag items. Notice that json-dot-loads (that ends with an s) builds JSON objects from strings rather than files. Now we have a Dask Bag called dict_items that is a collection of Python dictionaries. Dask Bags are very useful for nested data that does not translate easily to the rectangular structure of Arrays or DataFrames.
+
+7. Plucking values
+Remember, the take method returns tuples from Dask Bags. This means we can use take together with chained brackets to extract values from dictionaries within the Bag dict_items. The brackets get confusing quickly.
+
+8. Plucking values
+Fortunately, Dask Bags have a convenient method called pluck for Bags of dictionaries. We invoke pluck with a dictionary key as input. As with many Bag methods, pluck returns a new Dask Bag with lazy evaluation. When we apply the dot-compute method, the results are lists of values. So, using pluck greatly simplifies extracting values from Bags of dictionaries.
+
+9. Congressional legislation metadata
+We'll use these JSON manipulations to analyze 23 separate JSON files. Each summarizes up to 1500 separate pieces of congressional legislation. Each JSON object contains metadata about a bill that was introduced, discussed & voted on. In the following exercises, you'll load all the JSON files into a dask bag. You'll identify bills vetoed by the sitting president using the 'current_status' and you'll compute the average time to pass bills across the entire dataset.
+
+10. Metadata keys
+Here is a subset of metadata keys available from this dataset. Be aware that not all of these keys are available for each bill. So you'll have to be careful in your analysis.
+
+11. Let's practice!
+Get started now with your analysis using Dask Bags of US congressional bills.
+
