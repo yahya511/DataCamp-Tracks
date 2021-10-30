@@ -1,0 +1,122 @@
+
+1. Exploring the weather dataset
+In the first three chapters, you analyzed a dataset of traffic stops from the state of Rhode Island. In this chapter, you'll be working with a new dataset to help you determine if weather conditions have an impact on police behavior.
+
+2. Introduction to the dataset
+The weather data you'll be using was collected by the National Centers for Environmental Information. Our hypothesis is that weather conditions impact police behavior during traffic stops, so ideally we would look up the historical weather at the location of each stop. However, the traffic stops dataset does not specify stop location, so we're going to use the data from a single weather station near the center of Rhode Island. This is not ideal, but Rhode Island is the smallest US state and so a single station will still give us a general idea of the weather throughout the state.
+
+3. Examining the columns
+Let's read the weather dataset into a DataFrame using read_csv(), and then look at the head. You can see that the station column lists the station ID, and there's one row for each date. There are three columns related to temperature, two columns related to wind speed, and 20 columns related to the presence of certain bad weather conditions.
+
+4. Examining the wind speed
+Before using a new dataset, it's a good practice to explore the data to check that the values seem reasonable. If you don't find anything unreasonable, then you gain increased confidence that the data is trustworthy. For example, let's take a look at the two columns related to wind speed. AWND is average wind speed in miles per hour, and WSF2 is the fastest 2-minute wind speed, meaning the fastest wind speed during any 2-minute period. We can use the describe() method on these two columns to see summary statistics including the minimum, maximum, and 25th through 75th percentiles. Notice that the minimum values are above zero, and the fastest wind speed values are greater than the average wind speed values. Also, the numbers seem reasonable given that they are measured in miles per hour. These are all simple signs that the data is trustworthy.
+
+5. Creating a box plot
+Another way to examine these values is with a box plot, by specifying kind equals box when plotting. This is essentially a visual representation of the summary statistics, in that the box represents the 25th through 75th percentiles, and the lines below and above the box represent the minimum and maximum values, excluding the outliers represented by circles. Again, our goal here is simply to validate that the data looks reasonable.
+
+6. Creating a histogram (1)
+It would also be useful to validate that the fastest wind speed values are greater than the average values for every single row. We'll do this by subtracting the average speed from the fastest speed and storing the results in a new column. We'll visualize the new column using a histogram so that we can see its distribution. There are no values below zero, which is a good sign. But because there are some extreme values, it's hard to clearly see the shape of the distribution.
+
+7. Creating a histogram (2)
+We can make the shape more clear by changing the number of histogram bins to 20. This creates more narrow bins than the default value of 10. We can now see that the difference between the fastest and average wind speed values has an approximately normal shape. Many natural phenomena have a normal distribution, and so this shape is another sign that the dataset is trustworthy.
+
+8. Let's practice!
+In the exercises, you'll explore the weather dataset further in order to verify that it's a reliable source.
+
+
+
+
+1. Categorizing the weather
+Now that we've reviewed the weather dataset and concluded that it's a trustworthy source, we can start preparing it for analysis. But first, let's review a few pandas techniques we'll be using.
+
+2. Selecting a DataFrame slice (1)
+The weather DataFrame has 4,017 rows and 28 columns. Let's say that we wanted to copy the three temperature columns to a new DataFrame called temp. How might we do this?
+
+3. Selecting a DataFrame slice (2)
+You might recall that the loc accessor allows you to extract a DataFrame slice by specifying the starting and ending labels of your desired selection. In this case, we'll select all rows (represented by the first colon) and the columns TAVG through TMAX and save them to temp. You can see that the temp DataFrame contains all 4,017 rows but just 3 columns. This method is particularly useful when you need to select a large number of columns that are side-by-side.
+
+4. DataFrame operations
+Let's take a look at the head of temp. What would happen if you used the sum() method on the DataFrame? pandas will actually return the sum of each of the three columns. But what if you wanted to calculate the sum of each row? You can do this by specifying axis equals columns, and you'll see that each value is the sum of the three temperature values in that row. You may find it confusing that specifying the columns axis leads pandas to calculate row sums. But for mathematical operations, the axis specifies the array dimension that is being aggregated, and aggregating the columns is how you combine the data for each row.
+
+5. Mapping one set of values to another
+Let's return to the traffic stops dataset and the stop_duration column. You might remember that you can map one set of values to another using the Series map() method. In this case, we'll create a dictionary that maps the stop_duration values to the strings short, medium, and long. Then we'll use the map() method to create a column called stop_length. The stop_length column has the object data type since it contains string data.
+
+6. Changing data type from object to category (1)
+Whenever you have an object column with a small number of possible values, as is the case here, you may want to change its data type to category. The main reason to use the category type is that it stores the data more efficiently than the object type. Another reason is that it allows you to specify a logical order for the categories. Before we change the data type of the stop_length Series, we'll use a Series method to calculate its current memory usage, which is over 8 megabytes.
+
+7. Changing data type from object to category (2)
+To change the data type, we first create a Python list called cats that defines the logical order of the categories. Second, we use the astype() method to specify the new data type. We also specify that it should be ordered, and the cats list defines the ordering. By changing the data type, you can see that the memory usage of this column has been reduced to around 3 megabytes.
+
+8. Using ordered categories (1)
+Let's take a look at the head of this column. In the bottom two lines, you can see that the dtype is now category and the categories are ordered from short to long. Because of the ordering, you can now use comparison operators with this column.
+
+9. Using ordered categories (2)
+For example, you can specify that stop_length is greater than short in order to filter the DataFrame to only include medium or long stops. In addition, pandas will automatically sort ordered categories logically rather than alphabetically, which can make the results of a calculation easier to understand.
+
+10. Let's practice!
+It's your turn to practice these techniques while assigning a rating to weather conditions each day.
+
+
+
+
+1. Merging datasets
+Now that we've assigned a rating to the weather conditions each day, we need to merge that data with the traffic stop data so that we can analyze the relationship between weather and police behavior. Let's review how to merge two DataFrames.
+
+2. Preparing the first DataFrame
+We'll return to the DataFrame of Apple stock prices that we've used throughout the course. This time, the opening price at 9:30 AM and closing price at 4:00 PM are listed for each day in separate rows. Shortly, we're going to merge the apple DataFrame with another DataFrame. Because the index will be lost during the merge, we want to save it by moving it to a DataFrame column. We'll do this by using the reset_index() method and specifying that the operation should occur in place. You can see that date_and_time is now a DataFrame column, and the index is now the default integer index.
+
+3. Preparing the second DataFrame
+The second DataFrame we're working with is called high_low, and it contains the highest and lowest prices the Apple stock reached each day. We'd like to include the high data in the apple DataFrame, which we can do by merging the DataFrames. For the merge operation, we only need two columns from high_low: the date column, since it's the column on which the DataFrames will be joined, and the high column, since it's the column of interest. Thus, we'll create a new DataFrame called high that only includes these two columns.
+
+4. Merging the DataFrames
+To merge the apple and high DataFrames, we'll use the pd dot merge() function and save the result as apple_high. Let's review the five arguments. First, we specified the left and right DataFrames. Apple is defined as left and high is defined as right because we wanted to join the high DataFrame onto the apple DataFrame. Next, we specified the columns on which to join the DataFrames. Both DataFrames have a column containing the date, but we had to specify them separately because the column name is lowercase in the left DataFrame and uppercase in the right DataFrame. Finally, we specified the type of join. We used a left join in order to keep all of the rows from the left DataFrame regardless of whether there were matches in the right DataFrame.
+
+5. Comparing the DataFrames
+Let's compare the merged DataFrame with the original two DataFrames. The first four columns of apple_high are identical to apple. The data in the final two columns of apple_high came from the high DataFrame. Because the apple DataFrame contained two rows each from February 14 and 15, the high value of each of those dates appears twice in the apple_high DataFrame. But since the apple DataFrame did not contain any rows from February 16, the February 16 value from the high DataFrame was ignored.
+
+6. Setting the index
+Since the merge is complete, we'll set the date_and_time column as the index of the apple_high DataFrame. This replaces the default index and reduces the number of columns to five.
+
+7. Let's practice!
+In the exercises, you'll practice these skills while merging the weather and traffic stop datasets.
+
+
+
+
+1. Does weather affect the arrest rate?
+Now that we've merged the weather and traffic stop data, we can analyze the relationship between weather and police behavior.
+
+2. Driver gender and vehicle searches
+In a previous chapter, we investigated the relationship between driver gender and vehicle searches. First, we calculated the percentage of all stops that led to a search by taking the mean() of the Boolean Series search_conducted. This is called the search rate. Then, we compared the search rates for male and female drivers by using a groupby() on driver_gender before taking the mean() of search_conducted. We found that male drivers are searched more than twice as often as female drivers.
+
+3. Driver gender and vehicle searches
+Finally, we added violation to the groupby() operation. Our hypothesis was that search rate varies by violation type, and the difference in search rate between males and females is perhaps because they tend to commit different violations. The results disproved our hypothesis, because the search rate is higher for males than for females across all violations. This doesn't prove a causal link between gender and vehicles searches, but it does show a correlation.
+
+4. Examining a multi-indexed Series
+Let's save the results of the previous operation as new object called search_rate, and print it out again. What type of object is this? It may look like a DataFrame because of its structure, but it's actually a pandas Series that has a MultiIndex. Violation and driver_gender are not columns, rather they're the names of the index levels. You've seen the MultiIndex before in the context of a DataFrame. With a DataFrame, which is normally two dimensions, the MultiIndex adds a third dimension. With a Series, which is normally one dimension, the MultiIndex adds a second dimension.
+
+5. Working with a multi-indexed Series
+Let's print out the search_rate Series again. Working with a multi-indexed Series is actually very similar to working with a DataFrame. You can think of the outer index level, violation, as the DataFrame rows, and the inner index level, driver_gender, as the DataFrame columns. For example, we can use the loc accessor to select the Equipment row. This returns the search rate by gender for equipment violations only. Or, we can specify the Equipment row and the Male column to select a particular value in the Series.
+
+6. Converting a multi-indexed Series to a DataFrame
+You might think that if a multi-indexed Series is similar to a DataFrame, then there should be a way to convert one to the other. In fact, if you unstack() the search_rate Series, it actually results in a DataFrame. This is a useful technique any time you have a Series with a MultiIndex, since you're probably more comfortable manipulating a DataFrame. You might also think that there should be an easy way to create this DataFrame without using a groupby and an unstack.
+
+7. Converting a multi-indexed Series to a DataFrame
+In fact, you can use a pivot table to produce the exact same DataFrame. Violation is the index, driver_gender is the columns, and the mean of search_conducted is the values. Recall that mean() is the default aggregation function for a pivot table, but you can choose another function instead.
+
+8. Let's practice!
+In the exercises, you'll investigate the relationship between weather and arrest rate, and then you'll practice working with a multi-indexed Series.
+
+
+
+
+1. Conclusion
+Congratulations! You've now completed this course. Throughout the course, you used your pandas knowledge to prepare and analyze a dataset from start to finish. You practiced cleaning messy data, creating visualizations, answering questions about the data, and so much more.
+
+2. Stanford Open Policing Project
+You've built a great foundation of pandas knowledge, but there's a lot more to learn. The best way to improve your skills is to practice answering questions using data. For example, you can download the traffic stop data for Rhode Island and 30 other states from the Stanford Open Policing Project's website. There are many more interesting questions you can answer using this data.
+
+3. Thank you!
+Thank you so much for joining me. Best of luck to you in your data science career, and I hope to see you again in the future.
+
+

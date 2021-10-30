@@ -1,0 +1,96 @@
+
+1. Do the genders commit different violations?
+In the last chapter, we focused on preparing the traffic stops dataset for analysis. In this chapter, you'll use the dataset to explore the relationship between gender and policing, and you'll practice figuring out how to use pandas to answer specific questions.
+
+2. Counting unique values (1)
+Let's start by discussing a few methods that will help you with your analysis. The first method is value_counts(), which counts the unique values in a Series. It's best suited for a column that contains categorical rather than numerical data. For example, we can apply value_counts() to the stop_outcome column, which contains the outcome of each traffic stop. The results are displayed in descending order, so you can see that the most common outcome is a citation, also known as a ticket, and the second most common outcome is a warning.
+
+3. Counting unique values (2)
+Because value_counts() outputs a pandas Series, you can take the sum of this Series by simply adding the sum() method on the end. This is known as method chaining, a powerful technique we'll use throughout the course. The sum() of the value_counts() is actually equal to the number of rows in the DataFrame, which will be the case for any Series that has no missing values.
+
+4. Expressing counts as proportions
+Rather than examining the raw counts, you might prefer to see the stop outcomes as proportions of the total. So if you wanted to know what percentage of traffic stops ended in a citation, you would divide the number of citations by the total number of outcomes and get 0.89, or 89%. Rather than doing these calculations manually, you can instead set the normalize parameter of value_counts() to be True, and it will output proportions instead of counts. Citations are 89%, warnings are 6%, driver arrests are 3%, and so on.
+
+5. Filtering DataFrame rows
+Let's now take a look at the value_counts() for a different column, driver_race. You can see that there are five unique categories present. If you wanted to filter the DataFrame to only include drivers of a particular race, such as White, you would write that as a condition and put it inside brackets, as you've seen previously. We'll save the result in a new object. The shape of the new DataFrame is 61,870 rows, because that's the number of White drivers in the dataset, and 13 columns. You can now analyze this smaller DataFrame separately.
+
+6. Comparing stop outcomes for two groups
+For example, you could repeat the analysis of stop outcomes, but focus on White drivers only. Like before, you select the stop_outcome column and then chain the value_counts() method on the end. You could compare these results with the outcomes for another race, such as Asian, simply by changing the condition inside the brackets and then repeating the calculation. If you compare these two sets of numbers, you can see that the stop outcomes are fairly similar for these two groups.
+
+7. Let's practice!
+During the exercises, you'll practice using these techniques to answer a different question, which is whether or not drivers of different genders tend to commit different types of traffic violations.
+
+
+
+
+1. Does gender affect who gets a ticket for speeding?
+In the last section, we compared the traffic violations committed by each gender. In this section, we'll narrow our focus to the relationship between gender and stop outcomes for one specific violation, namely speeding.
+
+2. Filtering by multiple conditions (1)
+We'll need to use one additional technique for this analysis, namely filtering a DataFrame by multiple conditions. You may remember this technique from previous courses, but we'll review it here. In the last exercise, you used a single condition, driver_gender equals F, to create a DataFrame of female drivers. It has 23,774 rows because that's the number of rows in the ri DataFrame that satisfy this condition.
+
+3. Filtering by multiple conditions (2)
+What if we wanted to create a second DataFrame of female drivers, but only those who were arrested? We simply add a second condition to the filter, namely that the is_arrested column equals True. Notice that each condition is surrounded by parentheses, and there is an ampersand between the two conditions, which represents the logical AND operator. The second DataFrame is much smaller because it only includes rows that satisfy both conditions, meaning that it only includes female drivers who were also arrested.
+
+4. Filtering by multiple conditions (3)
+When filtering a DataFrame by multiple conditions, another option is to use the vertical pipe character between the two conditions. The pipe represents the logical OR operator, which indicates that a row should be included in the DataFrame if it meets either condition. This DataFrame is larger than the last one because it includes all females regardless of whether they were arrested, as well as all drivers who were arrested, regardless of whether they are female.
+
+5. Rules for filtering by multiple conditions
+Here's a quick summary of the rules for filtering DataFrames by multiple conditions. Use the ampersand to only include rows that satisfy both conditions. Use the pipe to include rows that satisfy either condition. Each condition must be surrounded by parentheses. Conditions can check for equality, inequality, greater than, less than, and so on. And you can use more than two conditions to create a filter.
+
+6. Correlation, not causation
+In the upcoming exercises, you'll analyze the relationship between gender and stop outcome when a driver is pulled over for speeding. In other words, you're examining the data to assess whether there is a correlation between these two attributes. However, it's important to note that we're not going to draw any conclusions about causation during this course, since we don't have the data or the expertise required to do so. Instead, we're simply exploring the relationships between different attributes in the dataset.
+
+7. Let's practice!
+Let's go ahead and get started with the exercises.
+
+
+
+
+1. Does gender affect whose vehicle is searched?
+During a traffic stop, the police officer sometimes conducts a search of the vehicle. Does the driver's gender affect whether their vehicle is searched? Let's review a few pandas techniques that will help us to answer this question.
+
+2. Math with Boolean values
+Recall that you can perform mathematical operations on Boolean values. For example, you previously used the isnull() method to generate a DataFrame of True and False values, and then took the sum() to count the missing values in each column. This worked because True values were treated as ones and False values were treated as zeros. Now we'll use the NumPy library to demonstrate a different operation, namely the mean. If you take the mean() of the list 0 1 0 0 you'll get 0.25, calculated as 1 divided by 4. Similarly, if you take the mean() of the list False True False False, you'll also get 0.25. Thus, the mean of a Boolean Series represents the percentage of values that are True.
+
+3. Taking the mean of a Boolean Series
+Now, let's see a real example of why it's useful to be able to take the mean of a Boolean Series. We'll first calculate the percentage of stops that result in an arrest using the value_counts() method. The arrest rate is around 3.6% since that's the percentage of True values. Note that this would work on an object column or a Boolean column. But we can get the same result more easily by taking the mean() of the is_arrested Series. This method only works because the data type is Boolean. This is exactly why you changed the data type of this Series from object to Boolean back in the first chapter.
+
+4. Comparing groups using groupby (1)
+The second technique we'll review is groupby(), which you've used in previous courses. Let's pretend that you wanted to study the arrest rate by police district. You can see that there are six districts by using the Series method unique(). One approach we've used to compare groups is to filter the DataFrame by each group, and then perform a calculation on each subset. So to calculate the arrest rate in Zone K1, we would filter by that district, select the is_arrested column, and then take the mean(). The arrest rate is about 2.4%, which is lower than the overall arrest rate of 3.6%.
+
+5. Comparing groups using groupby (2)
+Next we calculate the arrest rate in Zone K2, which is about 3.1%. But rather than repeating this process for all six districts, we can instead group by the district column, which will perform the same calculation for all districts at once. You can see a noticeably higher arrest rate in Zone X4.
+
+6. Grouping by multiple categories
+You can also group by multiple categories at once. For example, you can group by district and gender by passing it as a list of strings. This computes the arrest rate for every combination of district and gender. In other words, you can see the arrest rate for males and females in each district separately. Note that if you reverse the ordering of the items in the list, grouping first by gender and then by district, the calculations will be the same but the presentation of the results will be different. You can use whichever option makes it easier for you to understand the results.
+
+7. Let's practice!
+Now it's time to practice using these techniques to investigate the relationship between driver gender and vehicle searches.
+
+
+
+
+1. Does gender affect who is frisked during a search?
+In the last section, you investigated whether the gender of a driver affects the likelihood that their vehicle will be searched. In this section, we'll take a look at what happens during a search.
+
+2. Examining the search types
+As you've seen previously, the search_conducted field is True if there's a search during a traffic stop, and False otherwise. There's also a related field, search_type, that contains additional information about the search. Notice that the search_type field has 83,229 missing values, which is identical to the number of False values in the search_conducted field. That's because any time a search is not conducted, there's no information to record about a search, and thus the search_type will be missing. Note that the value_counts() method excludes missing values by default, and so we specified dropna equals False in order to see the missing values.
+
+3. Examining the search types
+There are only five possible values for search_type, which you can see at the top of the value_counts() output: Incident to Arrest, Probable Cause, Inventory, Reasonable Suspicion, and Protective Frisk. But sometimes, multiple values are relevant for a single traffic stop, in which case they're separated by commas. Let's focus on Inventory, meaning searches in which the police took an inventory of the vehicle. Looking at the third line of the value_counts() output, we see 219, which is the number of searches in which Inventory was the only search type. But what if we wanted to know the total number of times in which an inventory was done during a search? We'd also have to include any stops in which Inventory was one of multiple search types. To do this, we'll use a string method.
+
+4. Searching for a string (1)
+Back in chapter 1, you used a string method to concatenate two columns. This time, we'll use a string method called contains() that checks whether a string is present in each element of a given column. It returns True if the string is found, and False if it's not found. We also specify na equals False, which tells the contains() method to return False when it finds a missing value in the search_type column. We'll save the results in a new column called inventory.
+
+5. Searching for a string (2)
+As expected, the data type of the column is Boolean. To be clear, a True value in this column means that an inventory was done during a search, and a False value means it was not. We can take the sum() of the inventory column to see that an inventory was done during 441 searches. This includes the 219 stops in which Inventory was the only search type, plus additional stops in which Inventory was one of multiple search types.
+
+6. Calculating the inventory rate
+What if we wanted to calculate the percentage of searches which included an inventory? You might think this would be as simple as taking the mean() of the inventory column, and the answer would be about 0.5%. But what's wrong with this calculation? 0.5% is the percentage of all traffic stops which resulted in an inventory, including those stops in which a search was not even done. Instead, we first need to filter the DataFrame to only include those rows in which a search was done, and then take the mean() of the inventory column. The correct answer is that 13.3% of searches included an inventory. This is a vastly different result, and it highlights the importance of carefully choosing which rows are relevant before doing a calculation.
+
+7. Let's practice!
+Let's get started with the exercises, during which you'll use the search_type data to investigate protective frisks.
+
+
+

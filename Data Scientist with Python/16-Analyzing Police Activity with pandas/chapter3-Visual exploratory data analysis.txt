@@ -1,0 +1,105 @@
+
+
+1. Does time of day affect arrest rate?
+In the last chapter, we used filtering, grouping, and other techniques to answer questions about the traffic stops dataset. In this chapter, you'll explore and analyze the dataset visually using plots.
+
+2. Analyzing datetime data
+Back in chapter 1, we worked with a small DataFrame of Apple stock prices. We're going to use it here again, but this time it includes two days each from the first three months of 2018. There's also a new column, volume, that displays the number of Apple shares traded that day.
+
+3. Accessing datetime attributes (1)
+You might recall that we converted the date_and_time column to pandas datetime format. Because of datetime format, you actually have access to special date-based attributes via the dt accessor. For example, you can access the month as an integer by using the dt dot month attribute. There are many other similar attributes available, such as week, dayofweek, hour, minute, and so on.
+
+4. Accessing datetime attributes (2)
+Similar to our traffic stops dataset, we can set the date_and_time column as the DataFrame index. Because of its data type, it is now a DatetimeIndex. We can still access the same datetime attributes, such as month, and we get the same result as before, but we no longer have to use the dt accessor.
+
+5. Calculating the monthly mean price
+Let's examine the price column of the apple DataFrame. If we wanted to calculate the mean price for all rows, we would simply use the mean() method. But what if we wanted to calculate the mean price for each month? One idea would be to use a groupby() operation, but we can't group by month as a string since it's not a column in the DataFrame. Instead, we would group by apple dot index dot month, and then take the mean() of the price column. This operation outputs a Series, in which the index is the month number and the values are the mean prices. We'll go ahead and save this Series as an object called monthly_price.
+
+6. Plotting the monthly mean price
+Let's say that we wanted to plot this data in order to visually examine the monthly price trends. We would start by importing matplotlib dot pyplot as plt. Then, we call the plot() method on the monthly_price Series. The default plot for a Series is a line plot, which uses the Series index on the x-axis and the Series values on the y-axis. Finally, we'll label the axes and provide a title for the plot, and then use the show() function to display the plot.
+
+7. Line plot
+It's a very simple plot in this case, but you can imagine that with a much larger dataset, this plot could help you to understand the price trends in a way that examining the raw data could not.
+
+8. Let's practice!
+Now it's your turn to practice using datetime attributes and plots with our traffic stops dataset to analyze the relationship between time of day and arrest rate.
+
+
+
+
+1. Are drug-related stops on the rise?
+In the last section, we created a plot to help us see how a single variable changed over time. In this section, we'll use subplots to help us examine the relationship between two variables over time.
+
+2. Resampling the price
+Let's return to our DataFrame of Apple stock prices. In the last section, we calculated the mean price for each month using a groupby() operation. There's actually an alternative method, known as resampling, that we can use to accomplish the same task. As you might remember from previous courses, resampling is when you change the frequency of your time series observations. In this case, we'll resample the price column by month, represented by the capital letter M, and then chain the mean() method onto the end. The output is identical to the groupby() operation, except that the index consists of the last day of each month, rather than just the integers 1, 2, and 3.
+
+3. Resampling the volume
+As a reminder, the apple DataFrame also has a volume column that displays the number of Apple shares traded that day. Let's resample that column, to calculate the mean daily volume for each month. One thing worth noticing is that the output has the same index as the last resampling operation, since both price and volume were resampled at the same frequency.
+
+4. Concatenating price and volume
+Now that we've resampled both the price and volume data, we're going to combine the results into a single DataFrame so that we can study the relationship between price and volume. First, we'll save the two resampled Series as separate objects. One is called monthly_price and the other is called monthly_volume. Then, we'll combine these two objects using the concat() function, which concatenates pandas objects along a specified axis. In this case, we want them to be combined along the columns axis, meaning that we want them side-by-side. Notice that they aligned along their shared index. We'll save this new DataFrame as an object called monthly.
+
+5. Plotting price and volume (1)
+To visualize the relationship between price and volume, we simply call the plot() method on the monthly DataFrame. pandas outputs a single line plot in which each line represents one of the two columns. Because it's a single plot, the two lines are sharing both the x and y axes. It makes sense for the x-axis to be shared, since we want to compare price and volume by month. But sharing the y-axis is problematic, because price and volume are on such different scales: price is in the hundreds, and volume is in the tens of millions, represented by the 1e7 notation at the top of the y-axis. Because of the different scales, we can't actually see the price trend.
+
+6. Plotting price and volume (2)
+The solution to this problem is to set the subplots parameter to True, which results in two separate plots with independent y axes. Now we can clearly see the monthly trends for both price and volume. They appear to have an inverse relationship, though we wouldn't actually draw that conclusion without having a lot more data.
+
+7. Let's practice!
+Now it's time for you to practice resampling, concatenation, and subplots while you examine drug-related traffic stops in our dataset.
+
+
+
+1. What violations are caught in each district?
+In the last section, we saw how easy it is to create line plots directly from a DataFrame. Now, we're going to make different types of plots from DataFrames.
+
+2. Computing a frequency table
+One pandas function that might be new to you is crosstab(), short for cross-tabulation. To use crosstab(), you pass it two pandas Series that represent categories, and it outputs a frequency table in the form of a DataFrame. You can think of a frequency table as a tally of how many times each combination of values occurs in the dataset. In this case, we passed driver_race and driver_gender to crosstab(), and it tells us how many rows contain each combination of race and gender. For example, 551 Asian female drivers were stopped, which you can verify by filtering the DataFrame and checking the shape. Notice that race is along the index of the DataFrame and gender is along the columns, though you could transpose the DataFrame by reversing the order in which race and gender are passed to crosstab(). Let's go ahead and save the frequency table as an object called table.
+
+3. Selecting a DataFrame slice
+As you might recall from previous courses, the loc accessor allows you to select portions of a DataFrame by label. Given our frequency table, let's pretend we wanted to select the Asian through Hispanic rows only. Using loc, we can extract this slice of the DataFrame by specifying the starting and ending labels, separated by a colon. Let's overwrite our existing table object with this smaller DataFrame.
+
+4. Creating a line plot
+If we plot the table object, we'll get a line plot by default, in which the index is along the x-axis and each column becomes a line. However, a line plot is not appropriate in this case because it implies a change in time along the x-axis, whereas the x-axis actually represents three distinct categories.
+
+5. Creating a bar plot
+By specifying kind equals bar, you can create a bar plot, which is much more appropriate than a line plot for comparing categorical data. With this plot, the numbers in our frequency table have been converted to bars for which the height represents the magnitude. Each gender has been assigned a color, and the two gender bars for each race are placed next to one another. The bar plot makes it especially easy to see the gender difference within each race. For all three races, we see that the number of males stopped is far greater than the number of females stopped.
+
+6. Stacking the bars
+A variation of the bar plot is the stacked bar plot, which you can generate by adding the argument stacked equals True. For each race, the two gender bars are now stacked on top of one another. The strength of this plot is that it helps you to see the total stops for each race, which was not as obvious when the bars were side-by-side. By emphasizing the totals, however, this plot slightly deemphasizes the individual components of each bar, and makes those components harder to compare against one another. Neither type of bar plot is right or wrong, rather you should choose the plot that best helps to answer the question you're asking.
+
+7. Let's practice!
+It's your turn to practice these techniques while visualizing what violations are caught in each police district.
+
+
+
+
+1. How long might you be stopped for a violation?
+In this section, we'll start by learning how to translate strings into data that can be analyzed numerically, and then we'll learn a few easy ways to improve our plots.
+
+2. Analyzing an object column
+Let's return again to our DataFrame of Apple stock prices. A new column called change has been added to the DataFrame. It indicates whether the stock price went up or down compared to the previous trading day. Let's pretend we wanted to calculate how often the price went up. One way to do this would be to create a Boolean column that is True if the price went up, and False otherwise. Then we could easily calculate how often the price went up by taking the mean of the Boolean column. But how would we create this column? The change column has the object data type because it contains strings, and previously we've used the astype() method to convert strings to numbers or Booleans. However, astype() only works when pandas can infer how the conversion should be done, and that's not the case here. We'll need to find a different technique.
+
+3. Mapping one set of values to another
+When you need to map one set of values to another, you can use the Series map() method. You provide it with a dictionary that maps the values you currently have to the values that you want. In this case, we want to map "up" to True and "down" to False, so we'll create a dictionary called mapping that specifies this. Then, we'll use the map() method on the change column, pass it the mapping object, and store the result in a new column called is_up. When we print the DataFrame, you'll see that the is_up column contains True when the change column says up, and False when the change column says down. Now that we have a Boolean column, we can calculate how often the price went up by taking the mean() of that column. The answer is that it went up 50% of the time.
+
+4. Calculating the search rate
+Now we're going to return to our DataFrame of traffic stops, and shift to a completely separate topic. Let's say that we wanted to visualize how often searches were performed after each type of violation. We would group by violation, and then take the mean() of search_conducted. This calculates the search_rate for each of the six violation types, and returns a Series that is sorted in alphabetical order by violation. We'll save this as an object named search_rate.
+
+5. Creating a bar plot
+To visualize the search rate, we'll create a bar plot since we're comparing the search rate across categories. The violations are displayed on the x-axis, and the search rate is on the y-axis. This plot looks okay, but there are two simple changes we can make that will make this plot more effective.
+
+6. Ordering the bars (1)
+The first improvement we can make is to order the bars from left to right by size, which will make the plot easier to understand. All we need to do is to use the sort_values() method to sort the search_rate Series in ascending order.
+
+7. Ordering the bars (2)
+Then, when we call the plot method on the sorted data, the bars are now ordered. This makes it easy to see which violations have the highest and the lowest search rates.
+
+8. Rotating the bars
+The second improvement we can make is to change the kind argument from bar to barh, which will rotate the bars so that they're horizontal. This makes it much easier to read the labels for each bar.
+
+9. Let's practice!
+Let's go ahead and get started with the last few exercises in this chapter.
+
+
+

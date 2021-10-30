@@ -1,0 +1,65 @@
+
+1. Stanford Open Policing Project dataset
+Hi, my name is Kevin Markham and I'll be your instructor for this course. I'm a data scientist and the founder of Data School. In this course, you'll be practicing a lot of what you've learned about pandas already to answer interesting questions about a real dataset. You'll gain valuable experience analyzing a dataset from start to finish, which will help to prepare you for your data science career.
+
+2. Introduction to the dataset
+Let's start by introducing the data. You'll be working with a dataset of traffic stops by police officers that was collected by the Stanford Open Policing Project. They've collected data from 31 US states, but in this course you'll be focusing on data from the state of Rhode Island. For size reasons, some of the columns and rows have been removed, but you can download the full dataset for any of the 31 states from the project's website.
+
+3. Preparing the data
+This first chapter is about preparing the data for analysis. Before beginning an analysis, it's critical that you first examine the data to make sure that you understand it, and then clean the data, to make working with it a more efficient process. As always, we'll start by importing pandas as pd. We'll use the read_csv() function to read in the dataset from a file, and then store it in a DataFrame called ri, which stands for Rhode Island. We'll use the head() method in order to take a quick glance at the DataFrame, though there are many more columns than can fit on this screen. Each row represents a single traffic stop. You'll notice that the county_name column contains NaN values, which indicate missing values. These are often values that were not collected during the data gathering process, or are irrelevant for that particular row.
+
+4. Locating missing values (1)
+It's important that you locate missing values so that you can proactively decide how to handle them. You may recall that the isnull() method generates a DataFrame of True and False values: True if the element is missing, and False if it's not.
+
+5. Locating missing values (2)
+One useful trick is to take the sum of this DataFrame, which outputs a count of the number of missing values in each column. How does that calculation work? Well, the sum() method calculates the sum of each column by default, and True values are treated as ones, while False values are treated as zeros.
+
+6. Dropping a column
+Let's compare these missing value counts to the DataFrame's shape. You'll notice that the county_name column contains as many missing values as there are rows, meaning that it only contains missing values. Since it contains no useful information, this column can be dropped using the drop() method. Besides specifying the column name, you need to specify that you're dropping from the columns axis, and that you want the operation to occur in place, which avoids an assignment statement.
+
+7. Dropping rows
+Finally, let's take a look at one more method related to missing values. The dropna() method is a great way to drop rows based on the presence of missing values in that row. For example, let's pretend that the stop_date and stop_time columns are critical to our analysis, and thus a row is useless to us without that data. We can tell pandas to drop all rows that have a missing value in either the stop_date or stop_time column. Because we specified a subset, the dropna() method only takes these two columns into account when deciding which rows to drop.
+
+8. Let's practice!
+Now it's your turn to practice using these functions to examine and clean this dataset.
+
+
+
+
+1. Using proper data types
+In the last set of exercises, you began cleaning the dataset by removing columns and rows that will not be useful for your upcoming analyses. Now, we're going to continue cleaning the dataset by ensuring that each of the columns has the proper data type.
+
+2. Examining the data types
+Let's take a look at the dtypes attribute of the DataFrame. Every Series has a data type, which was automatically inferred by pandas when it was reading in the CSV file. As you can see, the only data types currently in use are object and bool. The object data type usually means that a Series is made up of Python strings, though it can indicate the presence of other Python objects such as lists. The bool data type is short for Boolean, which means that a Series is made up of True and False values. pandas also supports other data types, such as int for integers, float for floating point values, datetime for dates and times, and category for categorical variables.
+
+3. Why do data types matter?
+But why does the data type of a pandas Series even matter? Data types matter mostly because they affect which operations you can perform on a given Series. In particular, it's beneficial not to store data as strings when possible. For example, mathematical operations can be performed on ints and floats, but those operations will fail if the numbers are stored as strings. The datetime type enables a rich set of date-based attributes and methods that are not possible with strings. The category data type results in less memory usage and faster processing than strings. And the bool data type enables logical and mathematical operations that we'll use during the course.
+
+4. Fixing a data type
+Let's see an example of how you might fix an improper data type. We'll imagine a DataFrame named apple that has a Series named price, which stores the closing price of Apple company stock each day. You can check the data type of the price Series using its dtype attribute. It reports a dtype of "O", which stands for object and means that the numbers are actually stored as strings. To change the data type of the price Series from object to float, you can use the astype() method, to which you pass the new data type as an argument. Then, you simply overwrite the original Series. If you check the data type again, you can see that it has changed to float. You might have noticed that on the right side of the equals sign, I used dot notation to refer to the price Series, rather than bracket notation. They mean the same thing, but I'll be using dot notation throughout this course, because I find that dot notation makes pandas code more readable. However, it's worth noting that you must use bracket notation on the left side of an assignment statement to create a new Series or overwrite an existing Series.
+
+5. Let's practice!
+It's now time for you to practice examining and fixing data types in our dataset.
+
+
+
+1. Creating a DatetimeIndex
+In the last exercise, you fixed the data type of the is_arrested column. Now, we're going to build a DatetimeIndex for our DataFrame.
+
+2. Using datetime format
+Let's take a look at the head of the dataset again. As you can see, the date and time of each traffic stop are stored in separate columns, both of which are object columns. Because we'll be using stop_date and stop_time in our analysis, we're going to combine these two columns into a single column and then convert it to pandas' datetime format. This will be beneficial because unlike object columns, datetime columns provide date-based attributes that will make our analysis easier.
+
+3. Combining object columns
+Let's see an example of this using the apple stock price DataFrame from the previous video. Date and time are stored in separate columns, so the first task is to combine these two columns using a string method. As you might remember from previous courses, string methods, such as replace(), are Series methods available via the str accessor. In this example, we're replacing the forward slash in the date column with a dash. It outputs a new Series in which the string replacement has been made, though this change is temporary since we haven't saved the new Series. Anyway, to combine the columns, we're going to use the str dot cat() method, which is short for concatenate. We'll concatenate the date column with the time column, and tell pandas to separate them with a space, storing the result in a Series object named combined. You can see that the combined Series contains both the date and time. It's still an object column, but it's now ready for conversion to datetime format.
+
+4. Converting to datetime format
+To convert the combined Series to datetime format, you simply pass it to the to_datetime() function, and store the result in a new column. We didn't even need to specify that the original data was in month-day-year format, instead pandas just figured it out. Looking at the updated DataFrame, you can see that the new column contains both the date and time, and that it is stored in a more standard way. From the dtypes attribute, you can see that the new data type of the new column is datetime, instead of object.
+
+5. Setting the index
+One final step that we'll take is to set the datetime column as the index. That will make it easier to filter the DataFrame by date, plot the data by date, and so on. We'll use the set_index() method, and specify that the operation should occur in place to avoid an assignment statement. You can see that the default index has been replaced with the datetime column. And the index is now a special type called DatetimeIndex. As a reminder, when an existing column becomes the index, it is no longer considered to be one of the DataFrame columns.
+
+6. Let's practice!
+Now that you've seen how to create a DatetimeIndex for the apple DataFrame, you can practice these steps on our dataset of traffic stops. This is the final step before we begin our analysis of the dataset in the next chapter.
+
+
+
