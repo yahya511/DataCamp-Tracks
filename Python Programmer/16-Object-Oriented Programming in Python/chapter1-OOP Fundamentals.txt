@@ -1,0 +1,95 @@
+Got It!
+1. What is OOP?
+Hi! I'm Alex, and I'll be teaching you to think object-oriented!
+
+2. Procedural vs OOP
+Until now, you have probably been coding in so-called procedural style: your code was a sequence of steps to be carried out. This is common when doing data analysis: you download the data, process, and visualize it.
+
+3. Thinking in sequences
+Procedural thinking is natural. You get up, have breakfast, go to work. This sequential viewpoint works great if you are trying to plan your day. But if you are a city planner, you have to think about thousands of people with their own routines. Trying to map out a sequence of actions for each individual would quickly get unsustainable. Instead, you are likely to start thinking about patterns of behaviors. Same thing with code. The more data it uses, the more functionality it has, the harder it is to think about as just a sequence of steps.
+
+4. Procedural vs OOP
+Instead, we view it it as a collection of objects, and patterns of their interactions - like users interacting with elements of an interface. This point of view becomes invaluable when designing frameworks, like application program interfaces or graphical user interfaces, or building tools like pandas DataFrames! It will help you organize your code better, making it more reusable and maintainable.
+
+5. Objects as data structures
+The fundamental concepts of OOP are objects and classes. An object is a data structure incorporating information about state and behavior. For example, an object representing a customer can have a certain phone number and email associated with them, and behaviors like placeOrder or cancelOrder. An object representing a button on a website can have a label, and can triggerEvent when pressed. The distinctive feature of OOP is that state and behavior are bundled together: instead of thinking of customer data separately from customer actions, we think of them as one unit representing a customer. This is called encapsulation, and it's one of the core tenets of object-oriented programming.
+
+6. Classes as blueprints
+The real strength of OOP comes from utilizing classes. Classes are like blueprints for objects. They describe the possible states and behaviors that every object of a certain type could have. For example, if you say "every customer will have a phone number and an email, and will be able to place and cancel orders", you just defined a class! This way, you can talk about customers in a unified way.
+
+7. Classes as blueprints
+Then a specific Customer object is just a realization of this class with particular state values.
+
+8. Objects in Python
+In Python, everything is an object. Numbers, strings, DataFrames, even functions are objects. In particular, everything you deal with in Python has a class, a blueprint associated with it under the hood. The existence of these unified interfaces, is why you can use, for example, any DataFrame in the same way. You can call type() on any Python object to find out its class. For example, the class of a numpy array is actually called ndarray (for n-dimensional array).
+
+9. Attributes and methods
+Classes incorporate information about state and behavior. State information in Python is contained in attributes, and behavior information -- in methods. Take a numpy array: you've already been using some of its methods and attributes! For example, every numpy array has an attribute "shape" that you can access by specifying the name of the array, then dot, and shape. It also has methods, like max and reshape, which are also accessible via dot.
+
+10. Object = attributes + methods
+Attributes (or states) in Python objects are represented by variables -- like numbers, or strings, or tuples, in the case of the numpy array shape. Methods, or behaviors, are represented by functions. Both are accessible from an object using the dot syntax. You can list all the attributes and methods that an object has by calling dir() on it. For example here, we see that a numpy array has methods like trace and transpose.
+
+11. Let's review!
+Let's stop here for now. Don't worry if it seems confusing. It's a different way of thinking, and it will take some time to get used to. Now head over to the exercises to review what you learned!
+
+Got It!
+1. Class anatomy: attributes and methods
+Great job so far! Now that you know how to work with existing objects and classes, you'll learn how to create your own!
+
+2. A basic class
+To start a new class definition, all you need is a class statement, followed by the name of the class, followed by a colon. Everything in the indented block after will be considered a part of the class. You can create an "empty" class -- like a blank template -- by including the pass statement after the class declaration. Even though this class is empty, we can already create objects of the class by specifying the name of the class, followed by parentheses. Here, c1 and c2 are two different objects of the empty class Customer. We want to create objects that actually store data and operate on it -- in other words have attributes and methods.
+
+3. Add methods to a class
+Defining a method is is simple. Methods are functions, so the definition of a method looks just like a regular Python function, with one exception: the special self argument that every method will have as the first argument, possibly followed by other arguments. We'll get back to self in a minute, first let's see how this works. Here we defined a method "identify" for the Customer class that takes self and a name as a parameter and prints "I am Customer" plus name when called. We create a new customer object, call the method by using object-dot-method syntax and pass the desired name, and get the output. Note that name was the second parameter in the method definition, but it is the first parameter when the method is called. The mysterious self is not needed the method call.
+
+4. What is self?
+So what was that self? Classes are templates. Objects of a class don't yet exist when a class is being defined, but we often need a way to refer to the data of a particular object within class definition. That is the purpose of self - it's a stand-in for the future object. That's why every method should have the self argument -- so we could use it to access attributes and call other methods from within the class definition even when no objects were created yet. Python will handle self when the method is called from an object using the dot syntax. In fact, using object-dot-method is equivalent to passing that object as an argument. That's why we don't specify it explicitly when calling the method from an existing object.
+
+5. We need attributes
+By the principles of OOP, the data describing the state of the object should be bundled into the object. For example, customer name should be an attribute of a customer object, instead of a parameter passed to a method. In Python attributes -- like variables -- are created by assignment, meaning an attribute manifests into existence only when a value is assigned to it.
+
+6. Add an attribute to class
+Here is a method set_name with arguments self (every method should have a self argument) and new_name. To create an attribute of the Customer class called "name", all we need to do is to assign something to self-dot-name. Remember, self is a stand-in for object, so self-dot-attribute should remind you of the object-dot-attribute syntax. Here, we set the name attribute to the new_name parameter of the function. When we create a customer, it does not yet have a name attribute. But after the set_name method was called, the name attribute is created, and we can access it through dot-name.
+
+7. Using attributes in class definition
+Equipped with the name attribute, now we can improve our identification method! Instead of passing name as a parameter, we will use the data already stored in the name attribute of the customer class. We remove the name parameter from the identify method, and replace it with self-dot-name in the printout, which, via self, will pull the name attribute from the object that called the method. Now the identify function will only use the data that is encapsulated in the object, instead of using whatever we passed to it.
+
+8. Let's practice!
+Now, let's start creating your own classes!
+
+
+Got It!
+1. Class anatomy: the __init__ constructor
+Welcome back! In the previous lesson, you learned how to define methods and attributes in classes.
+
+2. Methods and attributes
+You learned that methods are functions within class with a special first argument self, and that attributes are created by assignment and referred to using the self variable within methods. In the exercises, you created an Employee class, and for each attribute you wanted to create, you defined a new method, and then called those methods one after another. This could quickly get unsustainable if your classes contain a lot of data.
+
+3. Constructor
+A better strategy would be to add data to the object when creating it, like you do when creating a numpy array or a DataFrame. Python allows you to add a special method called the constructor that is automatically called every time an object is created. The method has to be called underscore underscore init underscore underscore (the exact name and double underscores are essential for Python to recognize it). Here we define the init method for the customer class. The method takes on one argument, name, of course in addition to the self argument that should be there for any method. In the body of the method, we create the name attribute, set its value to the name parameter, and print a message. So now, we can pass the customer name in the parentheses when creating the customer object, and the init method will be automatically called, and the name attribute created.
+
+4. Add parameters
+We can add another parameter -- say, account balance -- to the init method, and create another attribute -- also called balance, that will also be initialized during object creation. We can now create a customer by calling Customer with two parameters in parentheses.
+
+5. Default arguments
+The init constructor is also a good place to set the default values for attributes. For example, here we set the default value of the balance argument to 0, so we can create a Customer object without specifying the value of the balance, but the attribute is created anyway, and is initialized to the default value 0.
+
+6. The right place to define attributes
+So, there are two ways to define attributes: we can define an attribute in any method in a class; and then calling the method will add the attribute to the object. Alternatively, we can define them all together in the constructor. If possible, try to avoid defining attributes outside the constructor. Your class definition can be hundreds lines of code long, and the person reading it would have to comb through all of them to find all the attributes. Moreover, defining all attributes in the constructor ensures that all of them are created when the object is created, so you don't have to worry about trying to access an attribute that doesn't yet exist. All this results in more organized, readable, and maintainable code.
+
+7. Best practices
+While we're on the subject of best practices, let's quickly go over a few more conventions that will make your code more reader-friendly.
+
+8. Best practices
+To name your classes, use camel case, which means that if your class name contains several words, they should be written without delimiters, and each word should start with a capital letter. For methods and attributes, it's the opposite -- words should be separated by underscores and start with lowercase letters.
+
+9. Best practices
+Here's a secret: the name "self" is a convention. You could actually use any name for the first variable of a method, it will always be treated as the object reference regardless. For example, if you are a Java programmer, you might be tempted to use "this", and if you are me, you might be tempted to use "kitty". Don't do it, and always use "self".
+
+10. Best practices
+Finally, classes, like functions, allow for docstrings which are displayed when help() is called on the object. Remember the first lesson of the course, and use the docstrings to make the life of the person using your class easier.
+
+11. Let's practice!
+Now, let's practice creating constructors!
+
+
