@@ -1,0 +1,93 @@
+s1. List comprehensions
+Let's say that you have a list of numbers and you want to create a new list of numbers that's the same as the old list, except that each number has 1 added to it.
+
+2. Populate a list with a for loop
+You could initialize a new empty list, loop through the old list, add 1 to each entry and append all new values to the new list, but for loops are inefficient, both computationally and in terms of coding time and space, particularly when you could do this in one line of code. "One line of code?" I hear you asking.
+
+3. A list comprehension
+Welcome to the wonderful world of list comprehensions! The syntax is as follows: within square brackets, you write the values you wish to create, otherwise known as the output expression, followed by the for clause referencing the original list. So in our case, you open the square bracket, followed by num + 1 for num in nums and then you close the square bracket. This is a list comprehension and creates precisely the desired list!
+
+4. For loop and list comprehension syntax
+See here the relationship between the for loop syntax and the list comprehension syntax. The power of list comprehensions is not merely relegated to the world of lists, however, you can write a list comprehension over any iterable.
+
+5. List comprehension with range()
+Here's an example of a list comprehension using a range object. To summarize,
+
+6. List comprehensions
+list comprehensions collapse for loops for building lists into a single line and the required components are 1) an iterable, 2) an iterator variable that represents the members of the iterable and 3) an output expression. That's it. You can also use list comprehensions in place of nested for loops.
+
+7. Nested loops (1)
+For example, lets say that we wanted to create a list of all pairs of integers where the first integer is between 0 and 1 and the second between 6 and 7. This nested for loop would produce the required result. The question is, can we do the same with a list comprehension? And the answer is, yes, as follows.
+
+8. Nested loops (2)
+Once again, within the square brackets, place the desired output expression followed by the two required for loop clauses. You may observe that while it keeps to a single line of code, we sacrifice some readability of the code as a tradeoff, so you'll have to consider if you'd like to use list comprehensions in cases such as this. The more often you use this, the more you get used to reading list comprehensions, so readability may not be a problem for you later on. But do remember that others may have to read your code as well!
+
+9. Let's practice!
+Now you've seen a few list comprehensions, it's your turn to write some! -
+
+
+1. Advanced comprehensions
+Now that you know the basics of list comprehensions, lets check out some more
+
+2. Conditionals in comprehensions
+advanced comprehension capabilities, such as conditionals! Here we see that we can filter the output of a list comprehension using a conditional on the iterable: in this example, the resulting list is the square of the values in range(10) under the condition that the value itself is even. If you have not seen it before, the percent operation that you see being used in the comprehension is called the modulo operator. We can look at the Python documentation to see how the modulo operator is used and it shows that it produces the remainder from the division of the first argument by the second. Thus an integer modulo two is equal to zero if and only if the integer is even.
+
+3. Conditionals in comprehensions
+We can also condition the list comprehension on the output expression. Here, for an even integer we output its square. In any other case, signified by the else clause, that is for odd integers, we output 0.
+
+4. Dict comprehensions
+Now we can also write dictionary comprehensions to create new dictionaries from iterables. The syntax is almost the same as in list comprehensions and there are 2 differences. One, we use curly braces instead of square brackets. Two, the key and value are separated by a colon in the output expression as we can see here. In this example, we are creating a dictionary with keys positive integers and corresponding values the respective negative integers.
+
+5. Let's practice!
+Now that we have a grasp on advanced list comprehensions and dictionary comprehensions, it's time to practice! -
+
+
+1. Introduction to generator expressions
+Now that you're getting a bit more comfortable with comprehensions, we're going to check out generators, which are related to comprehensions in way that will soon become evident.
+
+2. Generator expressions
+Recall that this list comprehension will create a list of the first 10 even numbers. Now lets replace the square brackets with round parentheses and voila! Something called a generator object has been created.
+
+3. List comprehensions vs. generators
+Now the question on everybody's lips is, "What is this generator object?" Well, a generator is like a list comprehension except it does not store the list in memory: it does not construct the list, but is an object we can iterate over to produce elements of the list as required.
+
+4. Printing values from generators (1)
+Here we can see that looping over a generator expression produces the elements of the analogous list. We can also pass a generator to the function list to create the list. Moreover,
+
+5. Printing values from generators (2)
+like any other iterator, we can pass a generator to the function next in order to iterate through its elements. For the geeks like me, this is an example of something called lazy evaluation, whereby the evaluation of the expression is delayed until its value is needed. This can help a great deal when working with extremely large sequences as you don't want to store the entire list in memory, which is what comprehensions would do; you want to generate elements of the sequence on the fly.
+
+6. Generators vs list comprehensions
+Let's say that we wanted to iterate over a very large sequence of numbers, such as from 0 up to 10 to the power of a million, or at least wanted to do so until another condition was satisfied. Look what happens when I try to build such an iterable list using a comprehension on DataCamp's servers.
+
+7. Generators vs list comprehensions
+My colleagues disconnect me because the list I'm trying to create can't even be stored in memory! Be warned though, don't try this at home, on our servers or yours!
+
+8. Generators vs list comprehensions
+Check this out, however: I can easily create the analogous generator object because it does not yet create the entire list.
+
+9. Conditionals in generator expressions
+What's really cool is that anything we can do in a list comprehension such as filtering and applying conditionals, we can also do in a generator expression, such as you see here. You'll get a whole bunch of practice with this in the upcoming exercises.
+
+10. Generator functions
+The last thing to discuss before you get coding is the ability to write generator functions. Generator functions are functions that, when called, produce generator objects. Generator functions are written with the syntax of any other user-defined function, however instead of returning values using the keyword return, they yield sequences of values using the keyword yield.
+
+11. Build a generator function
+Here I have defined a generator function that, when called with a number n, produces a generator object that generates integers 0 though n. We can see within the function definition that i is initialized to 0 and that the first time the generator object is called, it yields i equal to 0. It then adds one to i and will then yield one on the next iteration and so on. The while loop is true until i equals equals n and then the generator ceases to yield values.
+
+12. Use a generator function
+This generator function can be called as you do any other function. Here I call the generator function with the argument, 5. We see that it produces a generator object and that we can iterate over this generator object with a for loop to print the values it yields. Generator functions are a powerful and customizable way to create generators.
+
+13. Let's practice!
+You'll have much practice with these in the coming exercises. Happy generating! -
+
+
+1. Wrapping up comprehensions and generators.
+It's now time to apply your new and hard-won skills to the Data Science domain. In the following exercises, you'll use list comprehensions to wrangle important information from the time-stamped data of real tweets. I want to remind you of the structure and syntax of a list comprehension:
+
+2. Re-cap: list comprehensions
+in its most basic form, it is enclosed in square brackets and is structured as output expression for iterator variable in iterable. More advanced comprehensions can include conditionals on the output expression and/or conditionals on the iterable.
+
+3. Let's practice!
+After you complete the upcoming exercises, I'll see you in the next Chapter. Therein, we will not teach any new material. We'll be consolidating everything that we've learned so far in these two Python Data Science Toolbox courses using an extended case study. This chapter will be dedicated to using the skills you're developing to extract meaningful information from a real-world data set, the World Bank World Development Indicators dataset. Happy hacking, and see you there!
+
