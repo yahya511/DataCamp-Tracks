@@ -1,0 +1,135 @@
+
+
+1. Optimal parameters
+After completing the prequel to this course, you are now beginning to think probabilistically. Outcomes of measurements follow probability distributions defined by the story of how the data came to be. When we looked at Michelson's speed of light in air measurements, we assumed that the results were Normally distributed.
+
+2. Histogram of Michelson's measurements
+We verified that both by looking at the PDF and
+
+1 Data: Michelson, 1880
+3. CDF of Michelson's measurements
+the CDF, which was more effective because there is no binning bias. To compute and plot the CDF, we needed our old friends
+
+1 Data: Michelson, 1880
+4. Checking Normality of Michelson data
+Numpy and matplotlib dot pyplot, so the first step was to import them with their traditional aliases. To compute the theoretical CDF by sampling, we passed two parameters into np dot random dot normal, the mean and standard deviation. The values we chose for these parameters were in fact the mean and standard deviation we calculated directly from the data.
+
+5. CDF of Michelson's measurements
+The result was that the theoretical CDF overlayed beautifully with the empirical CDF. How did we know that the mean and standard deviation calculated from the data were the appropriate values for the Normal parameters? We could have chosen others.
+
+1 Data: Michelson, 1880
+6. CDF with bad estimate of st. dev.
+What if the standard deviation differs by 50%? The CDFs no longer match. Or if the mean
+
+1 Data: Michelson, 1880
+7. CDF with bad estimate of mean
+varies by just point-01%. So, if we believe that the process that generates our data gives Normally distributed results,
+
+1 Data: Michelson, 1880
+8. Optimal parameters
+the set of parameters that brings the model, in this case a Normal distribution, in closest agreement with the data uses the mean and standard deviation computed directly from the data. These are the optimal parameters. Remember though, the parameters are only optimal for
+
+9. Mass of MA large mouth bass
+the model you chose for your data. When your model is wrong, the optimal parameters are not really meaningful. Finding the optimal parameters is not always as easy as just computing the mean and standard deviation from the data. We will encounter this later in this chapter when we do linear regressions and we rely on built-in NumPy functions to find the optimal parameters for us. I pause to note that
+
+1 Source: Mass. Dept. of Environmental Protection
+10. Packages to do statistical inference
+there are great tools in the Python ecosystem for doing statistical inference, including by optimization, scipy dot stats and
+
+11. Packages to do statistical inference
+statsmodels being two good examples. In this course, however,
+
+12. Packages to do statistical inference
+we focus on hacker statistics because the technique is like a Swiss Army knife; the same simple principle is applicable to a wide variety of statistical problems.
+
+1 Knife image: D
+2 M Commons, CC BY
+3 SA 3.0
+13. Let's practice!
+Now it's time for you to do some exercises to demonstrate how choosing optimal parameters results in best agreement between the theoretical model distribution and your data.
+
+
+
+
+
+1. Linear regression by least squares
+Sometimes two variables are related. You may recall from the prequel to this course that we computed the Pearson correlation coefficient between
+
+2. 2008 US swing state election results
+Obama's vote share in each county in swings states and the total vote count of the respective counties. The Pearson correlation coefficient is important to compute, but we might like to get a fuller understanding of how the data are related to each other. Specifically, we might suspect some underlying function gives the data its shape.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+3. 2008 US swing state election results
+Often times a linear function is appropriate to describe the data, and this is what we will focus on in this course. The parameters of the function are
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+4. 2008 US swing state election results
+the slope and intercept. The slope sets how steep the line is, and the intercept sets where the line crosses the y-axis. How do we figure out which slope and intercept best describe the data? A simple answer is that we want to choose the slope and intercept such that the data points collectively lie as close as possible to the line. This is easiest to think about by first considering one data point,
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+5. 2008 US swing state election results
+say this one. The vertical distance between the data point and the line is called
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+6. Residuals
+the residual. In this case, the residual has a negative value because the data point lies below the line. Each data point has a residual associated with it.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+7. Least squares
+We define the line that is closest to the data to be the line for which the sum of the squares of all of the residuals is minimal. This process, finding the parameters for which the sum of the squares of the residuals is minimal, is called "least squares". There are many algorithms to do this in practice.
+
+8. Least squares with np.polyfit()
+We will use the Numpy function polyfit, which performs least squares analysis with polynomial functions. We can use it because a linear function is a first degree polynomial. The first two arguments to this function are the x and y data. The third argument is the degree of the polynomial you wish to fit; for linear functions, we enter one. The function returns the slope and intercept of the best fit line. The slope tells us that we get about 4 more percent votes for Obama for every 100,000 additional voters in a county. Now that you know how to perform a linear regression,
+
+9. Let's practice!
+let's do it with some real data in the exercises!
+
+
+
+
+1. The importance of EDA: Anscombe's quartet
+In 1973, statistician Francis Anscombe published a paper that contained
+
+2. Anscombe's quartet
+four fictitious x-y data sets, plotted here. He uses these data sets to make an important point. That point becomes clear if we blindly go about doing parameter estimation on these data sets. First, let's look at the average x-values of the four data sets.
+
+1 Data: Anscombe, The American Statistician, 1973
+3. Anscombe's quartet
+They are all the same. How about the average y-values?
+
+1 Data: Anscombe, The American Statistician, 1973
+4. Anscombe's quartet
+Again, all the same. And what if we do a linear regression on each of the data sets?
+
+1 Data: Anscombe, The American Statistician, 1973
+5. Anscombe's quartet
+They all have the same line! Surely some of the fits are less optimal than others. Let's look at the sum of the squares of the residuals.
+
+1 Data: Anscombe, The American Statistician, 1973
+6. Anscombe's quartet
+Oh my, they are all basically the same as well. Of course, Anscombe constructed the data sets so that this would happen. The point he was making is very important. You already have some powerful tools for statistical inference. You can compute summary statistics and optimal parameters, including linear regression parameters, and by the end of the course, you will able to construct confidence intervals with quantify uncertainty about the parameter estimates. These are crucial skills for any data analysis, no doubt.
+
+1 Data: Anscombe, The American Statistician, 1973
+7. Look before you leap!
+But look before you leap! This is a powerful reminder to do some graphic exploratory data analysis before you start computing and making judgments about your data. For example,
+
+8. Anscombe's quartet
+this data set might be well modeled with a line, and the regression parameters will be meaningful. The same is true of
+
+1 Data: Anscombe, The American Statistician, 1973
+9. Anscombe's quartet
+this data set, but the outlier throws off the slope and intercept. After doing EDA, you should look into what is causing that outlier.
+
+1 Data: Anscombe, The American Statistician, 1973
+10. Anscombe's quartet
+This data set might also have a linear relationship between x and y, but from the plot, you can conclude that you should try to acquire more data for intermediate x values to make sure that it does.
+
+1 Data: Anscombe, The American Statistician, 1973
+11. Anscombe's quartet
+And this data set is definitely not linear, and you need to choose another model. Explore your data first. I'll let you prove to yourself
+
+1 Data: Anscombe, The American Statistician, 1973
+12. Let's practice!
+that these data sets give the same regression parameters. It will be good practice, and seeing is believing!
+
+

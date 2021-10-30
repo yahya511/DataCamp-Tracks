@@ -1,0 +1,52 @@
+
+
+1. A/B testing
+Imagine your company has a proposed redesign of the splash page of its website. They are interested in how many more users click through to the website for the redesign versus the original design. You devise a test.
+
+2. Is your redesign effective?
+Take a set of 1000 visitors to the site and direct 500 of them to the original splash page and 500 of them to the redesigned one. You determine whether or not each of them clicks through to the rest of the website. On the original page, which we'll call page A,
+
+3. Is your redesign effective?
+45 visitors clicked through, and on the redesigned page, page B, 67 visitors clicked through. This makes you happy because that is almost a 50% increase in the click-through rate. But maybe there really is no difference between the effect of two designs on click-through rate and the difference you saw is due the random chance. You want to check: what is the probability that you would observe at least the observed difference in number of clicks through if that were the case? This is asking exactly the question you can address with
+
+4. Null hypothesis
+a hypothesis test. A permutation test is a good choice here because you can simulate the result as if the redesign had no effect on the click-through rate. Let's code it up in Python:
+
+5. Permutation test of clicks through
+for each splash page design, we have a Numpy array which contains 1 or 0 values for whether or not a visitor clicked through. Next, we need to define a function diff_frac for our test statistic. Ours is the fraction of visitors who click through. We can compute the fraction who click through by summing the entries in the arrays of ones and zeros and then dividing by the number of entries. Finally we compute the observed value of the test statistic using this function diff_frac. Now everything is in place to generate our permutation replicates of the test statistic
+
+6. Permutation test of clicks through
+using the permutation_replicate function you wrote in the exercises; we will generate 10,000. We compute the p-value as the number of replicates where the test statistic was at least as great as what we observed. We get a value of 0-point-016, which is relatively small, so we might reasonably think that the redesign is a real improvement. This is an example of an A/B test.
+
+7. A/B test
+A/B testing is often used by organizations to see if a change in strategy gives different, hopefully better, results. Generally,
+
+8. Null hypothesis of an A/B test
+the null hypothesis in an A/B test is that your test statistic is impervious to the change. A low p-value implies that the change in strategy lead to a change in performance. Once again, though, be warned that statistical significance does not mean practical significance. A difference in click-though rate may be statistically significant, but if it is only a couple people more per day, your marketing team may not consider the change worth the cost! A/B testing is just a special case of the hypothesis testing framework we have already been working with, a fun and informative one.
+
+9. Let's practice!
+Let's practice in with some exercises!
+
+
+
+
+
+1. Test of correlation
+Consider again the swing state county-level voting data.
+
+2. 2008 US swing state election results
+In the prequel to this course, we computed the Pearson correlation coefficient between Obama's vote share and the total number of votes. Remember the Pearson correlation coefficient is a measure of how much of the variability in two variables is due to them being correlated. It ranges from -1 for totally negatively correlated to 1 for positively correlated. We got a value of about point-54. This value of the Pearson correlation indicates that the data are not perfectly correlated, but are correlated nonetheless. But how can we know for sure if this correlation is real, or if it could have happened just by chance?
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+3. Hypothesis test of correlation
+We can do a hypothesis test! We posit a null hypothesis that there is no correlation between the two variables, in this case Obama's vote share and total votes. We then simulate the election assuming the null hypothesis is true (which you will figure out how to do in the exercises), and use the Pearson correlation coefficient as the test statistic. The p-value is then the fraction of replicates that have a Pearson correlation coefficient at least as large as what was observed. I did this procedure, and in all 10,000 of my replicates under the null hypothesis,
+
+4. More populous counties voted for Obama
+not one had a Pearson correlation coefficient as high as the observed value of point-54. I tried generating 100,000, and then a million replicates. In all cases, not one replicate had a Pearson correlation coefficient as high as point-54. This does not mean that the p-value is zero. It means that it is so low that we would have to generate an enormous number of replicates to have even one that has a test statistic sufficiently extreme. We conclude that the p-value
+
+5. More populous counties voted for Obama
+is very very small and there is essentially no doubt that counties with higher vote count tended to vote for Obama. After all, that is how he won the election.
+
+6. Let's practice!
+Now it is your turn to think about how to do a hypothesis test on correlation and execute it!
+

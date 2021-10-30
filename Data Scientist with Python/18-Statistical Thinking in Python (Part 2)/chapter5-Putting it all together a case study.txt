@@ -1,0 +1,88 @@
+
+
+1. Finch beaks and the need for statistics
+You are now carrying a well-stocked toolbox.
+
+2. Your well-equipped toolbox
+You know how to take a data set and explore it. You know how to think probabilistically and infer values and confidence intervals for parameters. And you know how to formulate a hypothesis and use your data, and Python, to test it. Let's put those tools to use! In this chapter, you will immerse yourself in what is in my opinion one of the most fascinating data sets out there. You may know that many of the important observations that
+
+3. Image: Public domain, US
+led Charles Darwin to develop the theory of evolution were made
+
+1 Image: Public domain, US
+4. Image: NASA
+in the Gal?pagos archipelago, particularly in the study of the small birds, called finches, that inhabit them. The islands are ideal for studying evolution because they are isolated so they do not have complicated effects from interactions with other species including humans. Furthermore, some of them are small, so entire populations can be monitored on a given island. Every year since 1973, Peter and Rosemary Grant of Princeton University have been spending several months of the year on
+
+1 Image: NASA
+5. The island of Daphne Major
+the tiny volcanic cinder cone island of Daphne Major in the Gal?pagos.
+
+1 Image: Grant and Grant, 2014
+6. The finches of Daphne Major
+This island has two dominant ground finch species, Geospiza fortis and Geospiza scandens. The Grants have monitored them every year, tagging them, making physiological measurements, taking samples for genetic sequencing, and more. In 2014,
+
+1 Source: John Gould, public domain
+7. Our data source
+they published a book entitled "40 Years of Evolution: Darwin's Finches on Daphne Major Island". They generously placed all of their data on the Dryad data repository making it free for anyone to use. The data set is impressive and a great set for using data science and statistical inference to learn about evolution. You will work with the Grants' measurements of
+
+8. The dimensions of the finch beak
+the beak length and
+
+1 Source: John Gould, public domain
+9. The dimensions of the finch beak
+beak depth. You will consider different aspects of the beak geometry, including how it varies over time, from species to species, and from parents to offspring. I will come back with short discussions as you are working through the data sets, but you are mostly on your own. You can do it! Ok, for your first analysis,
+
+1 Source: John Gould, public domain
+10. Investigation of G. scandens beak depth
+you will investigate how the beak depth of Geospiza scandens has changed over time. You will start with some exploratory analysis of the measurements of these species from 1975 and 2012. You will then perform a parameter estimation, with confidence intervals, of mean beak depth for those respective years. Finally, you will do a hypothesis test investigating if the mean beak depth has changed from 1975 to 2012.
+
+11. Let's practice!
+Have at it!
+
+
+
+
+
+1. Variation in beak shapes
+You just determined that the beak depth of Geospiza scandens changed over the course of 37 years. There are a few hypotheses as to why this is the case. One reason may be
+
+2. The drought of winter 1976/1977
+a drought in 1976 and 1977 that resulted in the death of the plants that produce small seeds on the island. The larger seeds required deeper beaks to crack them, so large-beaked birds survived and then reproduced. If this is the case, it stands to reason that the length of the beak might also change over time. Importantly, if the length and depth change at the same rate,
+
+1 Source: Grant and Grant, 2014
+3. Beak geometry
+the beak has the same shape; it just gets bigger. But if the beak length and beak depth change differently, the shape of the beak changes. In the next few exercises, you will investigate how beak length and depth change together. That means it's time for some linear regression! As a hint,
+
+1 Source: John Gould, public domain
+4. Hint
+the draw_bs_pairs_linreg function you wrote will be helpful in computing confidence intervals this of your linear regression parameters.
+
+5. Let's practice!
+Now, off you go, back to your analysis! -
+
+
+
+
+1. Calculation of heritability
+What is causing the beaks of Geospiza scandens to get bigger over time? I mentioned the selective pressure brought on by the drought. But why do some birds have such large beaks to begin with? A prevailing explanation is that scandens birds are mating the other major finch species on Daphne Major, Geopsiza fortis.
+
+2. The finches of Daphne Major
+These hybrid birds then mate with pure scandens, in a process called introgressive hybridization, which can bring fortis characteristics into the scandens species. This is similar to what likely happened to humans when they encountered neanderthals. In order assess the viability of this explanation,
+
+1 Source: John Gould, public domain
+3. Heredity
+we need to know how strongly parental traits are passed on to offspring. In this last set of exercises, we will investigate the extent to which parental beak depth is inherited by offspring in both scandens and fortis. You are applying your new statistical skills to a real, fundamental scientific problem.
+
+4. Let's practice!
+I find this exhilarating, and I hope you do, too!
+
+
+
+1. Final thoughts
+Wow, that finch beak analysis was intense. It makes me happy to know that you got to dive into one of my favorite data sets of all time. I hope going through that case study showed you how powerful you now are with your new skills in
+
+2. Your statistical thinking skills
+statistical inference, along with being able to implement them in Python. You can now do effective exploratory data analysis, plotting ECDFs and computing summary statistics. You can obtain parameters by optimization, including by linear regression. You can think probabilistically about those parameter values and give them confidence intervals. To do this, you can use the exceptionally powerful and versatile bootstrap method. Finally, you can formulate and test statistical hypotheses. There is a world of data out there for you to make inferences about using your hard-earnt Python skills! You have the knowledge and skills to do so. You are now a more powerful data scientist.
+
+3. Let's practice!
+Bon voyage!

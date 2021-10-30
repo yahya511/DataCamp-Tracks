@@ -1,0 +1,133 @@
+
+
+1. Formulating and simulating a hypothesis
+When we studied linear regression, we assumed a linear model
+
+2. 2008 US swing state election results
+for how the data are generated and then estimated the parameters that are defined by that model. But, how to we assess how reasonable it is that our observed data are actually described by the model? This is the realm of hypothesis testing. Let's start by thinking about a simpler scenario. Consider the following.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+3. Insert title here...
+Ohio and Pennsylvania are similar states. They are neighbors and they both have liberal urban counties and also lots of rural conservative counties. I hypothesize that county-level voting in these two states have identical probability distributions. We have voting data to help test if this hypothesis. Stated more concretely,
+
+4. Hypothesis testing
+we are going to assess how reasonable the observed data are assuming the hypothesis is true. The hypothesis we are testing is
+
+5. Null hypothesis
+typically called the null hypothesis. We might start by just plotting the two ECDFs of
+
+6. ECDFs of swing state election results
+the county-level votes. Whew! It is pretty tough to make a judgment here. Pennsylvania seems to be slightly more toward Obama in the middle part of the ECDFs, but not much. We can't really draw a conclusion here.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+7. Percent vote for Obama
+We could just compare some summary statistics. Again, this is a tough call. The means and medians of the two states are really close, and the standard deviations are almost identical. So eyeballing the data is not enough. To resolve this issue,
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+8. Simulating the hypothesis
+we can simulate what the data would look like if the county-level voting trends in the two states were identically distributed. We can do this by putting the Democratic share of the vote for all of Pennsylvania's 67 counties and Ohio's 88 counties together.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+9. Simulating the hypothesis
+We then ignore what state they belong to. Next, we randomly scramble
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+10. Simulating the hypothesis
+the ordering of the counties.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+11. Simulating the hypothesis
+We then re-label the first 67 to be "Pennsylvania" and the remaining ones to be "Ohio." So, we just redid the election as if there was no difference between Pennsylvania and Ohio.
+
+12. Permutation
+This technique, of scrambling the order of an array, is called a permutation. It is at the heart of simulating a null hypothesis were we assume two quantities are identically distributed.
+
+13. Generating a permutation sample
+Let's look at how we can implement this in Python. First, we need to make a single array with all of the counties in it. We do this using the np dot concatenate function. Notice that this function takes a tuple of the arrays you wish to concatenate as an argument. Next, we use the function np dot random dot permutation to conveniently permute the entries of the array. We then assign the first 67 to be labeled Pennsylvania and the last 88 to be labeled Ohio. These samples are called permutation samples.
+
+14. Let's practice!
+Now, let's practice doing some permutation sampling of real data!
+
+
+
+
+1. Test statistics and p-values
+Now that we know how to simulate the null hypothesis using permutation, we can start to test it. We will continue our study of hypothesis testing with
+
+2. Are OH and PA different?
+the Ohio/Pennsylvania vote data. We are testing the null hypothesis that the county-level voting is identically distributed between the two states. Remember that
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+3. Hypothesis testing
+testing a hypothesis is an assessment of how reasonable the observed data are assuming the hypothesis is true. But this is a bit vague. What about the data do we assess and how do we quantify the assessment? The answer to these questions hinges on the concept of
+
+4. Test statistic
+a test statistic. A test statistic is a single number that can be computed from observed data and also from data you simulate under the null hypothesis. It serves as a basis of comparison between what the hypothesis predicts and what we actually observed. Importantly, you should choose your test statistic to be something that is pertinent to the question you are trying to answer with your hypothesis test, in this case, are the two states different? If they are identical, they should have the same mean vote share for Obama. So the difference in mean vote share should be zero. We will therefore choose the difference in means as our test statistic.
+
+5. Permutation replicate
+From the permutation sample we generated in the last video, the value of the test statistic is 1-point-12%. The value of a test statistic computed from a permutation sample is called a permutation replicate, in this case, 1-point-12%. We already calculated that the difference in mean vote share from the actual election was 1-point-16%. So, for this permutation replicate, we did not quite get as big of a difference in means than what was observed in the original data. Now, we can "redo" the election 10,000 times under the null hypothesis by generating lots and lots of permutation replicates. (You will write for loops to do this in the exercises.)
+
+6. Mean vote difference under null hypothesis
+We can plot a histogram of all the permutation replicates. The difference of means from the elections simulated under the null hypothesis lies somewhere between -4 and 4%. The actual mean percent vote difference was 1-point-16%, shown by the red line. If we tally up the area of the histogram that is
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+7. Mean vote difference under null hypothesis
+to the right of the read line, we get that about 23% of the simulated elections had at least a 1-point-16% difference or greater. This value, point-23, is called
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+8. p-value
+the p-value. It is the probability of getting at least a 1-point-16% difference in the mean vote share assuming the states have identically distributed voting. So is it plausible that we would observe the vote share we got if Pennsylvania and Ohio had identically distributed county-level voting? Sure it is. It happened 23% of the time under the null hypothesis. Now, we have to be careful about the definition of the p-value. Again, the p-value is the probability of obtaining a value of your test statistic that is at least as extreme as what was observed, under the assumption the null hypothesis is true. The p-value is exactly that. It is not the probability that the null hypothesis is true. Further, the p-value is only meaningful if the null hypothesis is clearly stated, along with the test statistic used to evaluate it. When the p-value is small, it is often said that the data are
+
+9. Statistical significance
+statistically significantly different than what we would observe under the null hypothesis. For this reason, the hypothesis testing we're doing is sometimes called
+
+10. Null hypothesis significance testing (NHST)
+null hypothesis significance testing, or NHST. I encourage you not to just label something as statistically significant or not, but rather to consider the value of the p-value, as well as how much different the data are from what you would expect from the null hypothesis.
+
+11. statistical significance ? practical significance
+Remember: statistical significance (that is, low p-values) and practical significance, whether or not the difference of the data from the null hypothesis matters for practical considerations, are two different things.
+
+12. Let's practice!
+Ok, now let's perform some hypothesis tests!
+
+
+
+
+1. Bootstrap hypothesis tests
+Let's go over the pipeline of hypothesis testing that we have been studying.
+
+2. Pipeline for hypothesis testing
+First, clearly state the null hypothesis. Stating the null hypothesis so that it is crystal clear is essential to be able to simulate it. Next, define your test statistic. Then generate many sets of simulated data assuming the null hypothesis is true. Compute the test statistic for each simulated data set. The p-value is then the fraction of your simulated data sets for which the test statistic is at least as extreme as for the real data. Now let's do another hypothesis test.
+
+3. Michelson and Newcomb: speed of light pioneers
+Consider again Michelson's measurements of the speed of light. Around the same time that Michelson did his experiment, his future collaborator Simon Newcomb also measured the speed of light.
+
+1 Michelson image: public domain, Smithsonian
+2 Newcomb image: US Library of Congress
+4. Michelson and Newcomb: speed of light pioneers
+Newcomb's measurements had a mean of 299,860 km/s, differing from Michelson's by about 8 km/s. We want to know if there is something fundamentally different about Newcomb's and Michelson's measurements. The thing is: we only have Newcomb's mean and none of his data points!
+
+1 Michelson image: public domain, Smithsonian
+2 Newcomb image: US Library of Congress
+5. The data we have
+The question is: could Michelson have gotten the data set he did if the true mean speed of light in his experiments was equal to Newcomb's? So, we formally
+
+1 Data: Michelson, 1880
+6. Null hypothesis
+state our hypothesis as this: the true mean speed of light in Michelson's experiments was actually Newcomb's reported mean, which we'll call the Newcomb value. When I say the true mean speed of light in Michelson's experiments, think the mean Michelson would have gotten had done his experiment lots and lots and lots of times. Because we are comparing a data set with a value, a permutation test is not applicable. We need to simulate the situation in which the true mean speed of light in Michelson's experiments is Newcomb's value.
+
+7. Shifting the Michelson data
+To achieve this, we shift Michelson's data such that its mean now matches Newcomb's value. See here the ECDF of the shifted data relative to the original data. We can then use bootstrapping on this shifted data to simulate data acquisition under the null hypothesis.
+
+8. Calculating the test statistic
+The test statistic is the the mean of the bootstrap sample minus Newcomb's value. We write a function diff_from_newcomb to compute it, and compute the observed test statistic.
+
+9. Computing the p-value
+We then use the draw_bs_reps function you have already written to generate the bootstrap replicates, which is the value of the test statistic computed from a bootstrap sample. Note that the data we pass into the function are the shifted Michelson measurements because those are the ones we use to simulate the null hypothesis. The p-value is computed exactly the same way as for the permutation test. We report the fraction of bootstrap replicates that are less than the observed test statistic. In this case, we use less than because the mean from Michelson's experiments was less than Newcomb's value. We get a p-value of 0-point-16. This suggests that it is quite possible the Newcomb and Michelson did not really have fundamental differences in their measurements. This is an example of
+
+10. One sample test
+a one-sample test, since we had one set of samples from Michelson and were comparing to a single number from Newcomb. Often in the field, you will do two-sample tests that require the bootstrap, which you will explore in the exercises. I know this video was a lot to take in. Explicitly simulating a null hypothesis like this, we we have to shift the mean, can be tricky. You'll get a chance to practice in the exercises, and you may want to go over the procedure again to make sure you understand it.
+
+11. Let's practice!
+Ok, enough talk. Let's do some bootstrap hypothesis tests!
+
