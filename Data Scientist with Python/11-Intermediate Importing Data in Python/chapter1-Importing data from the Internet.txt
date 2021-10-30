@@ -1,0 +1,75 @@
+
+
+1. Importing flat files from the web
+You're now able to import data in Python from all sorts of file types:
+
+2. You’re already great at importing!
+flat files such as dot txt's and dot csv's, other file types such as pickled files, Excel spreadsheets and MATLAB files. You've also gained valuable experience in querying relational databases to import data from them using SQL. You have really come a long way, congratulations! However, all of these skills involve importing data from files that you have locally. Much of the time as a data scientist, these skills won't be quite enough because you won't always have the data that you need. You will need to import it from the web.
+
+3. Can you import web data?
+Say, for example, you want to import the Wine Quality dataset from the Machine Learning Repository hosted by the University of California, Irvine. How do you get this file from the web? Now you could use your favourite web browser of choice to navigate to the relevant URL, point and click on the appropriate hyperlinks to download the file but this poses a few problems. Firstly, it isn't written in code and so poses reproducibility problems. If another Data Scientist wanted to reproduce your workflow it, she would necessarily have to do so outside Python. Secondly, it is NOT scalable. If you wanted to download one hundred or one thousand such files, it would take one hundred or one thousand times as long, respectively, whereas if you wrote it in code, your workflow could scale.
+
+4. You’ll learn how to…
+As reproducibility and scalability are situated at the very heart of Data Science, you're going to learn in this chapter how to use Python code to import and locally save datasets from the world wide web. You'll also learn how to load such datasets into pandas dataframes directly from the web, whether they be flat files or otherwise. Then you'll place these skills in the wider context of making HTTP requests. In particular, you'll make HTTP GET requests, which in plain English means getting data from the web. You'll use these new Request skills to learn the basics of scraping HTML from the internet and you'll use the wonderful Python package BeautifulSoup to parse the HTML and turn it into data. There are a number of great packages to help us import web data: herein, you'll become familiar with the urllib and requests packages. We'll first check out urllib:
+
+5. The urllib package
+"This module provides a high-level interface for fetching data across the World Wide Web. In particular, the urlopen function is similar to the built-in function open, but accepts Universal Resource Locators (URLs) instead of filenames." Let's now dive directly in to importing data from the web with an example, importing the Wine Quality dataset for white wine. Don't get jealous: in the first interactive exercise, it will be your job to import the red wine dataset!
+
+6. How to automate file download in Python
+All we have done here is imported a function called urlretrieve from the request subpackage of the urllib package, we assigned the relevant URL as a string to the variable url. We then used the urlretrieve function to write the contents of the url to a file 'winequality-white dot csv'. Now it's your turn to do the same but for red wine!
+
+7. Let's practice!
+In the following interactive exercises you'll also figure out how to use pandas to load the contents of web files directly into pandas dataframes without first having to save them locally. Happy hacking!
+
+
+
+
+1. HTTP requests to import files from the web
+Congrats on importing your first web data! In order to import files from the web,
+
+2. URL
+we used the urlretrieve function from urllib dot requests. Lets now unpack this a bit and, in the process, understand a few things about how the internet works. URL stands for Uniform or Universal Resource Locator and all they really are are references to web resources. The vast majority of URLs are web addresses, but they can refer to a few other things, such as file transfer protocols (FTP) and database access. We'll currently focus on those URLs that are web addresses OR the locations of websites. Such a URL consists of 2 parts, a protocol identifier http or https and a resource name such as datacamp dot com. The combination of protocol identifier and resource name uniquely specifies the web address! To explain URLs, I have introduced yet another acronym
+
+3. HTTP
+http, which itself stands for HyperText Transfer Protocol. Wikipedia provides a great description of HTTP. "The Hypertext Transfer Protocol (HTTP) is an application protocol for distributed, collaborative, hypermedia information systems. HTTP is the foundation of data communication for the World Wide Web." Note that HTTPS is a more secure form of HTTP. Each time you go to a website, you are actually sending an HTTP request to a server. This request is known as a GET request, by far the most common type of HTTP request. We are actually performing a GET request when using the function urlretrieve. The ingenuity of urlretrieve also lies in fact that it not only makes a GET request but also saves the relevant data locally. In the following, you'll learn how to make more GET requests to store web data in your environment. In particular, you'll figure out how to get the HTML data from a webpage. HTML stands for Hypertext Markup Language and is the standard markup language for the web.
+
+4. GET requests using urllib
+To extract the html from the wikipedia home page, you import the necessary functions, specify the URL, package the GET request using the function Request, send the request and catch the response using the function urlopen. This returns an HTTPResponse object, which has an associated read method. You then apply this read method to the response, which returns the HTML as a string, which you store in the variable html. You remember to be polite and close the response!
+
+5. GET requests using requests
+Now we are going to do the same, however here we'll use the requests package, which provides a wonderful API for making requests. According to the requests package website. "Requests allows you to send organic, grass-fed HTTP/1 dot 1 requests, without the need for manual labor." and the following organizations claim to use requests internally: "Her Majesty's Government, Amazon, Google, Twilio, NPR, Obama for America, Twitter, Sony, and Federal U.S. Institutions that prefer to be unnamed."
+
+6. GET requests using requests
+Moreover, "Requests is one of the most downloaded Python packages of all time, pulling in over 7,000,000 downloads every month. All the cool kids are doing it!" Lets now see requests at work. Here, you import the package requests, specify the URL, package the request, send the request and catch the response with a single function requests dot get; apply the text method to the response which returns the HTML as a string.
+
+7. Let's practice!
+That's enough out of me for the time being. Let's get you hacking away at pulling down some HTML from the web using GET requests! GET coding!
+
+
+
+1. Scraping the web in Python
+Wow! you have just scraped HTML data from the web and you've done so using two different packages, urllib and requests. You also saw that requests provided a higher-level interface in that you needed to write less lines of to retrieve the relevant HTML as a string.
+
+2. HTML
+You've got the HTML of your page of interest but, generally HTML is a humble-jumble mix of both unstructured and structured data. A word on these terms: Structured data is data that has a pre-defined data model or that is organized in a defined manner. Unstructured data is data that does not possess either of these properties. HTML is interesting because, although much of it is unstructured text, it does contain tags that determine where, for examples, headings can be found, and hyperlinks.
+
+3. BeautifulSoup
+In general, to turn HTML that you have scraped from the world wide web into useful data, you'll need to parse it and extract structured data from it. In this video and the next few interactive exercises, we'll provide a brief introduction to how you can perform such tasks using the Python package BeautifulSoup. Lets check out the package's website. The first words at the top are: "You didn't write that awful page. You're just trying to get some data out of it. Beautiful Soup is here to help. Since 2004, it's been saving programmers hours or days of work on quick-turnaround screen scraping projects." Firstly, a word on the name of the package: BeautifulSoup? In web development, the term "tag soup" refers to structurally or syntactically incorrect HTML code written for a web page. What Beautiful Soup does best is to make tag soup beautiful again and to extract information from it with ease! In fact, the main object created and queried when using this package is called BeautifulSoup and it has a very important associated method called prettify! Lets now see BeautifulSoup in Beautiful Action!
+
+4. BeautifulSoup
+Once again, you use requests to scrape the HTML from the web. Then you create a BeautifulSoup object from the resulting HTML and prettify.
+
+5. Prettified Soup
+Printing the prettified Soup and the original HTML, you can see that for, example, the prettified Soup is indented in the way you would expect properly written HTML to be.
+
+6. Exploring BeautifulSoup
+You'll explore a few of the methods that you can apply to your soupified HTML in the following exercises, such as title and get_text, which extract the title and text, respectively.
+
+7. Exploring BeautifulSoup
+You'll also work with the Soupy method find_all in order to extract the URLs of all of the hyperlinks in the HTML. These are merely a few of many methods existing in BeautifulSoup to extract data from HTML. If, after completing these exercises, you find yourself thirsting for more BeautifulSoup, there are plenty of great resources on their website.
+
+8. Let's practice!
+Okay, now it's your turn to jump into the deep end of the proverbial soup bowl! Happy hacking!
+
+
+

@@ -1,0 +1,67 @@
+
+1. The Twitter API and Authentication
+Congratulations on interacting with your very first APIs and getting data from them! You're on the home stretch now.
+
+2. Herein, you’ll learn
+As a final deep dive, you're going to stream data from the Twitter API. You'll learn how to filter incoming tweets for keywords, you'll learn about the principles of API authentication and OAuth. You'll also learn the basics of the package
+
+3. Herein, you’ll learn
+tweepy, which many people in PythonLand use to interact with the Twitter API.
+
+4. Access the Twitter API
+One of the first major differences between the Twitter API and all the APIs you have seen so far is that you were able to access all the others anonymously and Twitter requires that you have an account. In order gain access to the Twitter API, one needs to create a twitter account if you don't already have one,
+
+5. Access the Twitter API
+log into Twitter Apps and click "Create a New App" - you'll need to agree to a variety of terms and conditions here,
+
+6. Access the Twitter API
+then , go to your "Keys and Access Tokens" tab and Copy your API key, your API secret,
+
+7. Access the Twitter API
+your Access Token and your Access Token secret. These are the Authentication credentials that will allow you to access the Twitter API from Python. In the following interactive exercises, we won't require that you create your own Twitter account and App: we'll do a mock run-through of how you would stream data and analyze as if you had done so.
+
+8. Twitter has a number of APIs
+It is now important to mention that Twitter has a number of APIs. Firstly, they have a REST API; we won't go into the gory details of REST APIs here but I'll say two things - one: REST is short for Representational State Transfer; two: Twitter's REST API allows the user to "read and write Twitter data"; In order "monitor or process Tweets in real-time",
+
+9. Twitter has a number of APIs
+that is, to stream Twitter data, however, we'll want to use Twitter's Streaming API. In particular,
+
+10. Twitter has a number of APIs
+we'll use the public stream, which Twitter's API documentation states "Streams of the public data flowing through Twitter.". The Public Stream itself contains a number of options. As we want to read and process tweets,
+
+11. Twitter has a number of APIs
+we'll want to use the GET statuses/sample API, which "Returns a small random sample of all public statuses."
+
+12. Twitter has a number of APIs
+If you wanted to access absolutely "All public statuses", you would need to use Twitter's Firehose API, which is not publicly available and would most likely cost you a pretty penny.
+
+13. Tweets are returned as JSONs
+One last point to note before we begin streaming tweets: tweets are returned to us as JSONs and they contain numerous possible fields. Check out the Twitter tweet field guide here. You can get tweet text, user, language, time of tweet,
+
+14. Tweets are returned as JSONs
+among many other fields. Lets see how to access and stream data from the Twitter API!. For first-time Python tweet-streamers, I usually recommend the package tweepy,
+
+15. Using Tweepy: Authentication handler
+which has a nice balance of usability and capability. Let's now use it to stream some tweets! First off, it has an OAuth handler which takes care of all of that nasty stuff for you: all you need to do is to pass the API Key and Secret to the handler and then to pass to access credentials using the set_access_token method.
+
+16. Tweepy: define stream listener class
+After this, you'll need to define you Twitter stream listener Class. I wouldn't necessarily expect you to be able to do this yourself so I'm going to do that for you both here and in the interactive exercises that follow. Here I define a Tweet listener that creates a file called 'tweets dot txt', collects streaming tweets and writes them to the file 'tweets dot txt'; once 100 tweets have been streamed, the listener closes the file and stops listening.
+
+17. Using Tweepy: stream tweets!!
+Now that we have written our Twitter Stream Listener Class, all you need to do is to create an instance of it and authenticate it. You can then stream tweets that containing keywords of choice by applying the filter method to the object stream! In the following exercises, you'll practice writing Python code to stream tweets and then you'll do some basic analysis of these tweets to see how often particular keywords are mentioned.
+
+18. Let's practice!
+Happy streaming!
+
+
+
+
+1. Final Thoughts
+Wowee congratulations! You've just completed your deep dive into the Twitter API, in which you streamed tweets, processed them and visualized your results. Amazing! If you've made it this far,
+
+2. What you’ve learned:
+you're now be able to import data in Python from a wide array of sources. To recap the skill-set and data importing chops that you have gained in this course AND its prequel, you're now adept at importing basic text files and flat files, the basic bread and butter of any working Data Scientist's professional life, local files in other formats, such as Excel spreadsheets, SAS, Stata and MATLAB files, pickled and HDF5 files. These skills will make you an even better collaborator for many working professionals out there. You've built up your basic skills at writing SQL queries and can now get all types of data out of relational databases. You're able to pull data from the web: not only can you import basic web files, but you know a number of ways to issue GET requests and can even do some basic web scraping and HTML parsing! On top of all of this, you've learnt how to pull data from APIs and have had hands-on experience doing so with dives into several examples. You've learned a great deal and
+
+3. Let's practice!
+successfully completed these two courses on Importing Data in Python. Happy importing!
+

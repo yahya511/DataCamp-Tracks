@@ -1,0 +1,76 @@
+
+1. Introduction to APIs and JSONs
+In this chapter, you'll explore pulling data from the web even further by
+
+2. APIs
+learning how to interact with APIs, or Application Programming Interfaces. An API is a set of protocols and routines for building and interacting with software applications. In particular, you'll learn how to use the Open Movie Database API and, in the next chapter,
+
+3. APIs
+the Twitter API to pull data from both applications, while learning about API interaction best practices. A standard form for transferring data through APIs is
+
+4. JSONs
+the JSON file format, so in this video, we'll focus our attention squarely on these. Then we'll move onto actually getting data from APIs. JSON is an acronym that is short for JavaScript Object Notation. It is a file format that arose out of a growing need for real-time server-to-browser communication that wouldn't necessarily rely on Flash or Java and was first specified and also popularized by Douglas Crockford, an American programmer and entrepreneur. One of the cool things about JSONs is that they're human readable, that is, they can naturally be read by humans unlike, for example, pickled files, as we saw in the previous course. As they're human readable, let's check one out!
+
+5. JSONs
+Here you see a JSON from the OMDB OR Open Movie Database API. In particular, this is JSON containing information about the movie Snakes on a Plane. First notice that the JSON consists of name-value pairs separated by commas. This will remind you of the key-value pairs in a Python dictionary! We'll see in a minute that, for this reason, when loading JSONs into Python, it is natural to store them in a dict. The keys in JSONs will always be strings enclosed in quotation marks. The values can be strings, integers, arrays or even objects. Such an object can even be a JSON and then you have nested JSONs but we won't go further into these here. In this case of the Snakes on a Plane JSON, all the values are strings and we can see this from the quotation marks.
+
+6. JSONs
+The value corresponding to the key 'Title' is the title of the movie as a string: Snakes on a Plane.
+
+7. JSONs
+The value corresponding to the key 'Year' is the year of release as a string: 2006 and so on. There's the rating, the runtime, director, writers, plot, language and much more! You'll soon learn how to use the OMDB API and Python to automate retrieval of such data, but first you'll figure out how to load JSONs from a local directory.
+
+8. Loading JSONs in Python
+Lets say that I had the JSON stored in my working directory as 'snakes dot json'. To load the JSON into my Python environment, I would first import the package json and then open a connection to the file and use the function json dot load to load the JSON. If I then check the datatype of json_data by executing type(json_data), I see that Python cleverly imported the JSON as a dictionary!
+
+9. Exploring JSONs in Python
+To print the key-value pairs to the console, I can then iterate over the key-value pairs using a for loop. Now it's your turn to test your JSON skills
+
+10. Let's practice!
+so get coding!
+
+
+
+1. APIs and interacting with the world wide web
+Congrats on making it through your crash course in JSONs! JSONs are everywhere and one of the main motivating reasons for getting to know how to work with them as a Data Scientist is that much of the data that you'll get from APIs are packaged as JSONs.
+
+2. Herein, you’ll learn
+In this video, you'll learn what APIs are, why they are so important, and see a number of illustrative examples. In the subsequent interactive exercises, you'll gain valuable practice connecting to a variety of APIs, pulling and parsing data from them.
+
+3. What is an API?
+So what is an API and why are they so important? Simply put, an API is a set of protocols and routines for building and interacting with software applications. Another way to think of it is that an API is a bunch of code that allows two software programs to communicate with each other. For example, if you wanted to stream twitter data by writing some Python code, you would use the Twitter API. If you wanted to automate pulling and processing information
+
+4. What is an API?
+from Wikipedia in your programming language of choice, you could do so using the Wikipedia API.
+
+5. APIs are everywhere
+Using such APIs have now become standard ways of interacting with such applications. Twitter has an API that is used by marketing companies and social scientists engaged in research concerning social networks.
+
+6. APIs are everywhere
+Uber,
+
+7. APIs are everywhere
+Facebook and
+
+8. APIs are everywhere
+Instagram all have APIs. Now let's figure out how to connect to an API and how to pull data from it.
+
+9. Connecting to an API in Python
+In this example, we'll pull movie data from the Open Movie Database, or OMDB, API. Once again, you'll use the ever-elegant requests library. You import requests and assign the URL of interest to the variable url. You then package and send the request to the URL, which describes your API query, and catch the response in one line of code. Thanks again, requests package! Another really cool aspect of the requests package is that the Response objects, such as r, have an associate method json, which is a built-in JSON decoder for when we're dealing with JSON data. This returns a dictionary and we can then print all the key-value pairs to check out what we pulled from the OMBD API!
+
+10. What was that URL?
+Now the last thing to discuss is how the URL we used actually pulled data from the API. To do so, lets break it up into chunks. The http signifies that we're making an HTTP request, the 'www dot omdb dot api' that we're querying the OMDB API, then there's the "?t equals hackers" which is the really interesting part and something we haven't discussed yet in this course. This string that begins with a question mark is called a Query String. Query Strings are parts of URLs that do not necessarily fit into conventional a hierarchical path structure. What follows the question mark in the query string is the query we are making to the OMBD API. The query we just made was simple : querying 't equals hackers' asked the API to return the data about the movie with the title Hackers. The 't' in the query stood for title.
+
+11. OMDb API
+We knew that this was how to perform such a query from the documentation on the OMDB API's homepage. Under "Usage" here, they state explicitly that 'Send all data requests to: http:// www dot omdbapi dot com /?'.
+
+12. OMDb API
+They also have a query string parameters table that shows how to query a particular title or a particular movie ID.
+
+13. It’s a regular URL!
+It is also worth mentioning that there is nothing special about this URL and so you can also navigate to it in your browser of choice. It will generally look like this. I like to use a Chrome extension called JSON formatter to make it a bit prettier. Alright. Now you know all about APIs and have a basic practical understanding of how to query them,
+
+14. Let's practice!
+lets get you writing some Python to extract some data from a number of APIs! Happy coding!
+
+
