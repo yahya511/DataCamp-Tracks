@@ -1,0 +1,103 @@
+
+
+1. Categorical Plot Types
+In the first two chapters of this course, we covered the basics of how to use the Seaborn API for creating and customizing plots using different Seaborn and matplotlib approaches. These chapters provide the foundation for exploring additional plot types. This lesson will focus on the many different categorical plots that Seaborn supports.
+
+2. Categorical Data
+In our earlier exercises we looked at distribution and linear regression plots, used on numerical values. Seaborn also supports many plot types with categorical data. Categorical data is data which includes a limited or fixed number of values and is most useful when combined with numeric data. For the rest of this lesson, we will be looking at US Healthcare reimbursement data related to Renal Failure category codes and their associated reimbursement values. In these examples, the codes are the categorical variables and the average hospital charge is the numerical value we will analyze in our plots.
+
+3. Plot types - show each observation
+Seaborn breaks categorical data plots into three groups. The first group includes the stripplot() and swarmplot(), which show all the individual observations on the plot.
+
+4. Plot types - abstract representations
+The second category contains the familiar boxplot(), as well as the violinplot() and lvplot(). These plots show an abstract representation of the categorical data.
+
+5. Plot types - statistical estimates
+The final group of plots show statistical estimates of the categorical variables. The barplot() and pointplot() contain useful summaries of data. The countplot() shows the number of instances of each observation.
+
+6. Plots of each observation - stripplot
+Seaborn's stripplot() shows every observation in the dataset. In some cases, it can be difficult to see individual data points. We can use the jitter parameter in order to more easily see how the Average Covered Charges vary by Diagnostic Reimbursement Code.
+
+7. Plots of each observation - swarmplot
+We can plot a more sophisticated visualization of all the data using a swarmplot(). This plot uses a complex algorithm to place the observations in a manner where they do not overlap. The downside of this approach is that the swarmplot() does not scale well to large datasets.
+
+8. Abstract representations - boxplot
+The next category of plots show abstract representations of the data. A boxplot() is the most common of this type. This plot is used to show several measures related to the distribution of data, including the median, upper and lower quartiles, as well as outliers.
+
+9. Abstract representation - violinplot
+The violinplot() is a combination of a kernel density plot and a box plot and can be suitable for providing an alternative view of the distribution of data. Because the plot uses a kernel density calculation it does not show all data points. This can be useful for displaying large datasets but it can be computationally intensive to create.
+
+10. Abstract representation - lvplot
+The final plot in this grouping is the lvplot(), which stands for Letter Value plot. The API is the same as the boxplot() and violinplot() but can scale more effectively to large datasets. The lvplot() is a hybrid between a boxplot() and violinplot() and is relatively quick to render and easy to interpret.
+
+11. Statistical estimates - barplot
+The final category of plots are statistical estimates of the data. The barplot() shows an estimate of the value as well as a confidence interval. In this example, we include the hue parameter described in Chapter 1, which provides another useful way for us to look at this categorical data.
+
+12. Statistical estimates - pointplot
+The pointplot() is similar to the barplot() in that it shows a summary measure and confidence interval. A pointplot() can be very useful for observing how values change across categorical values.
+
+13. Statistical estimates - countplot
+The final categorical plot is the countplot(), which displays the number of instances of each variable.
+
+14. Let's practice!
+Now that we have gone through all of the categorical plots available in Seaborn, let's practice making some of our own.
+
+
+Hide Transcript
+
+
+1. Regression Plots
+In Chapter 1, we briefly covered regression plots. Since regression plots are a very important tool in the data scientist's toolbox, Seaborn has a robust API that supports sophisticated analysis of datasets. In this lesson, we will spend some time looking at regression analysis of bicycle-sharing data from Washington, DC.
+
+2. Bicycle Dataset
+This dataset contains a summary of bicycle rental activity by day that has been joined with weather information such as temperature, humidity, and overall weather conditions. We can use Seaborn's regression plotting tools to evaluate the data from multiple perspectives and look for relationships between these numeric variables.
+
+3. Plotting with regplot()
+Here is a quick summary of the regplot() function. Like most of the Seaborn functions we have reviewed, the function requires the definition of the data and the x and y variables. In this example, we include a unique marker for the observations. Upon first glance, it looks like there is a relationship between temperature and total bike rentals in a day. This intuitively makes sense. People like to bike when the weather is warm.
+
+4. Evaluating regression with residplot()
+The residual plot is a very useful plot for understanding the appropriateness of a regression model. Ideally, the residual values in the plot should be plotted randomly across the horizontal line. In this specific example, the data looks like it might have a slight curve suggesting a nonlinear model might be appropriate.
+
+5. Polynomial regression
+If a value greater than 1 is passed to the order parameter of regplot(), then Seaborn will attempt a polynomial fit using underlying NumPy functions. In this example, Seaborn computes a second order polynomial function for the relationship between temperature and rentals. In this view, it looks like rentals might start to trail off if the weather gets too warm.
+
+6. residplot with polynomial regression
+The residual plot can interpret the second order polynomial and plot the residual values. In this example, the values are more randomly distributed, so a second order equation is likely more appropriate for this problem.
+
+7. Categorical values
+Seaborn also supports regression plots with categorical variables. It might be interesting to see how rentals change over the various months. In this example, using the jitter parameter makes it easier to see the individual distribution of the rental values for each month.
+
+8. Estimators
+In some cases, even with the jitter, it may be difficult to see if there are any trends based on the value of the variable. Using an estimator for the x value can provide another helpful view of the data. This simplified view shows a trend consistent with the seasons in Washington, DC.
+
+9. Binning the data
+When there are continuous variables, it can be helpful to break them into different bins. In this case, we can divide the temperature into four bins and Seaborn will take care of calculating those bins for us and plotting the results. This is much quicker than trying to use pandas or some other mechanism to create the bins. This shortcut function can help with getting a quick read on continuous data such as temperature.
+
+10. Let's practice!
+Seaborn's regplot() function supports several parameters for creating highly customized regression plots. Now, let's apply these concepts to some examples.
+
+Hide Transcript
+
+
+1. Matrix Plots
+The final category of plots we will discuss in this section are matrix plots. The heatmap is the most common type of matrix plot and can be easily created by Seaborn. These types of matrix plots can be useful for quickly seeing trends in a dataset. Let's learn how to construct these plots in Seaborn and use them to look at our bicycle rental data.
+
+2. Getting data in the right format
+Seaborn's heatmap() function expects the data to be in a matrix. To illustrate this process, we can look at the bicycle data to see how rentals vary by day of the week and month. The crosstab() function builds a table to summarize the data by the day and month. In this example, we also use the aggfunc argument to get the average number of rentals for each of the day and month combinations. This is a very useful capability available in pandas and makes it easy to plot a heatmap once it is in this format.
+
+3. Build a heatmap
+The heatmap translates the numerical values in the matrix into a color coded grid. In this example, the colors get lighter as the numbers increase. Using this approach, it is easy to see that the busiest days are Saturdays in June and September. The color code also illustrates that rental rates are higher in the warmer weather months from May through October.
+
+4. Customize a heatmap
+The display of the heatmap can be customized in multiple ways to present the most information as clearly as possible. This example illustrates a number of customizations. First, we use annot equals True to turn on annotations in the individual cells. The fmt option ensures that the results are displayed as integers. Next, we use a custom cmap of Yellow Green Blue to change the shading we use. By setting cbar equals False, the color bar is not displayed. Finally, passing a variable to linewidths puts some small spacing between the cells so that the values are simpler to view. This example shows how changing a few parameters in Seaborn really changes the output of the plot.
+
+5. Centering a heatmap
+The final customization we will look at is centering the heatmap() color scheme. In this example, we center the colormap at the value stored for Sept and Saturday of 9 and 6 using the numeric indices for these values. The effect of this change is that overall color scheme is shifted towards yellows instead of blues.
+
+6. Plotting a correlation matrix
+One common usage for a heatmap is to visually represent the correlation between variables. pandas DataFrames have a corr() function that calculates the correlation between the values in the columns. The output of this function is ideally structured to be displayed as a heatmap. This visualization can be useful to understand which variables you might want to further study using regplot(). This plot shows that the total rentals are most highly correlated with the temp variables.
+
+7. Let's practice!
+It’s time to put this into practice.
+
+

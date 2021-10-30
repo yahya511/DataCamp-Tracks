@@ -1,0 +1,59 @@
+
+
+1. Using Seaborn Styles
+Choosing the right type of plot is only the first step in creating effective visualizations. It is also important to configure the other aspects of your visualizations such as the layouts, labels, and colors. These traits are referred to as the visualization's aesthetics. Seaborn provides many functions for configuring your plots so they have the most impact. In this lesson, we will cover how to use Seaborn's style functions to dramatically alter the way your data is displayed.
+
+2. Setting Styles
+Seaborn has several default built in themes that are more appealing than the default matplotlib styles. In order to set a default theme, use the sns.set() function. In this example, we can look at the distribution of college tuition fees in the US. The first image shows the standard pandas histogram and the second plot shows what the histogram looks like with Seaborn's style. Notice how the color palette is muted and the grid lines are displayed. This is the default Seaborn style, also called darkgrid.
+
+3. Theme examples with sns.set_style()
+Styles control multiple aspects of the final plot including the color palette and the use of grid lines or tick marks. Depending on the visualization, one style may be more beneficial than others for conveying your message. The best approach is to experiment with the styles and use the one that works best for your needs. This example shows the impact changing styles can have when plotting your data.
+
+4. Removing axes with despine()
+In general, visualizations are more impactful if the amount of excess "chart junk" is removed. A common use case is to remove the lines around the axes called spines. Seaborn's despine() function removes one or more of the spines on a chart. The default is to remove the top and right lines but more can be removed by passing arguments to the despine() function.
+
+5. Let's practice!
+Now that you have learned about some simple methods for modifying the aesthetics of your plots, let's try some examples on your own.
+
+
+
+
+1. Colors in Seaborn
+Color is an extremely important component in creating effective visualizations. Different types of data can be interpreted more effectively by using the correct color palettes. In addition, around 8% of the population is affected by color blindness of some form, so using palettes that are tailored to those users is very important. Seaborn has several functions for creating, viewing, and configuring color palettes. Effectively understanding and using these functions can greatly increase the impact of your plots.
+
+2. Defining a color for a plot
+Since Seaborn is built on top of matplotlib, it is able to interpret and apply matplotlib color codes. By using the familiar sns.set() function with color codes equals True, any matplotlib color codes will be appropriately mapped to the Seaborn palette. Here is an example of plotting our distplot() using 'g' for green.
+
+3. Palettes
+As shown in the previous slide, we can assign specific colors to a plot. However, this can be tedious when there are many items that must be encoded with color. Seaborn makes this task much easier by allowing us to set a palette of colors that can be cycled through in a plot. Seaborn has six default palettes including deep, muted, pastel, bright, dark, and colorblind. Here are examples of how the different palettes look with a distplot().
+
+4. Displaying Palettes
+Seaborn offers several convenience functions for working with palettes. The palplot() function display color swatches in a Jupyter notebook. In order to retrieve the current palette, you can use the color palette function. This short example shows the exact colors included in the default palettes and how to use each of these functions.
+
+5. Defining Custom Palettes
+There are three main types of color palettes. Circular color palettes are used for categorical data that is not ordered. Sequential palettes are useful when the data has a consistent range from high to low values. A diverging color palette is best used when both the high and the low values are interesting. Seaborn allows us to create each of these types of palettes in multiple manners. Each example on this slide shows a different automatically created palette of 12 different colors.
+
+6. Let's practice!
+Now that we have walked through creating and using some palettes in Seaborn, we can now apply these concepts to some more examples.
+
+
+
+1. Customizing with matplotlib
+Seaborn has several convenience functions for modifying components of your final Seaborn visualization. Since Seaborn is based on matplotlib, there is a wide variety of options for further modifying your Seaborn plots. This video will show you how to further configure your plots using the underlying matplotlib library.
+
+2. Matplotlib Axes
+As we have discussed in prior lessons, Seaborn does its best to make plots look good with minimal changes on your part. By using matplotlib's axes objects, you can customize almost any element of your plot. The most important concept is to add additional code to create the subplots using matplotlib's subplots functions and pass the resulting axes object to the Seaborn function. Seaborn will then plot the data on the given axes. In this example, I have used the ax set function to customize the x-label to show that the tuition data is for the 2013-2014 school year.
+
+3. Further Customizations
+This example shows how much control you have once you start modifying the axes. In addition to setting an x-label, I have also changed the y-label and set a limit so that tuition ranges are only between 0 and $50,000. Finally, I added a title.
+
+4. Combining Plots
+This example illustrates how you can combine and customize multiple Seaborn plots. First, we create two axes and ensure that the y-axis is shared between the plots. Next, we plot a full distplot on ax0. Then, we use pandas' query function to only plot the data for the state of Minnesota. The other new concept is the use of the axvline to denote the maximum amount we can budget for tuition. In this case, $20,000. The final step is to turn on the legend and display it.
+
+5. Combining Plots
+This example shows how much control you can have when creating your own visualizations.
+
+6. Let's practice!
+Now that you understand the basics of customizing your Seaborn plots using matplotlib, we can try some exercises to get some real world experience.
+
+

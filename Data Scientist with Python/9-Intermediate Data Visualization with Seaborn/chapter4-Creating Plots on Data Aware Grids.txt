@@ -1,0 +1,110 @@
+
+
+1. Using FacetGrid, factorplot and lmplot
+One of Seaborn's most powerful features is its ability to combine multiple smaller plots into a larger visualization that can help identify trends in data with many variables. This video will discuss the concepts behind this visualization tool and discuss the difference between the FacetGrid, factorplots, and lmplots.
+
+2. Multiple plots of data
+The concept of small multiples is useful for analyzing data with many variables. The idea is that you can quickly identify trends in data by comparing multiple plots side by side using the same scales and axes. These plots are referred to as a trellis or lattice plot. In data science, this concept is also frequently called faceting. In this specific example, we can look at the college tuition data and how it varies across the type of degree the school provides, the region, and whether the school is controlled as a public or private institution.
+
+3. Tidy data
+One very important requirement for Seaborn to create these plots is that the data must be in tidy format. This means that each row of the data is a single observation and the columns contain the variables. Once the data is in this format, Seaborn can perform a lot of the heavy lifting needed to create these small multiple plots.
+
+4. FacetGrid
+Seaborn's FacetGrid manages the back end data manipulations to make sure that the data is split across rows, columns, and hue and then used to make the appropriate plot type. The key point to remember is that FacetGrid() provides a lot of flexibility, but you must use a two step process of defining the Facets and mapping the plot type.
+
+5. FacetGrid Categorical Example
+This example shows how to map a boxplot onto a data-aware FacetGrid(). The first step is to set up FacetGrid() with the column defined as the Highest Degree awarded by the school. The next step is to plot a boxplot of the Tuition values. In this case, we also define the order we want the degrees to be displayed in. This example could be expanded to include other variables to divide the data by rows.
+
+6. factorplot()
+Seaborn's FacetGrid() is very powerful and flexible but involves multiple steps to create. The factorplot() function is a shortcut to creating FacetGrids. The underlying returned value is a FacetGrid but the process for creating one is much simpler. The single factorplot() function takes care of the two step process for you.
+
+7. FacetGrid for regression
+The FacetGrid() function also supports standard matplotlib plots. In this example, we can look at a simple scatter plot of Tuition compared to SAT Average across the different degree categories. We can use the same two step setup and mapping process as we did for the box plot.
+
+8. lmplot
+The lmplot() function is similar to the factorplot() function. It provides a shortcut for plotting regression and scatter plots on FacetGrids. In this example, we create a plot that is similar to the FacetGrid() scatter plot. We have also disabled regression lines with the fit_reg equals False parameter.
+
+9. lmplot with regression
+Here, the data is filtered to look only at Regions 4 and 5 for those schools that only offer Bachelor's or Graduate level degrees. The example shows how to define the column as the Highest Degree offered and for the row to filter the data by Region. Behind the scenes, Seaborn filters the data so these plots show only a subset of data for each plot.
+
+10. Let's practice!
+In this section we discussed how the FacetGrid, factorplot(), and lmplot() can be very powerful tools for creating many small plots of data. In the following exercises, you will get a chance to create some of your own.
+
+
+Hide Transcript
+
+
+1. Using PairGrid and pairplot
+The next type of data-aware grid plots we will discuss are the PairGrid and pairplot. These plots are similar to the FacetGrid, factorplot, and lmplots we discussed in the previous exercise because they allow us to see interactions across different columns of data. The difference with these plots is that we only define the columns of data we want to compare.
+
+2. Pairwise relationships
+Let's take a look at our Fair Market Housing data we looked at in a previous exercise. The PairGrid plot allows us to build plots that show the relationships between two data elements. In this example, we want to look at the relationships that might exist between the Fair Market Rent and Median Income of the tenants. The diagonals contain histograms of Fair Market Rent and Median Income. The other diagonal contains a scatter plot alternating which variable is on the x or y-axis.
+
+3. Creating a PairGrid
+The process for creating a PairGrid is similar to a FacetGrid in that we must create the grid, then map a plot type to the grid. The interesting point with this grid is that we do not define the row and column parameters. Instead we define the variables. In this case, the variables are the dataframe columns that we want to look at. The dataframe contains a Fair Market Rate column as well as a Median Income column, which we pass to the PairGrid. The next step is to let Seaborn know that we want to see a scatter plot visualization of the relationship between the two variables. Seaborn takes care of varying the x and y-axis for each of these plots.
+
+4. Customizing the PairGrid diagonals
+In the previous example, the diagonals contained straight lines, which are not very insightful. Fortunately, the PairGrid supports defining the type of plots that can be displayed on the diagonals. You can use the map_diag function to define the plotting function for the main diagonal. The map_offdiag function defines the other diagonal. In this case, we are looking at a histogram plot of the Fair Market Rent and Median Income. This view is much more useful than the previous scatter.
+
+5. Pairplot
+Pairplot is a shortcut function that simplifies the PairGrid. First, we define the variables like we did in the previous view. However, instead of mapping the plots, we can pass keywords to the function to specify the kind of plots for the main and off diagonals. The other nice aspect of this function is that it plots a regression line for us. This is a useful feature for visualizing potential relationships in the data.
+
+6. Customizing a pairplot
+Here is another example of how Seaborn can generate complex plots with very little code. To limit the data we are interested in, we filter the data to rentals with less than 3 bedrooms and assign hue to the bedrooms column. We also pass a keyword argument to reduce the alpha variable to 0.5. This makes the scatter plots transparent so that it is easier to see the observations. The other item to notice is that we passed in 3 variables, so this plot now contains a total of nine plots.
+
+7. Let's practice!
+The PairGrid and pairplot functions are useful tools for looking at the relationships between pairs of variables. Let's practice using these two plot types.
+
+
+Hide Transcript
+
+
+1. Using JointGrid and jointplot
+The final data-aware grid we will discuss is the JointGrid and its companion function, jointplot(). A JointGrid() allows us to compare the distribution of data between two variables. A JointGrid() makes use of scatter plots, regression lines, as well as histograms, distribution plots, and kernel density estimates to give us insight into our data.
+
+2. JointGrid() Overview
+The JointGrid is similar to the other Grid plots in that it takes a small number of inputs and creates an insightful visualization of the data. This type of plot may be new to many aspiring data scientists, so we will describe the basic layout. The input to JointGrid() is an X and Y variable. In this case, we are looking at the relationship between College Tuition and the Admissions Rate. The center of the plot contains a scatter plot of these two variables. The plots along the x and y-axis show the distribution of the data for each variable. This plot can be configured by specifying the type of joint plots as well as the marginal plots. Now that you know the basics, we can look at creating one.
+
+3. Basic JointGrid
+The JointGrid() creation process follows the same steps as the other grids. You must define the grid and map the plots onto the grid. In this case, we define the Tuition and Admission Rates as the X and Y variables. Then we map Seaborn's regplot() and distplot() to the grid. Seaborn takes care of creating the plot.
+
+4. Advanced JointGrid
+Here, we show the flexibility available through the JointGrid() function. The plot_joint() function specifies that a kde plot should be included in the center. The kdeplots on the margins are defined with plot_marginals(). We also use the annotate() function to define additional information about the relationship of the variables. Python's SciPy stats library contains a function that calculates the Pearson correlation value. Seaborn takes care of applying that function and labeling the graph with this value. This view of the data helps us understand the distributions of data for these two variables. In this example, there is a large group of values that have tuition between $15,000 and $20,000 and admission rates around 60%.
+
+5. jointplot()
+The jointplot() is easier to use but provides fewer customization capabilities. In this example, we show a hex plot as the method to demonstrate the relationship between the two variables. Seaborn automatically includes the Pearson r correlation in this plot. As you can see, this is a simpler approach than creating the JointGrid().
+
+6. Customizing a jointplot
+The jointplot() supports simple creation of scatter, hex, residual, regression, and kde plots. It can also support adding overlay plots to enhance the final output. This example, shows a fairly common paradigm for analyzing the data with Seaborn. In addition to defining the X and Y variables, we set the limits for the x-axis to cut off at 0 and 25,000. We also pass keywords to the marginal plot to control the structure of the histogram. In this case, we only want to look at the distribution of results for public universities with an undergraduate enrollment less than 2,500 students. Finally, by including the plot_joint() function, a kde plot is overlaid on the scatter plot.
+
+7. Customizing a jointplot
+This combination of plots is useful for understanding the areas where Tuition and Admission rates have natural groupings. Finally, Seaborn includes the Pearson r coefficient and p-value to summarize the statistical significance of the relationship.
+
+8. Let's practice!
+Now that we have discussed the JointGrid() and jointplot() functions, let's try creating some of our own.
+
+Hide Transcript
+
+
+1. Selecting Seaborn Plots
+We have covered a lot of different plots in Seaborn. The final section of this course will bring all of the concepts together and give you a framework for deciding when to use each Seaborn plot.
+
+2. Seaborn plot map
+We will reinforce the previous lessons by showing how these plot types fit together. The power of Seaborn is the way that the different plots build on each other. For instance, a kdeplot can be used on its own or it can be generated from a distplot(). In addition, the PairGrid() and JointGrid() plots build on top of the regression and distribution plots. Let's explore this in more detail and discuss guidelines on how to approach using Seaborn in your daily data science workflow.
+
+3. Univariate Distribution Analysis
+One of the first steps in analyzing numerical data is looking at its distribution. Seaborn's distplot() combines many of the features of the rugplot(), kdeplot(), and matplotlib histogram into a single function. The distplot() function is the best place to start when trying to do distribution analysis with Seaborn.
+
+4. Regression Analysis
+A regression plot is an example of a plot that shows the relationship between two variables. matplotlib's scatter() plot is a very simple method to compare the interaction of two variables on the x and y-axis. The lmplot() combines many of these features of the underlying regplot() and residplot() in addition to the ability to plot the data on a FacetGrid(). In many instances, lmplot() is the best function to use for determining linear relationships between data.
+
+5. Categorical Plots
+Seaborn has many types of categorical plots as well. In most scenarios, it makes sense to use one of the categorical plots such as the boxplot() or violinplot() to examine the distribution of the variables. Then, follow up with the statistical estimation plots such as the point, bar, or countplot. If you need to facet the data across rows or columns, use a factorplot().
+
+6. pairplot() and jointplot()
+The pairplot() and jointplot() visualizations are going to be most useful after you have done some preliminary analysis of regressions or distributions of the data. Once you are familiar with the data, the pairplot() and jointplot() can be very useful in understanding how two or more variables interact with each other.
+
+7. Thank You!
+Congratulations on completing the course. You are now familiar with the Seaborn library and can start to incorporate it into your own data analysis tasks!
+
+

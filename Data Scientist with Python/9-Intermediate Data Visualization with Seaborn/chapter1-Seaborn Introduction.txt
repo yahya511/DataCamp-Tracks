@@ -1,0 +1,58 @@
+1. Introduction to Seaborn
+Welcome to this introduction to Seaborn. My name is Chris Moffitt and I will be your instructor for this course. I have been using Python for over 10 years and am currently the creator of the popular blog Practical Business Python. I am excited to show you how to effectively use the Seaborn library for creating insightful visualizations.
+
+2. Python Visualization Landscape
+The Python visualization landscape is complex and it can be challenging to find the right tool for the right job. Before we discuss Seaborn in detail, it is helpful to understand where it stands in this landscape. This illustration is from Jake VanderPlas' pycon 2017 presentation on the visualization landscape in Python and highlights the complex ecosystem. The key point is that matplotlib is a foundational library used by many visualization tools including Seaborn.
+
+3. Matplotlib
+matplotlib is a robust library that can support building many types of visualizations. Seaborn uses it to construct statistical visualizations. When working with Seaborn, it is helpful to understand some of the underlying matplotlib constructs. This brief example shows how to plot a column in a pandas DataFrame as a histogram. This specific example includes information about the alcohol content of several different types of Portuguese wines. If you do not understand this code example, you may want to review some introductory Python courses. The rest of this course will assume you understand basic Python and pandas usage.
+
+4. Pandas
+pandas is one of the most important Python libraries for manipulating and analyzing data. In addition to providing powerful data manipulation tools, pandas supports basic data plotting functions. The actual API is consistent with other pandas functions, so it is a very useful tool. The plotting is carried out by matplotlib, so the resulting output looks very similar to the pure matplotlib output. This functionality is very useful when you need to quickly look at data that is already in a DataFrame.
+
+5. Seaborn
+Seaborn integrates with the rest of the Python data science landscape by leveraging matplotlib and integrating with pandas. In this example,
+
+6. Seaborn
+a plot similar to a histogram can be created using Seaborn's distplot() function. The resulting output looks like a histogram but actually is a Gaussian kernel density estimate or KDE. In the next slide we will compare this output to the pandas generated histogram.
+
+7. Histogram vs. Distplot
+This relatively simple example is illustrative of how to use Seaborn. The code is simple but can be used for powerful data analysis. In addition to the analysis, it makes reasonable assumptions about colors and other visual elements to make visualizations that look more pleasing than the standard matplotlib plots. Additionally, Seaborn performs statistical analysis on the data to generate the KDE.
+
+8. Let's practice!
+Now it's your turn to try out Seaborn.
+
+
+
+1. Using the distribution plot
+Now that you have a basic understanding of Seaborn and how it relates to matplotlib and pandas, we will spend some time looking at how to customize distribution plots in Seaborn. The basic ideas learned with this plot type can be applied to the other Seaborn plotting functions we will see in upcoming exercises.
+
+2. Creating a histogram
+The Seaborn API supports customizing the type of plot by using different arguments. In this example, we can use the same distplot() function to create a standard histogram and customize the number of bins to further understand how the values are distributed. This basic approach is used by most functions in Seaborn and is a powerful tool for analyzing data quickly.
+
+3. Alternative data distributions
+As you can see, the distplot() function has several options for configuration and customization. The benefit of this approach is that you can rapidly try different views and settle on the one that seems most appropriate for your analysis. Trying different combinations of the kde and rugp lot can yield important insights.
+
+4. Further Customizations
+There are many functions in Seaborn that build upon each other. The distplot() function we have been discussing relies on using additional Seaborn functions such as the kdeplot() and rugplot(). By understanding this relationship, you can further customize Seaborn plots by passing additional arguments to the underlying functions. In this case, we can tell the underlying kde() function to shade the plot by passing the kde_kws dictionary.
+
+5. Let's practice!
+Now that you know about several Seaborn functions, let's practice some more.
+
+
+1. Regression Plots in Seaborn
+Now that we have taken a look at distribution plots in Seaborn, we will transition to another basic visualization process by plotting linear regression lines. The previous analysis we performed is often referred to as univariate analysis because we only look at one variable. Regression analysis is bivariate because we are looking for relationships between two variables.
+
+2. Introduction to regplot
+The regplot() function is the basis for building regression plots in Seaborn. The basic function call is similar to distplot(), but we explicitly define the x and y variables as well as the source of the data. Since we are using a pandas DataFrame, the x and y variables refer to the columns in the DataFrame. This basic process is similar for many other Seaborn plots so it is good to make sure you understand this well before moving on to more complex plots. In this specific plot, we are interested in any relationship between the alcohol content of the wine and the pH levels. The regression line hints that there might be a slight increase in pH values as the alcohol content increases.
+
+3. lmplot() builds on top of the base regplot()
+One of the confusing points about Seaborn is that it may seem like there is more than one way to do the same plot. In the previous exercises, we looked at distplots and briefly discussed kde plots as a building block for the more robust distplot(). In a similar manner, the lower level regplot() and higher level lmplot() are related. They are called the same way and produce similar output. However, the lmplot() is much more powerful. In this example, we can look at the relationship between alcohol content and quality using both of these plot types. The output looks similar except for the aspect ratio. In the next slide, I will show how the lmplot() is much more flexible.
+
+4. lmplot faceting
+The use of hue and columns is a powerful concept that is present throughout many of Seaborn's functions. The use of plotting multiple graphs while changing a single variable is often called faceting. In this case, faceting can be accomplished by using the lmplot() function. The base function is very similar to regplot() but it provides much more power by allowing you to add additional information using columns, colors, or rows. There are an entire class of functions in Seaborn that support this type of faceting and we will continue to explore them throughout the course.
+
+5. Let's practice!
+It is time to put these concepts into practice. In the following exercises, we will go through some more examples of using the regplot() and lmplot() functions to analyze a dataset. By the end of the exercises, you should have a good understanding of how Seaborn works and be prepared for learning about additional plot types supported by Seaborn.
+
+
