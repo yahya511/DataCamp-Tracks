@@ -1,0 +1,43 @@
+Got It!
+1. Case Study - Counting Crimes
+Now it's time to put your learning to practical use with a case study on the Chicago Crime Data.
+
+2. Data Set Overview
+Our data is in a CSV file and looks like you see here. It contains the details for each crime in the City of Chicago. It's worth noting that I've shrunk the dataset down to be more manageable via sampling so these don't represent every crime that occurred. The full dataset is available on the City of Chicago's Open Data Portal.
+
+3. Part 1 - Step 1
+You'll begin this case study by reading data from a CSV and building a list to hold your data.
+
+4. Part 1 - Step 2
+In the second step, you'll count the data by month using a counter similarly to how we did previously, but with a small twist, which I'll come back to in a second. Then you'll use the month date part to group/count the data by month. So about that twist. In the date part grouping example we used a defaultdict. Here you'll be using a counter. Hint: both work the same way since both are based on dictionaries.
+
+5. Part 1 - Step 3
+Next, we want to extract the data into a dictionary keys by month that stores a list of the location types where the crimes occurred that month. We'll use the defaultdict we learned about in when working on eateries coupled with the date component grouping we just used in the prior step and learned earlier.
+
+6. Part 1 - Final
+So to answer the real question, "What are the five most common crime locations per month?" We'll use a Counter on our new dictionary as we did previous to find the answer we're seeking. Good luck with part 1!
+
+7. Let's practice!
+
+
+Got It!
+1. Case Study - Crimes by District and Differences by Block
+Now let's try our hand at the second part of the case study. First, We're going to determine how many crimes occurred by district, and then look at how types of crimes differ between city blocks.
+
+2. Part 2 - Step 1
+Previously, we read the data directly from the csv file into a dictionary as shown here. This example shows how to use the dictreader which gives you a dictionary per row of the file, you'll need to determine how to properly build the dictionary based on the assignment instructions. Then we can use that dictionary to do things like pop out a key, as we did in a prior exercise, and store the remainder of the data under that key in another dictionary. Here is a reminder of how to pop data from a dictionary, which leaves the original dictionary with everything but that key and value still in place.
+
+3. Part 2 - Step 2
+Then we want to determine how many crimes occurred by district. You'll need to loop over the dictionary Pythonically and use Counter and defaultdict as we have several times in this case study. Here is an example of how we Pythonically looped over dictionaries in our videos.
+
+4. Wrapping Up
+In the last step of our case study, we've identified a few blocks of data we want to concentrate on and see the differences in crimes that occur in these locations. First you'll want to take a list and get a unique set of crimes for that block as we did in chapter one. Then you'll look for difference in the unique crime sets using the set difference method as we did at the end of chapter 1. This will complete the case study! Good luck!
+
+5. Let's practice!
+
+
+Got It!
+1. Final thoughts
+Congratulations, you made it! You've learned the fundamentals of data types and how to use them in many different ways with Python. You are able to bend lists, sets, and dictionaries to your will and use them to answer data science questions. You explored the collections module to maintain order, establish defaults, and count furiously. You have traveled through time with datetime objects and the Pendulum library. Then you put it all together in a case study. Again, congratulations on completing the course and thank you!
+
+2. Congratulations

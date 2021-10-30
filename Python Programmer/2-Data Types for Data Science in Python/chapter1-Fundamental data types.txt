@@ -1,0 +1,87 @@
+Got It!
+1. Introduction and lists
+Hello, I'm Jason Myers and welcome to the Python data types for data science course. I'm an author, open source maintainer, and an avid Python user.
+
+2. Data types
+In most programming languages, the data type system set the stage for the capabilities of the language. Understanding how to use the fundamental data types of a language greatly empowers you as a data scientist. You've already encountered integers and strings, so let's start with container sequences.
+
+3. Container sequences
+A container sequence gets its name because it holds a sequence of elements of other data types. In the data science world, we'll use these containers to store our data for aggregation, order, sorting, and more. Python provides several container sequences such as lists, sets, and tuples to name a few. They can be mutable meaning that they can have elements added and removed from them. Immutability, not able to be altered, allows us to protect our reference data, and replace individual data points with sums, averages, derivations, etc. We can iterate, also known as looping, over the data contained within these containers. Being able to iterate over these sequences allows us to group data, aggregate it, and process it over time. Let's start with learning about container types by looking at lists.
+
+4. Lists
+Often we need to hold an ordered collection of items, and lists allow us to do just that. Lists are mutable so we can add or remove data from them. Lists also allow us to access an individual element within them using an index. Let's see this in action.
+
+5. Accessing single items in list
+If I wanted to store a list of cookies I've eaten this week. I would begin by creating that list of cookies. When I eat another cookie, I'll want to add that to my list as well, which I can do with the append method. Then I can print the whole list of cookies. If I wanted to print the cookie I ate third; then I could use an index, which in this case would be 2 since indexes starts at zero, and print that element from the list. In addition to appending each cookie one at a time, we might also want to combine multiple lists.
+
+6. Combining Lists
+Python empowers us to combine lists in a few ways. First, we can use operators like the plus sign to add two lists together. When we do this, we will get a new list object returned to us. For example, we can add a list of cookies and cakes to create a list of deserts. Additionally, we can use the extend method on the list to combine two lists effectively appending all the values from a second list. You'll have the chance to use this in the exercises.
+
+7. Finding Elements in a List
+Earlier, we took advantage of the indexability of lists to return the item at a certain index. However, if we only know the value of an element, we can use it with the index method to get its index. Here I'm trying to remember when I had a sugar cookie.
+
+8. Removing Elements in a List
+Another reason I might want to know the index of a value is to remove it from a list with the pop method. Here I want to remove that sugar cookie from the list of cookies. So i pass the index I found earlier to the pop method, and I store the result of the pop method, which is the value we removed. Finally, I print the list so I can ensure it was removed.
+
+9. Iterating over lists
+Often when working with lists, we want to work on that list one element at a time. We can do that by iterating over the list using a for loop. Here I want to print each cookie I've eaten this week. So I loop over each cookie in the cookies list and print it.
+
+10. Sorting lists
+Python provides the sorted function that accepts an iterable such as a list and returns a new list with the elements in the proper order. Here I sort the cookies list and then print it so I can see the cookie names in alphabetical order. Time for you to try this on your own.
+
+11. Let's practice!
+
+
+Got It!
+1. Meet the Tuples
+The next container type we want to learn about is the tuple. Tuples are widely used internally many of the systems we depend on like databases.
+
+2. Tuple, Tuple
+Tuples are very much like lists they hold data in the order, and we can access elements inside a tuple with an index. However, the similarities end there. Tuples are easier to process and more memory efficient than lists. Tuples are immutable, which means we can't add or remove elements from them. This is powerful because we can use them to ensure that our data is not altered. We can create tuples by pairing up elements. Finally, we can use something called unpacking to expand a tuple into named variables that represent each element in the tuple. Let's explore these features...
+
+3. Zipping tuples
+Often, we'll have lists where we want to matchup elements into pairs, and the zip function enables us to do that. Here I've got a list for the most popular cookies in the US and India, and I want to build a list of pairs by the popularity rank of the cookie in each country and I'll pass them the zip function. Then I can print the result of my zip and you can see I have what looks like a list of Tuples. It's really an iterator, but that's for a different course. Notice that the tuples use a parenthesis as their object representation.
+
+4. Unpacking tuples
+Now let's look at how we can use unpacking with a tuple. Tuple unpacking, also sometimes called tuple expansion, allows us to assign the elements of a tuple to named variables for later use. This syntax allows us to create more readable and less error prone code. Here I have a tuple containing the top ranked cookie from both countries, and I want to store them as us_num_1 and in_num_1. So that I can print them by name. I start by putting both variables as the target of the assignment statement separated by a comma. Then assign the first tuple in our top_pairs list to them. Let's look at a another great use case for tuple unpacking.
+
+5. More unpacking in Loops
+For me the place I use tuple unpacking the most is when working with loops. We can use tuple unpacking when declaring the for loop, to separate a list of tuples into their elements as we loop over them. This sounds a bit strange, but let's take a look at it. Here I'm building a for loop that uses tuple unpacking when iterating over the top_pairs list. It splits each tuple in the list into its Indian and US cookie elements. We then use each of these variables to print the cookies in order. Another use of tuple unpacking helps us keep track of which element in the iterable or list we are currently on.
+
+6. Enumerating positions
+Often we want to know what the index is of an element in the iterable is. The enumerate function enabled us to do that by creating tuples were the first element of the tuple is the index of the element in the original list, then the element itself. We can use this to track rankings in our data or skip elements we are not interested in. Here I'm going to enumerate our top pairs list and split that resulting tuple into idx and item. I can also use tuple unpacking on the item to get all three components separately. This can be exceptionally powerful. Let's look at a bit of responsibility that comes with this power.
+
+7. Be careful when making tuples
+When we are creating tuples, we can make them with zip or enumerate or use parentheses as shown here. However the real magic for creating a tuple in Python is the comma, if we accidentally end a line with a comma, we can create a tuple! This can have some very undesirable side affect further down in our code. Keep this in mind if you get a tuple where you don't expect it.
+
+8. Let's practice!
+
+
+Got It!
+1. Sets for unordered and unique data
+Now that you've learned about lists and tuples let's look at our last built-in array data type the set. Sets are excellent for finding all the unique values in a column of your data, a list of elements, or even rows from a file.
+
+2. Set
+We use sets when we want to store unique data elements in an unordered fashion. For example, I might want to store a list of each type of cookie I had without any duplicates. Set are also mutable so I can add and remove elements from them. We're just going to scratch the surface of what can be done with a set. It has many more capabilities that align with set theory from math.
+
+3. Creating Sets
+A set is almost always created from a list. For example, I might have a list of cookies I've eaten today. I can make a set of them by passing them into the set constructor. Finally if I print it, you might notice that although I had three chocolate chip cookies in my list, once I make it a set, there is only one occurrence of it in the set. This occurs because sets only store unique items. Now let's explore modifying a set.
+
+4. Modifying Sets
+When working with a set we will use the add method to add a new element to the set. It will only add the element if it is unique otherwise it just continues on. Also, we can add multiple items using the update method. The update method takes a list of items and adds each one to the set if it is not present. While making the first two sections of this chapter, I ate two more cookies: a biscotti and a chocolate chip cookie. So let's use the add method to add those to our set, and print the result.
+
+5. Updating Sets
+Finally, Hugo also had some cookies, so let's use the update method to add the cookies he ate to our set and print them. Now let's learn how to remove some elements from our set.
+
+6. Removing data from sets
+When removing data from a set, we can use the discard method to safely remove an element from the set by its value. No error will be thrown if the value is not found. We can also use the pop method to remove and return an arbitrary element from the set. Let's remove the biscotti from our cookie set as Hugo and I had some debate about whether or not this was even a cookie with the discard method, and print the set. Next, we'll pop two cookies out of the list to decide what we could eat next. Next, we're going to leverage some of that set theory from math to perform very quick comparison operations.
+
+7. Set Operations - Similarities
+The union method on a set accepts a set as an argument and returns all the unique elements from both sets as a new one. The intersection method also accepts a set and returns the overlapping elements found in both sets. This is great for comparing data year over year for example. Speaking of examples, I'm going to create two new sets of the cookies Hugo and I have eaten. Then I'm going to use the union method to see the full set of cookies eaten by both of us. Finally, I use the intersection method to see the cookies that Hugo and I both ate. While these two methods help us find commonality, sets also provide methods to help us find differences.
+
+8. Set Operations - Differences
+We can use the difference method, which accepts a set, to find elements in one set that are not present in another set. The target we call the difference method on is important as that will be the basis for our differences. So here I want to see the cookies that I ate that Hugo didn't, which I can do by calling difference on my set of cookies and giving it Hugo's set and I can perform the reverse of this operation by using Hugo's list as the target.
+
+9. Let's practice!
+
+

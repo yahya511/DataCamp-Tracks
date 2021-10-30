@@ -1,0 +1,83 @@
+Got It!
+1. There and Back Again a DateTime Journey
+Dealing with dates and times is often considered to be very confusing with all the considerations due to the unique ways in which time flows. Leap Years, Different length months, different distribution of weekdays/weekends, and the dreaded timezones are just a few of the things we must consider. However, with careful reasoning, you'll soon be working with datetime data with relative ease. Only practice and experience can make you fluent in datetime issues, so let's start on this learning journey. I'll be using data from the NYC parking violations dataset.
+
+2. From string to datetime
+When working with datetimes in Python, we use the datetime module from the standard library. There is a datetime type inside of the datetime module. In addition to letting us manually create datetime objects, we can also parse existing strings into datetime objects. This is an exceptionally common task. So let's dive into an example. We being by importing the datetime type from the datetime module. Next, I'm printing the string that we are going to parse to create a datetime object.
+
+3. Parsing strings into datetimes
+Next I use the strptime method to parse the parking_violations_date using a format string for MM/DD/YYYY (more on this in just one sec). Finally, I print the datetime object so we can see the results. Okay, so about those format strings...
+
+4. Time Format Strings
+Time format strings are common across many different programming language, and originated in C. Here are the few that we just used with the strptime method. You use the directives and any special characters or spaces you need to match the datestring you are trying to parse. There is a complete list of them in the Python Documentation, and I linked in the exercises for you to reference. In addition to using these format strings for converting from a string to a datetime,
+
+5. Datetime to String
+we can also use them to go from a datetime to a string object with the strftime() method. For example, we can use the same format string to output the datetime we created on the prior slide. We can also output the string as an ISO standard datetime string, one of the most common ways to express times when dealing with writing to or reading from files or applications. Let's use it on our datetime object, we've been working with. Time for you to practice.
+
+6. Let's practice!
+
+
+Got It!
+1. Working with Datetime Components and current time
+Once we have a datetime object, we can work with it to get parts of the datetime like the month, year, or day. We can also get the current time and manipulate a timezone. Let's begin by working with the parts of a datetime object.
+
+2. Datetime Components
+All the parts of a datetime object are available as attributes, such as day, month, year, hour, minute, second etc. These are often used to group data by a particular time frame. Let's count the NYC parking violations for 2016 and group by day. We'll start by using a defaultdict of ints to count the records by day. Next, I'll loop over the packing violations to and parse the date which is found in the fifth element of our list. Next I increment the appropriate day based on the violation.
+
+3. Datetime Components - Results
+Finally I'm going to sort the days of the month and print the day of the month and our violation count for that day.
+
+4. What is the deal with now
+Often when working with datetime objects, you'll want to work on windows or ranges that start from the current date and time. We can do this using the datetime now functions. There is a dot now() method on the datetime object in the datetime module and a dot utcnow() method. The dot now() method returns the current local time on the machine on which it is run, and dot utcnow() does the same thing but returns the value in UTC timezone. We'll talk more about timezones in a second. Let's start by importing datetime type. Then we'll call the now method on it and it will return a new datetime representing the current time. Let's print it to see what we got.
+
+5. What is the deal with utcnow
+Next, let's call utcnow and get the current time in the UTC timezone. Finally, print it. The UTC timezone is only timezone with this special kind of method. Let's learn a bit more about timezones.
+
+6. Timezones
+Timezones can make life very interesting! By default, any datetime you make using the now methods are "naive" datetime objects, which means they are missing their timezone that is required to make an "aware" datetime object. You'll often get data where timezone is not supplied and you need to set it manually. In order to work effectively with other timezones, you can use the pytz module and use the timezone names from the Olsen database, the standard for timezone information. An "aware" datetime object has an dot astimezone() method that accepts a timezone object and returns a new datetime object in the desired timezone. If the tzinfo is not set for the datetime object it assumes the timezone of the computer you are working on. Let's see this in action.
+
+7. Timezones in action
+I'll begin by importing timezone from pytz. I've got the datetime of a violation, and parsed it into a naive datetime object. Next, I'm going to prepare the timezone objects I'm going to work with. Then, I create an object to present the Eastern timezone that NYC is in, and then the timezone for LA. Next, I use the replace method to replace the empty timezone on my record datetime and save it as my datetime. Now that I have an aware datetime instance, I can use the as timezone method to get the records time in LA.
+
+8. Timezones in action - results
+Finally, I print them both. This type of conversion is great for ensuring that data remains relevant to the viewer by presenting it in their native timezone. Your turn to work with these concepts.
+
+9. Let's practice!
+
+
+Got It!
+1. Time Travel (Adding and Subtracting Time)
+Another common thing to do with time object is to peer into the future or past to find data. Let's look at how that works.
+
+2. Incrementing through time
+A very common case when working with times is to get a date 30, 60, 90 days in the past from some date. In Python we use the timedelta object from the datetime module to represent differences in datetime objects. You can create a timedelta by passing any number of keyword arguments such as days, seconds, microseconds, milliseconds, minutes, hours, and weeks to it. Once we have a timedelta object, we can add or subtract it from a datetime object to get a datetime object relative to the original datetime object. Let's look at how this works in practice. First, we import timedelta from the datetime module. Next we'll make a timedelta instance called flashback for 90 days. Then, we can see the starting point by printing the datetime we'll be working with.
+
+3. Adding and subtracting timedeltas
+Then I'll print the the date minus 90 days and finally plus 90 days. This can be useful to compare a date this year to one from the prior year, compare by quarter as we did here, or compare month to month. Let's look at how we can find the time between two dates.
+
+4. Datetime differences
+Just like we were able to subtract a timedelta from a datetime to find a date in the past, we can also calculate the difference between two dates to get the timedelta between in return. Let's find out how much time has elapsed between the first two violations in our list. I've already parsed both dates into record_dt and record2_dt, respectively. Now I subtract one from the other and store the result as time_diff. This returns a timedelta, which I used the type function to demonstrate here, that represents the time difference between the two datetimes. Finally, I can print the time_diff and see that that time difference between violations was 4 seconds! In fact after some more digging, I was able to determine that the average difference was 15-point-3 seconds! That's a lot of parking violations! Now, it's your turn to practice this.
+
+5. Let's practice!
+
+
+Got It!
+1. HELP! Libraries to make it easier
+There are several third-party libraries that make parsing, converting, and working with dates and times easier. One of most popular is the Pendulum library. Let's use Pendulum here to do some common datetime operations.
+
+2. Parsing time with pendulum
+Pendulum provides a powerful way to convert strings to pendulum datetime objects via the dot parse() method. Just pass it a date string and it will attempt to convert into a valid pendulum datetime. Here is a great example of how helpful parse can be. In the raw data for the parking violations we have been working with this chapter, it contains the date and time in separate columns, and the AM/PM indicator is just a single character. So I start by importing pendulum. Using the first parking violation, I'm building a string called occurred that is the date plus a space plus the time and appending an M to complete the AM/PM indicator. Then, I use pendulum dot parse() on the string and instruct pendulum that it's in the Eastern timezome all on one line! Finally, I print the date that pendulum parsed. (Note that they use a aware version os the ISO standard string). If we were to do this with datetime, we'd need to use strptime with a format string, and use the replace method to fix the timezone. Let's look at another place where pendulum is helpful - timezones.
+
+3. Timezone hopping with pendulum
+Pendulum has wonderful support for timezones, and comes with the Olsen Database that I mentioned earlier built into it. It provides an in_timezone() method that can be used to convert a pendulum object to a desired timezone. Also, Pendulum's now method accepts a timezone so you can generate the current time easily for any location in the world. I saved the results for our pendulum parsing example into the violations_dts list as you can see here.
+
+4. More timezone hopping
+I'm going to iterate over the records and convert them all the to Tokyo timezone. Finally, I'm going to use the now() method with the Tokyo timezone to get the current time in Tokyo.
+
+5. Humanizing differences
+Pendulum has an alternative to timedelta called a period when calculating the difference between two dates by subtraction that provides methods such as dot in_days/weeks/hour/minutes and in_words to output in a chosen manner. Let's take two of our violation datetimes and calculate the difference. Here you can see the period object where we got a timedelta previously. Next I use the in_words() method to get a nice English representation of the difference.
+
+6. More human than human
+Pendulum provides the ability to set a locale and get it in other languages. Then, I use the in_days() method to see the difference in days and finally I use in_hours to see the difference in hours. This is just a taste of what pendulum can do. It would be well worth your time after this class to play more with pendulum and incorporate it into your work. Your turn to take it for a spin.
+
+7. Let's practice!

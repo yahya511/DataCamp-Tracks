@@ -1,0 +1,65 @@
+Got It!
+1. Counting made easy
+As a data scientist, we're often going to need to count items, create dictionaries values before we know keys to store them in, or maintain order in a dictionary.
+
+2. Collections Module
+The collections module is part of Python standard library and holds several more advanced data containers which solve these problems and more. Let's start our tour of the collection module by learning about Counter.
+
+3. Counter
+Counter is a powerful python object based on the dictionary object that accepts a list and counts the number of times a value is found within the elements of that list. Since it's based on a dictionary, you can use all the normal dictionary features. Here, I have an list named nyc_eatery_types that contains one column of data called type from a table about eateries in NYC parks. I create a new Counter based on that list and print it. You can see each type from list and the number of times it was found in the list. I can also see how many restaurants are in the counter by using Restaurant as the index and printing it. Counters also provide a wonderful way to find the high values they contain.
+
+4. Counter to find the most common
+The most_common() method on a Counter returns a list of tuples containing the items and their count in descending order. Here I'm printing the top 3 eatery types in the NYC park system with the most_common method and passing it 3 as the number items to return. most_common() is great for frequency analytics, how often something occurs, a problem I encounter often when working on data science problems. Now it's your turn.
+
+5. Let's practice!
+
+
+Got It!
+1. Dictionaries of unknown structure - defaultdict
+Often, we'll be working with data were we don't know all the keys that will be used, but we want to store a complex structure under those keys. A good example is I want every key to have a list of values. I'd have to initialize every key with an empty list then add the values to the list. Here is an example of just that.
+
+2. Dictionary Handling
+You can I start by looping over a list of tuples with the park's id and the name of the eatery. Then I check to see if I have a list for that part already in my dictionary. If not I create an empty list. Next, I append the name of the eatery to the list for that park id. Thankfully, collections provides an easier way using defaultdict.
+
+3. Using defaultdict
+Defaultdict accepts a type that every value will default to if the key is not present in the dictionary. You can override that type by setting the key manually to a value of different type. Still working with the NYC Parks eatery data, I have a list of tuples that contain the park id and the name of an eatery. I want to create a list of eateries by park. I begin by importing defaultdict from collections. Next, I create a defaultdict that defaults to a list. Next I iterate over my data and unpack it into the park_id and name. I append each eatery name into list for each park id. Finally, I print the eateries in the park with the ID os M010, which if you are curious is Central Park. Let's look at another example.
+
+4. defaultdict (cont.)
+It's also common to use a defaultdict as a type of counter for a list if dictionaries where we are counting multiple keys from those dictionaries. In our NYC park eateries, I was curious how many had a published phone number or a website. This time when creating my defaultdict, I tell it I want it to be an int. Then I look over my nyc_eateries data and add 1 to the phones key on my defaultdict if it has a phone number that is not None. Then I add 1 to the websites key if it has a website. Finally, I print my defaultdict to see the counts. Let's go practice.
+
+5. Let's practice!
+
+Got It!
+1. Maintaining Dictionary Order with OrderedDict
+Often we want to store data in the dictionary in an ordered fashion. For example, I might want to store the data in order by date, or by a ranking.
+
+2. Order in Python dictionaries
+Normal dictionaries don't maintain order of the keys that you insert into them in versions of Python below 3-point-6. Recently in Python 3-point-6 they started storing dictionary order. However, the collections module provides an OrderedDict that maintains the order that keys and values as they were added to the dictionary without regard for the Python version. You might remember this from our video using the CSV dictreader which returned each row as an OrderedDict. Let's take a look at an example using an OrderedDict.
+
+3. Getting started with OrderedDict
+We begin by importing OrderedDict from collections. Next, I create an OrderedDict to hold the NYC Park data by permit end date. Then I loop over the NYC park eateries which are ordered by permit end date already and add them to the OrderedDict by that date. Finally, I can print the first three permit end dates by making a list of the items and slicing it.
+
+4. OrderedDict power feature
+Using the OrderedDict from the previous example, I use popitem() and get the permit that expires the latest, a second popitem() returns the next latest expiration. Finally, I can pop the lowest end date in the dictionary by using popitem last equals False here. Your turn to experiment with an OrderedDict. Let's do some work with OrderedDicts.
+
+5. OrderedDict power feature (2)
+6. Let's practice!
+
+
+Got It!
+1. namedtuple
+Often times when working with data, you will use a dictionary just so you can use key names to make reading the code and accessing the data easier to understand.
+
+2. What is a namedtuple?
+Python has another container called a namedtuple which is a tuple, but has names for each position of the tuple. This works well when you don't need the nested structure of a dictionary or desire each item to look identical, and don't want to add the overhead of a Pandas dataframe.
+
+3. Creating a namedtuple
+You create a namedtuple by passing a name for the tuple type and a list of field names. Let's begin by importing namedtuple from the collections module. Next we'll define our namedtuple. It's common practice to use Pascalcase (capitalizing each word) when naming namedtuples so hear I've used Eatery with a capital E for both the tuple name and the variable we stored the namedtuple as. Then we provide a list of fields we want on the nametuple. Now we can create our Eatery named tuples. I'm going to change our NYC Park eateries data into a list of namedtuples. I create an empty list then iterate over my nyc_eateries list creating an instance of my Eatery namedtuple by passing in the data from the loop as the arguments to my namedtuple.
+
+4. Print the first element
+Finally, let's print the first Eatery in the list. Now that we've got a list of named tuples let's see how we can use them.
+
+5. Leveraging namedtuples
+One of the great things about named tuples is that they can make code clearer because each field is available an as attribute. An attribute is basically a named field or data storage location. We can also depend on every instance of a namedtuple to have all the fields, although some might be empty or None in Python terms. This means we can always have safe access to a field without the need for a get method like a dictionary. Here I'm going to use the list of tuples we created in the prior slide, and print the name, park_id, and location for the first three entries in the list. Now it's your turn to practice.
+
+6. Let's practice!

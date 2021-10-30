@@ -1,0 +1,72 @@
+Got It!
+1. Using dictionaries
+Now that you are familiar with the container sequence types, let's dive into dictionaries. People often joke that everything in Python is a dictionary, and while it is a joke, there is a tiny bit of truth to that. I find myself using dictionaries the most of any container type. Dictionary are useful for storing key/value pair, grouping data by time or structuring hierarchical data like org charts. Let's take a look.
+
+2. Creating and looping through dictionaries
+Dictionaries hold data in key/value pairs. While the key must be alphanumeric, the value can be any other data type. It's also possible to nest dictionaries so that you can work with grouped or hierarchical data. We can also iterate over the keys and values of a dictionary. We can also iterate over the items of a dictionary, which are tuples of the key value pairs)! We create dictionaries using the dict() method or the braces shortcut. Here, I've got a list of tuples containing the name and zip for New York City Art Galleries. I'd like to turn that into a dictionary so I can quickly find the zip code without having to scan the whole list. I begin by creating an empty dictionary named art_galleries. Next I use tuple unpacking as I loop over the galleries list that contains my data. Then inside the loop I set the name of the gallery as the key in my dictionary and the zip code as the value. Finally, I'd like to find the last 5 art gallery names. By default when using sorted on a dictionary or looping over a dictionary we loop over the keys. So we'll print the keys which are names. Let's talk more about accessing dictionary values by key.
+
+3. Printing in the loop
+4. Safely finding by key
+Here I'm looking for the Louvre gallery in New York City, but it's in Paris and throws an exception. Often you will know the key you want to get from the dictionary, and using the key as an index value to get the data. However, if the key is not present you will get an ugly exception that stops the execution of your code. While you could use Python exception handling, this is so common that dictionaries have a get() method just for this problem.
+
+5. Safely finding by key (cont.)
+The get method allows you to safely get a value from a key by passing the key. If the key is not found in the dictionary, it returns None. You can optionally supply a second argument which will be returned instead of None. Continuing from the prior example of looking for the Louvre, I make the same request with the get method, and supply the string Not Found to be returned if it is not present, which is exactly what happens. Finally, I supplied a valid key to the get() method and it returned the value from the dictionary. Accessing data in a safe manner is critical to ensure your programs execute properly. Let's learn more about nested data.
+
+6. Working with nested dictionaries
+I mentioned earlier that you can also nest dictionaries to group data or establish a hierarchy. I've reorganized my prior art galleries dictionary to by keyed by zip code and then gallery name with the value of their phone number. I can use the keys() method to see the list of zip code keys. I can print the value of one of those zip codes so you can see the dictionary nested under it,
+
+7. Accessing nested data
+and I can get the phone number of one of those galleries by using the gallery name which is the nested dictionary's key as a secondary index. Nesting dictionaries is a very common way to deal with repeating data structures such as yearly data, grouped, or hierarchical data such as organization reporting structures. You access nested values by providing multiple indices to the dictionary or using the get method on an index.
+
+8. Let's practice!
+It's your turn to practice.
+
+
+
+Got It!
+1. Altering dictionaries
+In the prior video we learned that dictionaries are mutable, so we can alter them in a number of ways. Let's start by adding data to them. Which is something that you, as a data scientist, will need to do all the time.
+
+2. Adding and extending dictionaries
+You can add data to a dictionary just by using a new key as an index and assigning it a value. It's also possible to supply a dictionary, list of tuples or a set of keywords arguments to the update() method to add values into a dictionary. I have a dictionary that contains the art galleries in the 10007 zip code and I want to add it to my art_galleries dictionary. I assign the zip code as the key and then the dictionary as the value.
+
+3. Updating a dictionary
+I can also create a list of tuples, and supply them to the update() method. Here I'm supplying them to a dictionary index of the zip code since I want this data to be nested underneath it. Finally I'll print the zip code to be sure they were added. Notice how those are now a dictionary under that key. Often, We'll also want to narrow down our dataset to only the data which is relevant to the problem at hand, so let's learn how to remove data.
+
+4. Popping and deleting from dictionaries
+You can use the del python instruction on a dictionary key to remove data from a dictionary. However, it's important to remember that del will throw a KeyError if the key you are trying to delete does not exist. The pop() method provides a safe way to remove keys from a dictionary. Let's start by removing all the galleries from zipcode '11234', then I'm not sure if there are any galleries in zip code 10310, so I'm going to pop that zip code from the dictionary and save it. Finally, I'll print the popped value.
+
+5. Let's practice!
+
+
+Got It!
+1. Pythonically using dictionaries
+So far, we've been working with dictionaries in a straight forward manner, but Python has more efficient ways to work with them. We refer to these manners of interacting as being Pythonic.
+
+2. Working with dictionaries more pythonically
+Previously, we looped through dictionary keys then used the keys to get the values we desired. Python provides an items() method which returns a dict_items object, but we can iterate over it as a list of key/value tuples. If I use the dot items() method on my original art_galleries dictionary it returns a tuple of the gallery name and the phone number. I can use tuple unpacking to go ahead and expand that into its two components in the loop. Finally, I print them so you can see the information. Now let's look at a more Pythonic method for checking if data is present in a dictionary.
+
+3. Checking dictionaries for data
+Earlier, we used the get method to safely look for keys, and we can use that to check to see if a key is in a dictionary. However, Python provides the in operator to see if a key is in a dictionary. It returns a boolean (True or False). Here I'm checking to see if 11234 is in the art_galleries dictionary, and since I deleted that key earlier it returns false. Since it returns a boolean, it is often used in conditionals statements like an if/else statement. Here if the key 10010 is in the art_galleries dictionary I'm going to print a message saying that it was found and with the value of the key.
+
+4. Let's practice!
+
+
+Got It!
+1. Working with CSV files
+Okay, we're going to take a break from all this talk of types and look at where our data has been coming from so far: CSVs or Comma Separated Value files.
+
+2. CSV Files
+Many of the data sets you're going to encounter as a data scientist will be published as CSV files, because it's one of the most common ways to dump data from a database or storage system. Here is an example of a CSV file for the Art galleries we've been working with. You can see it begins with a header line that identifies the fields in each row. Then a line for each row of data. CSV files are not required to have a header. Let's look at how to read data from these.
+
+3. Reading from a file using CSV reader
+Python provides a wonderful module called csv to work with these types of files. To create a Python file object, you use the open() function, which accepts a file name and a mode. The mode is typically 'r' for read or 'w' for write. Then we pass the file object to the dot reader() method on the csv module and use it as you would any other iterable. Here I import the csv module, create a file object for the ART_GALLERY dot csv data file. Then I use the csv dot reader to read the file and iterate over each line or row in the file and print it.
+
+4. Reading from a CSV - Results
+Notice this files first line is a header record which contains the fields found in each record of the file.
+
+5. Creating a dictionary from a file
+The Python CSV module also provides a way to directly create a dictionary from a csv file with the DictReader class. If the file has a header row, that row will automatically be used as the keys for the dictionary; however, if not you can supply a list of keys to be used. Each row from the file is returned as an ordered dictionary. We'll learn more about OrderedDicts in a later video. Let's review an example of how this works. It's all the same until line there where we use the DictReader instead of the reader method. Then we print the row, we get an OrderedDict that looks like a list of tuples; however, it operates just like a normal dictionary. Okay time for you to practice.
+
+6. Let's practice!
+
