@@ -1,0 +1,95 @@
+Got It!
+1. Introduction to string manipulation
+Welcome to this course! My name is Eugenia and I will guide you in your journey to master regular expressions.
+
+2. You will learn
+In this course, you will learn how to manipulate strings to find and replace specific substrings. You will also explore different approaches for string formatting, such as interpolating a string in a template. Last, you will dive into basic and advanced regular expressions to master how to find complex patterns in a string.
+
+3. Why it is important
+As a data scientist, you can encounter strings when cleaning a dataset to prepare it for text mining or sentiment analysis. Sometimes, you will need to process text to feed an algorithm that determines whether an email is spam. Maybe, you will need to parse and extract specific data from a website to build a database.Learning to manipulate strings and master regular expressions will allow you to perform these tasks faster and more efficiently.
+
+4. Strings
+The first step of our journey is strings, a data type used to represent textual data. Python recognizes any sequence of characters inside quotes as a single string object. As shown on the slide, both single or double quotes can be used. You should use the same quote type to open and close the string. If a quote is part of the string as seen in the code, we need to use the other quote type to enclose the string. Otherwise, python recognizes the second quote as a closing one.
+
+5. More strings
+Python has built-in functions to handle strings. Suppose we define the following string. We can get the number of characters in the string by applying the function len() which returns eleven as shown in the output. The function str() returns the string representation of an object as seen in the code.
+
+6. Concatenation
+Suppose now we have the following two strings shown on the slide. You want to concatenate them. Concatenate means obtaining a new string that contains both of the original strings. Applying the plus operand to sum up both strings, specifying also the space, generates the output seen in the code.
+
+7. Indexing
+Individual characters of a string can be accessed directly using an index; the position of that character within the string. Let's work with the following example. To get the fourth character of the string, we specify the string name followed by the position inside square brackets. In python, string indexing is zero-based meaning that the first character has index zero as shown on the slide. For character four, we specify index three getting the following output. We can also indicate indices with negative numbers. If we specify index minus one, we get the last character of the string as shown in the output.
+
+8. Slicing
+With the bracket notation, python allows you to access a specific part or sequence of characters within the original string. For that aim, we specify the starting and ending positions inside square brackets separated by a colon as you see on the slide. The ending position is excluded in the resulting output. Omitting the first or second index results in the slice starting at the beginning or going until the end of the string as shown in the output.
+
+9. Stride
+String slicing also accepts a third index which specifies how many characters to omit before retrieving a character. In the example, the specified indices returns the following output. They are the characters retrieved between positions zero and six, skipping two characters in between. Interestingly, omitting the first and second indices and designating a minus one step returns a reversed string as shown in the output.
+
+10. Let's practice!
+Now, you are ready to start manipulating string by yourself.
+
+
+
+Got It!
+1. String operations
+In this video, we'll learn more about string manipulation, specifically, about basic string operations.
+
+2. Adjusting cases
+Most data science projects involve string manipulation. Python has many built-in methods that allow us to handle strings. Let's check some of them. Suppose we have a string like the one in the example code. Sometimes, the analysis requires the string to be entirely lowercase. We could use the dot lower method to convert all alphabetic characters to lowercase as shown in the output. On the contrary, we might want the string to be uppercase. We could use the dot upper method to convert all alphabetic characters to uppercase as displayed.
+
+3. Adjusting cases2
+Lastly, we could use dot capitalize to return a copy of the string with the first character in uppercase while keeping all other characters in lowercase as displayed.
+
+4. Splitting
+There are methods that can convert between a string and other types of data, such as lists by breaking a string into pieces. Let's work with the following example. We want to split the string into a list of substrings. Python provides us with two methods: dot split and dot rsplit. Both of them return a list.They both take a separating element by which we are splitting the string, and a maxsplit that tells us the maximum number of substrings we want. As we can see in the code, the difference is that split starts splitting at the left. rsplit begins at the right of the string. If maxsplit is not specified both methods behave in the same way. They give as many substrings as possible. If you want the split to be done by the whitespace you don't have to specify the sep argument.
+
+5. Splitting
+Consider the following string. If we print it out, we can see that contains two lines. Why is that? There are some escape sequences such as slash n or slash r that indicates a line boundary. Sometimes, we want to split a string into lines. So in the case of our string, we want to split it at the slash n.
+
+6. splitlines
+For this aim, Python has the method splitlines(). As we can see in the code, the string is split at the slash n sequence returning a list of two elements.
+
+7. Joining
+Some methods can paste or concatenate together the objects in a list or other iterable data. This is the case for dot join method. The syntax is simple. It first takes the separating element. Inside the call, we specify the list or iterable element. We can observe in the example, that whitespace is specified as a separator and the data type is a list. The result is a single string containing all the objects in the list separated by whitespace.
+
+8. Stripping characters
+Lastly, we'll talk about methods that will trim characters from a string. The dot strip method will remove both leading and trailing characters. Inside the call, we can specifying a character. If we don't do it, whitespace will be removed. Let's say we have the following string. And we apply the dot strip method as shown. We get a string where both the leading space and the trailing escape sequence were removed.
+
+9. Stripping characters2
+We can apply dot rstrip method and it will return a string where the trailing slash n was removed. If we apply the dot lstrip method, we'll get a string with the leading whitespace eliminated.
+
+10. Let's practice!
+Now that you know many built-in methods for string manipulation, you can start to put them into practice!
+
+
+
+Got It!
+1. Finding and replacing
+Finally, we'll talk about different methods that allow us to search or replace substrings.
+
+2. Finding substrings
+Python has several built-in methods that will help you search a target string for a specified substring. The first method is dot find. As you can see in the slide, it takes the desired substring as a mandatory argument. You can specify two other arguments. An inclusive starting position and an exclusive ending position. In the example code, we search for Waldo in the string Where's Waldo?. The dot find method returns the lowest index in the string where it can find the substring, in this case, eight. If we search for Wenda, the substring is not found and the method returns minus one.
+
+3. Finding substrings
+Now, we check if we can find Waldo between characters number zero and five. In the code, we specify the starting position, zero, and the ending position, six, because this position is not inclusive. The dot find method will not find the substring and returns minus one as we see in the output.
+
+4. Index function
+The dot index method is identical to dot find. In the slide, we see that it takes the desired substring as mandatory argument. It can take optional starting and ending positions as well. In the example, we search again for Waldo using dot index. We get eight again. When we look for a substring that is not there, we have a difference. The dot index method raises an exception, as we can see in the output.
+
+5. Index function
+We can handle this using the try except block. In the slide, you can observe the syntax. The try part will test the given code. If any error appears the except part will be executed obtaining the following output as a result.
+
+6. Counting occurrences
+The dot count method searches for a specified substring in the target string. It returns the number of non-overlapping occurrences. In simple words, how many times the substring is present in the string. The syntax of dot count is very similar to the other methods as we can observe. In the example, we use the dot count method to get how many times fruit appears. In the output, we see that is two. Then, we limit the occurrences of fruit between character zero and fifteen of the string as we can observe in the code. The method will return 1. Remember that starting position is inclusive, but the ending is not.
+
+7. Replacing substrings
+Sometimes you will want to replace occurrences of a substring with a new substring. In this case, Python provides us with the dot replace method. As we see in the slide, it takes three arguments: the substring to replace, the new string to replace it, and an optional number that indicates how many occurrences to replace. In the example code, we replace the substring house with car. The method will return a copy with all house substrings replaced. In the next example, we specified that we only want 2 of the occurrences to be replaced. We see in the output that the method return a copy of the string with the first two occurrences of house replaced by car.
+
+8. Wrapping up
+In this chapter, we walked through learning how to manipulate strings, a valuable skill for any data science project. You saw how to slide, concatenate and adjust cases of strings, how to split them into pieces and join them back together, how to remove characters and finally how to find, count and replace occurrences of substrings.
+
+9. Let's practice!
+Now, it's your time to put the concepts into practice.
+
+

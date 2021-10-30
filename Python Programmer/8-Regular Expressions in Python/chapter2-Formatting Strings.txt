@@ -1,0 +1,105 @@
+Got It!
+1. Positional formatting
+The next step of our journey is string formatting. In this video, we'll talk about positional formatting.
+
+2. What is string formatting?
+String formatting is also called string interpolation. It is the process of inserting a custom string in a predefined text. Here, we see an example. Don't panic. We are going to explain this later. As data scientist, you will use it to insert a title in a graph, show an error message or pass a statement into a function.
+
+3. Methods for formatting
+The modern versions of Python have three main approaches to string formatting: positional formatting, covered in this video, formatted strings literals, and template methods, covered in following videos.
+
+4. Positional formatting
+Positional formatting works in the following way. We put placeholders defined by a pair of curly braces in a text. We call the string dot format method. Then, we pass the desired value into the method. The method replaces the placeholders using the values in order of appearance. Let's examine the example. We define a string and insert two placeholders. We pass two strings to the method which will be passed to get the following output.
+
+5. Positional formatting
+We can use variables for both the string and the values passed to the method. In the example code, we defined a string with placeholders along with two other variables. We apply the format method to the string using the two defined variables. The method reads the string and replaces the placeholders with the given values. And we get the output seen in the slide.
+
+6. Reordering values
+We can add index numbers into the curly braces. This affects the order in which the method replaces placeholders. In the example, we left the placeholders empty. The method replaces them with the values in the given order. And we get the output shown here. If we add the index numbers, the replacement order changes accordingly. Now, the output changes as you can observe.
+
+7. Named placeholders
+We can also introduce keyword arguments that are called by their keyword name. In the example code, we inserted keywords in the placeholders. Then, we call these keywords in the format method. We then assign which variable will be passed for each of them resulting in the following output.
+
+8. Named placeholders
+Let's examine this code. We have defined a dictionary with keys: tool and goal. We want to insert their values in a string. Inside the placeholders, we can specify the value associated with the key tool of the variable data using bracket notation. Pay attention to the code. Data is the dictionary specified in the method and tool is the key present in that dictionary. So, we get the desired output shown in the slide. Be careful! You need to specify the index without using quotes.
+
+9. Format specifier
+We can also use format specifiers inside the curly braces. This defines how individual values are presented. We’ll use the syntax index colon specifier. One of the most common format specifiers is float represented by the letter f. In the code, we specified that the value passed with index 0 will be a float, getting the displayed output. We could also add dot two f indicating that we want the float to have two decimals as seen in the resulting output.
+
+10. Formatting datetime
+Python has a module called datetime that allows us to, for example, get the date and time for today. You can see that the format returned is very particular. We can use format specifiers such as percentage y, m, d, h and capital m to adjust the format to something more familiar to us as you can observe in the slide.
+
+11. Let's practice!
+Now, it's your time to practice string formatting!
+
+
+
+Got It!
+1. Formatted string literal
+Modern versions of Python introduced a new powerful string formatting: formatted string literal method.
+
+2. f-strings
+The strings defined by this method are called f-strings. They have a minimal syntax as you can see in the slide. To defined them, you need to add the prefix f before the string. Inside quotes, you put your text along with curly braces, which identify placeholders where you insert the expressions. In the example code, we have two variables, way and method. Then, we define an f-string. Inside curly braces, we pass the two variables. The method replaces the placeholders with the variables. And we obtain the following output.
+
+3. Type conversion
+f-strings allow us to convert expressions into different types. We can use exclamation mark s for strings, r for printable representation of strings, or a to escape non-ascii characters. Let's imagine we define the variable name as you can see in the slide. The variable should be surrounded by quotes in the resulting string. We can add after the variable the exclamation r conversion. This will return a printable representation of the string. In the output, we can see that quotes are surrounding the variable.
+
+4. Format specifiers
+We can also use format specifiers such as e for scientific notation, d for digit and f for float. In the example code, we define a variable containing a number. Then, we insert it in the f-string. We specify that we want it to have only two decimals. And we get the following string.
+
+5. Format specifiers
+We can also format datetime. We only need to insert the variable containing the datetime object. After that, we placed a colon and the specifiers month name, day and year. And we get the string containing the date as we see on the code.
+
+6. Index lookups
+Do you remember when we accessed dictionaries from the string format method? To insert the value associated with a specific key, we specify the index without quotes. Let's try the same to access dictionaries in f-strings. As we see in the code, Python raises an error telling us that it cannot find the variable. This is due to the fact we need to surround the index with quotes.
+
+7. Escape sequences
+In the first video, we said that a string is anything appearing inside quotes. If the string contains quotes as well, one of the ways to escape the error raised is to add a backslash before the quotes.
+
+8. Escape sequences
+What does this have to do with f-strings? We said that indexes required quotes. f-strings follow the same rule as strings. If Python finds a second quote, it understands that this is a closing mark. So we could escape the quotes by adding backslash. But, we can observe in the code that backslashes are not allowed in the f-string expression. So our only solution is to use single quotes to get the desire output as we can observe in the slide.
+
+9. Inline operations
+One of the biggest advantages of f-strings is that they allow us to perform inline operations. In the example, we define two numeric variables. We then insert them into the f-string. We can also multiply them inside the expression. And we get the result of that operation in the output.
+
+10. Calling functions
+We can also call functions inside the expression of f-strings. In the example, we define a function. Then, we call this function and pass two numbers inside the expression in the f-string. This will return the value in the final string as we can observe in the slide.
+
+11. Let's practice!
+Now, it's time for you to start using f-strings!
+
+
+Got It!
+1. Template method
+In this video, we'll take a closer look at the last string formatting method, template strings.
+
+2. Template strings
+Template strings have a simpler syntax. They are slow. And they don't allow the use of format specifiers. Yet, they are very suitable in some specific situations. Specially, when working with externally formatted strings that you don't have control over.
+
+3. Basic syntax
+Template strings do not belong to the Python core features. You need to import the Template class from the string module. First, you need to create the template string. For that, you use the Template constructor that takes only the string, as you can observe in the slide. Template strings use dollar signs to identify placeholders or identifiers. Then, you need to call the method that substitutes the identifier by the string values. For that, you use the identifier name equal the replacement string. And we'll get the output shown in the slide.
+
+4. Substitution
+We can place many identifiers as well as variables when using Template strings. In the example code, we define two variables containing strings. We can create a template having two identifiers with a designated name. Afterward, we call the method substitute to assign the identifiers to the different variables. And we get the following output.
+
+5. Substitution
+Sometimes we need to add extra curly braces after the dollar sign to enclose the identifier. This is required when valid characters follow the identifier but are not part of it. Let's clarify this. In the example, we need to add the ending -ing immediately after the first identifier. We need to include curly braces. If we don't do it, Python believes that -ing belong to the identifier name. We replace it by the variable noun obtaining the shown output.
+
+6. Substitution
+Let's imagine now that you are working with numbers and you want to include the dollar sign as part of a string. Because they are use for identifiers, you will need to escape this character by adding an extra dollar sign. And get the correct output as seen in the code.
+
+7. Substitution
+In the example code, we have defined a dictionary with only one key. However, when we define our template string, we include two identifiers. What would happen if we pass this dictionary to the method substitute? Python will raise an error. It tries to replace every placeholder and some of them are missing.
+
+8. Substitution
+We could try using the try except block again. In the slide, you can observe again the syntax. The try part will test the given code. If any error appears the except part will be executed obtaining the following output as a result.
+
+9. Safe substitution
+A better way to handle this situation is using the safe substitute method. This method will always try to return a usable string. How? It will place missing placeholders in the resulting string. Let's say we have the same situation as before. Now, if we pass the dictionary to the safe substitute, we will not get an error. Instead, we'll get the identifier dollar sign cake in our resulting string, as you can observe in the output.
+
+10. Which should I use?
+In summary, how do you decide which string formatting you should use? String format is easy to use. You could start mastering this method and then apply the concepts to f-strings. Moreover, the f-strings are always advisable above all methods. But only if you are working with modern versions of Python. Use template strings only when working with user-provided strings.
+
+11. Let's practice!
+Now that you know a lot about template strings, let's practice some of these concepts.
+
