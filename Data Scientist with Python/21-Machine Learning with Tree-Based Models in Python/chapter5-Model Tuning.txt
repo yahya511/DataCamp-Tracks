@@ -1,0 +1,86 @@
+
+
+1. Tuning a CART's hyperparameters
+To obtain a better performance, the hyperparameters of a machine learning should be tuned.
+
+2. Hyperparameters
+Machine learning models are characterized by parameters and hyperparameters. Parameters are learned from data through training; examples of parameters include the split-feature and the split-point of a node in a CART. Hyperparameters are not learned from data; they should be set prior to training. Examples of hyperparameters include the maximum-depth and the splitting-criterion of a CART.
+
+3. What is hyperparameter tuning?
+Hyperparameter tuning consists of searching for the set of optimal hyperparameters for the learning algorithm. The solution involves finding the set of optimal hyperparameters yielding an optimal model. The optimal model yields an optimal score. The score function measures the agreement between true labels and a model's predictions. In sklearn, it defaults to accuracy for classifiers and r-squared for regressors. A model's generalization performance is evaluated using cross-validation.
+
+4. Why tune hyperparameters?
+A legitimate question that you may ask is: why bother tuning hyperparameters? Well, in scikit-learn, a model's default hyperparameters are not optimal for all problems. Hyperparameters should be tuned to obtain the best model performance.
+
+5. Approaches to hyperparameter tuning
+Now there are many approaches for hyperparameter tuning including: grid-search, random-search, and so on. In this course, we'll only be exploring the method of grid-search.
+
+6. Grid search cross validation
+In grid-search cross-validation, first you manually set a grid of discrete hyperparameter values. Then, you pick a metric for scoring model performance and you search exhaustively through the grid. For each set of hyperparameters, you evaluate each model's score. The optimal hyperparameters are those for which the model achieves the best cross-validation score. Note that grid-search suffers from the curse of dimensionality, i-dot-e-dot, the bigger the grid, the longer it takes to find the solution.
+
+7. Grid search cross validation: example
+Let's walk through a concrete example to understand this procedure. Consider the case of a CART where you search through the two-dimensional hyperparameter grid shown here. The dimensions correspond to the CART's maximum-depth and the minimum-percentage of samples per leaf. For each combination of hyperparameters, the cross-validation score is evaluated using k-fold CV for example. Finally, the optimal hyperparameters correspond to the model achieving the best cross-validation score.
+
+8. Inspecting the hyperparameters of a CART in sklearn
+Let's now see how we can inspect the hyperparameters of a CART in scikit-learn. You can first instantiate a DecisionTreeClassifier dt as shown here.
+
+9. Inspecting the hyperparameters of a CART in sklearn
+Then, call dt's -dot-get_params() method. This prints out a dictionary where the keys are the hyperparameter names. In the following, we'll only be optimizing max_depth, max_features and min_samples_leaf. Note that max_features is the number of features to consider when looking for the best split. When it's a float, it is interpreted as a percentage. You can learn more about these hyperparameters by consulting scikit-learn's documentation.
+
+10. Grid search CV in sklearn (Breast Cancer dataset)
+Let's now tune dt on the wisconsin breast cancer dataset which is already loaded and split into 80%-train and 20%-test. First, import GridSearchCV from sklearn-dot-model_selection. Then, define a dictionary called params_dt containing the names of the hyperparameters to tune as keys and lists of hyperparameter-values as values. Once done, instantiate a GridSearchCV object grid_dt by passing dt as an estimator and params_dt as param_grid. Also set scoring to accuracy and cv to 10 in order to use 10-fold stratified cross-validation for model evaluation. Finally, fit grid_dt to the training set.
+
+11. Extracting the best hyperparameters
+After training grid_dt, the best set of hyperparameter-values can be extracted from the attribute -dot-best_params_ of grid_dt. Also, the best cross validation accuracy can be accessed through grid_dt's -dot-best_score_ attribute.
+
+12. Extracting the best estimator
+Similarly, the best-model can be extracted using the -dot-best_estimator attribute. Note that this model is fitted on the whole training set because the refit parameter of GridSearchCV is set to True by default. Finally, you can evaluate this model's test set accuracy using the score method. The result is about 94-dot-7% while the score of an untuned CART is of 93%.
+
+13. Let's practice!
+Now it's your turn to practice.
+
+
+
+
+1. Tuning an RF's Hyperparameters
+Let's now turn to a case where we tune the hyperparameters of Random Forests which is an ensemble method.
+
+2. Random Forests Hyperparameters
+In addition to the hyperparameters of the CARTs forming random forests, the ensemble itself is characterized by other hyperparameters such as the number of estimators, whether it uses bootstraping or not and so on.
+
+3. Tuning is expensive
+As a note, hyperparameter tuning is computationally expensive and may sometimes lead only to very slight improvement of a model's performance. For this reason, it is desired to weigh the impact of tuning on the pipeline of your data analysis project as a whole in order to understand if it is worth pursuing.
+
+4. Inspecting RF Hyperparameters in sklearn
+To inspect the hyperparameters of a RandomForestRegressor, first, import RandomForestRegressor from sklearn.ensemble and then instantiate a RandomForestRegressor rf as shown here.
+
+5. Inspecting RF Hyperparameters in sklearn
+The hyperparameters of rf along with their default values can be accessed by calling rf's dot-get_params() method. In the following, we'll be optimizing n_estimators, max_depth, min_samples_leaf and max_features. You can learn more about these hyperparameters by consulting scikit-learn's documentation.
+
+6. GridSearchCV in sklearn (auto dataset)
+We'll perform grid-search cross-validation on the auto-dataset which is already loaded and split into 80%-train and 20%-test. First import mean_squared_error as MSE from sklearn.metrics and GridSearchCV from sklearn.model_selection. Then, define a dictionary called params_rf containing the grid of hyperparameters. Finally, instantiate a GridSearchCV object called grid_rf and pass the parameters rf as estimator, params_rf as param_grid. Also set cv to 3 to perform 3-fold cross-validation. In addition, set scoring to neg_mean_squared_error in order to use negative mean squared error as a metric. Note that the parameter verbose controls verbosity; the higher its value, the more messages are printed during fitting.
+
+7. Searching for the best hyperparameters
+You can now fit grid_rf to the training set as shown here. The output shows messages related to grid fitting as well as the obtained optimal model.
+
+8. Extracting the best hyperparameters
+You can extract rf's best hyperparameters by getting the attribute best_params_ from grid_rf. The results are shown here.
+
+9. Evaluating the best model performance
+You can also extract the best model from rf. This enables you to predict the test set labels and evaluate the test-set RMSE. The output shows a result of 3-dot-89. If you would have trained an untuned model, the RMSE would be 3-dot-98.
+
+10. Let's practice!
+Now let's try some examples.
+
+
+
+
+1. Congratulations!
+Congratulations on completing this course!
+
+2. How far you have come
+Take a moment to take a look at how far you have come! In chapter 1, you started off by understanding and applying the CART algorithm to train decision trees or CARTs for problems involving classification and regression. In chapter 2, you understood what the generalization error of a supervised learning model is. In addition, you also learned how underfitting and overfitting can be diagnosed with cross-validation. Furthermore, you learned how model ensembling can produce results that are more robust than individual decision trees. In chapter 3, you applied randomization through bootstrapping and constructed a diverse set of trees in an ensemble through bagging. You also explored how random forests introduces further randomization by sampling features at the level of each node in each tree forming the ensemble. Chapter 4 introduced you to boosting, an ensemble method in which predictors are trained sequentially and where each predictor tries to correct the errors made by its predecessor. Specifically, you saw how AdaBoost involved tweaking the weights of the training samples while gradient boosting involved fitting each tree using the residuals of its predecessor as labels. You also learned how subsampling instances and features can lead to a better performance through Stochastic Gradient Boosting. Finally, in chapter 5, you explored hyperparameter tuning through Grid Search cross-validation and you learned how important it is to get the most out of your models.
+
+3. Thank you!
+I hope you enjoyed taking this course as much as I enjoyed developing it. Finally, I encourage you to apply the skills you learned by practicing on real-world datasets.
+
