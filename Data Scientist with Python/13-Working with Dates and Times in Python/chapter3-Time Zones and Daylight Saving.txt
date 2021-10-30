@@ -1,0 +1,114 @@
+
+1. UTC offsets
+Sometimes, you really need to know exactly when something happened. Up until now, the datetime objects you have worked with are what is called "naive", and can't be compared across different parts of the world. They don't know anything about their time zone.
+
+2. Time zones
+Why does this matter? Before time zones, each town or city set its clock so that noon was directly overhead.
+
+3. Time zones
+Another city 100 miles away would also set their clocks to be noon when the sun was overhead.
+
+4. Time zones
+But this meant that these two cities had clocks that were different, by maybe 15 or 20 minutes. When people moved by foot or horseback, this wasn't a problem.
+
+5. Time zones
+Then railroads, and later telegraphs, came into existence. Now you could move or communicate with someone 100 or even 1000 miles away fast enough that time had to be consistent.
+
+6. Time zones
+Governments solved this problem by declaring that all clocks within a wide area would agree on the hour, even if some were ahead or behind of their solar time. The United States, for example, has 4 major time zones, plus one for Alaska and another for Hawaii. Our bike data was collected in Washington, D.C., which observes Eastern time.
+
+7. UTC
+But since we're not using the sun anymore, how do we know how to set the clock? Because the United Kingdom was the first to standardize its time, everyone in the world sets their clocks relative to the original historical UK standard. This standard time is called UTC. Because all clocks are set relative to UTC, we can compare time around the world. Generally, clocks west of the UK are set earlier than UTC, and clocks east of the UK are set later than UTC. For example, the eastern United States is typically UTC minus 5 hours, while India is typically UTC plus 5 hours 30 minutes.
+
+8. UTC
+Let's see this in code. As before, you import datetime and timedelta. Now you also import timezone. This will let you specify what timezone the clock was in when our data was recorded.
+
+9. UTC
+We create a timezone object, which accepts a timedelta that explains how to translate your datetime into UTC. In this case, since the clock that measured our bicycle data set was five hours behind UTC, we create ET to be at UTC-5. We can specify what time zone the clock was in when the last ride started in our data set. The clock that recorded the ride was 5 hours behind UTC. Now if you print it, your datetime includes the UTC offset.
+
+10. UTC
+Making a datetime "aware" of its timezone means you can ask Python new questions. For example, suppose you want to know what the date and time would have been if the clock had been set to India Standard Time instead. First, create a new timezone object set to UTC plus 5 hours 30 minutes. Now use the astimezone() method to ask Python to create a new datetime object corresponding to the same moment, but adjusted to a different time zone. In this case, because clocks in India would have been set 10.5 hours ahead of clocks on the eastern US, the last ride would have taken place on December 31, at 1 hour, 39 minutes, and 3 seconds past midnight local time. Same moment, different clock.
+
+11. Adjusting timezone vs changing tzinfo
+Finally, there is an important difference between adjusting timezones and changing the tzinfo directly. You can set the tzinfo directly, using the replace() method. Here we've set the tzinfo to be timezone.utc, a convenient object with zero UTC offset. The clock stays the same, but the UTC offset has shifted. Or, just like before, you can call the astimezone() method. Now if we adjust into UTC with astimezone(timezone.utc), we change both the UTC offset and the clock itself.
+
+12. UTC Offsets
+Now that you have learned about UTC offsets, which allow us to compare times around the world, it's time to practice using them!
+
+
+
+
+1. Time zone database
+Now that you understand how UTC offsets work, it's time to talk about how you use timezones in practice.
+
+2. Time zone database
+This is a picture of all of the different time zones in the world, as of 2017. They cut across countries, and within countries, and sometimes one is even totally surrounded by another one. How could you possibly know all of these when you need to align your data to UTC? Do you need to look up the offset for each one in some big spreadsheet somewhere? Can't a computer help with this?
+
+3. Time zone database
+Thankfully, yes. There is a database called tz, updated 3-4 times a year as timezone rules change. This database is used by computer programs across many programming languages. Because timezone information changes so quickly, it doesn't make sense to bundle it directly into Python. Instead, you will use a package called dateutil.
+
+4. Time zone database
+Let's start by making a timezone object that corresponds to the eastern United States, where our bicycle data comes from. Within tz, time zones are defined first by the continent they are on, and then by the nearest major city. For example, the time zone used on the eastern seaboard of the United States is 'America/New York'. We fetch this timezone by calling tz.gettz(), and passing 'America/New York' as the string.
+
+5. Time zone database
+Here are a few more examples: 'America/Mexico_City'. 'Europe/London'. 'Africa/Accra'.
+
+6. Time zone database
+Let's look at our last ride again. Instead of specifying the UTC offset yourself, you pass the timezone you got from tz. Look at the result, and you can see that it's got the right UTC offset.
+
+7. Time zone database
+Even more excitingly, this same object will adjust the UTC offset depending on the date and time. If we call datetime() with the time of our first ride, and pass in the same timezone info, we see that it gives us a different UTC offset. We will discuss daylight savings time in the next lesson, but suffice to say that in some places the clocks change twice a year. Instead of having to look up when these things change, we just ask the timezone database to know for us. tz includes rules for UTC offsets going all the way back to the late 1960s, and sometimes earlier. If you have data stretching over a long period of time, and you really care about getting the exact hours and minutes correct, you can use tz to put all of your date and timestamps on to a common scale.
+
+8. Time zone database
+Now that you have a basic understanding of using the tz class from dateutil, it's time to practice some examples!
+
+
+
+
+1. Starting Daylight Saving Time
+Some places change their clocks twice a year to create longer summer evenings. This practice is called daylight saving time, but it would better be called daylight shifting time. In some countries it is called "summer time". Dealing with daylight saving time can be one of the most fiendish challenges in dealing with dates and times. To keep things simple, let's start with the situation where the clocks move forward in the spring. In the next lesson, we'll discuss handling the opposite case, when the clocks move back in the fall.
+
+2. Start of Daylight Saving Time
+Let's look at an example. On March 12, 2017, in Washington, D.C., the clock jumped straight from 1:59 am to 3 am. The clock "springs forward". It never officially struck 2 am anywhere on the East Coast of the United States that day.
+
+3. Start of Daylight Saving Time
+Just like before, to make our clock in Washington, D.C. comparable to clocks in other places, we need to represent it with a UTC offset. Only now the UTC offset is going to change. On this date, at 1 AM in Washington, D.C., we were in Eastern Standard Time. It was 6 AM UTC, a five-hour difference. At 3 AM in Washington, D.C., we were in Eastern Daylight Time. It was 7 AM UTC, a four-hour difference.
+
+4. Start of Daylight Saving Time
+Let's see the same thing in code. To be as clear as possible, let's create the UTC offsets by hand for now instead of using dateutil.tz. We start by creating a datetime object, spring_ahead_159am, for March 12th, at 1:59:59, without any timezone information. We print the results out with isoformat() to check that we have the time right, and we make another object for spring_ahead_3am. We subtract the two datetime objects and ask how much time has elapsed by calling total_seconds(). As expected, they're an hour and one second apart.
+
+5. Start of Daylight Saving Time
+As before, to fix problems with comparing datetimes we start by creating timezone objects. We define Eastern Standard Time, or EST, using the timezone constructor. We set the offset to -5 hours. Similarly, we define Eastern Daylight Time, or EDT, with an offset of -4 hours.
+
+6. Start of Daylight Saving Time
+We assign our first timestamp, at 1:59 am to be in EST. When we call isoformat(), we see it has the correct offset. We assign our second timestamp, at 3:00 am, to be in EDT, and again check the output with isoformat(). When we subtract the two datetime objects, we see correctly that one second has elapsed. Putting things in terms of UTC once again allowed us to make proper comparisons.
+
+7. Start of Daylight Saving Time
+But how do we know when the cutoff is without looking it up ourselves? dateutil to the rescue again. Just like before when it saved us from having to define timezones by hand, dateutil saves us from having to know daylight savings rules. We create a timezone object by calling tz.gettz() and pass our timezone description string. Recall that since Washington, D.C. is in the America/New_York time zone, that's what we use. Once again we create a datetime corresponding to 1:59 am on the day that the east coast of the US springs forward. This time though, we set the tzinfo to eastern time. Similarly, we create a datetime set to 3 am on March 12th, and when we set tzinfo to be eastern time, dateutil figures out for us that it should be in EDT.
+
+8. Daylight Saving
+In this lesson, we covered "spring ahead". Let's try some examples of working with datetimes that handle a switch into daylight saving time.
+
+
+
+
+1. Ending Daylight Saving Time
+In the previous lesson, we discussed how to handle when the clock "springs ahead" and we enter daylight saving. In the fall, when the clocks are reset back to standard time, an interesting wrinkle occurs. In this lesson, we'll finish our discussion of daylight saving time by showing what happens when we "fall back", and also talk about how to unambiguously handle events which bridge a daylight savings jump.
+
+2. Ending Daylight Saving Time
+Let's look back at our example in Washington, D.C., on the day that daylight saving time ended. On November 5th, 2017, at 2 AM the clocks jumped back an hour. That means there were two 1 AMs! We've represented this by "folding" over our timeline to show the repeat.
+
+3. Ending Daylight Saving Time
+As before, in order to make sense of this situation, we need to map everything back to UTC. The first 1 AM maps to 5 AM UTC. This is the minus 4 hour UTC offset for Eastern Daylight Time we discussed in the previous lesson. At 1:59:59 local time, we're at 5:59:59 UTC. The next moment, our local clock jumps back, but since time has not actually gone backward, the clock continues to tick in UTC. We switch to a UTC offset of minus 5 hours (colored in blue), and the second 1 AM corresponds to 6 AM UTC.
+
+4. Ending Daylight Saving Time
+First, let's make a tzinfo object corresponding to our bike data's timezone. We make a datetime for November 5th and 1 am. Let's check and see if this time is ambiguous, meaning we need to tell it apart somehow. We call tz.datetime_ambiguous(), and see that, yes, this is a time which could occur at two different UTC moments in this timezone. Now we create a second datetime, with the same date and time. This time, we call tz.enfold(), which takes the argument of the datetime we want to mark. enfold says, this datetime belongs to the *second* time the wall clock struck 1 AM this day, and not the first.
+
+5. Ending Daylight Saving Time
+The thing is, enfold by itself doesn't change any of the behavior of a datetime. You can see here that Python doesn't take it into account when doing datetime arithmetic. Fold is just a placeholder, and it's up to further parts of the program to pay attention to fold and do something with it. What are we going to do?! We need to convert to UTC, which is unambiguous. When we really want to make sure that everything is accounted for, putting everything into UTC is the way to do it. Now when we ask Python to take the difference, we see that it correctly tells us these two timestamps are an hour apart. In general, whenever we really want to be sure of the duration between events that might cross a daylight saving boundary, we need to do our math in UTC.
+
+6. Ending Daylight Saving Time
+We've covered how to handle springing forward and falling back, both with hand-coded UTC offsets and with dateutil. Python often tries to be helpful by glossing over daylight saving time difference, and oftentimes that's what you want. However, when you do care about it, use dateutil to set the timezone information correctly and then switch into UTC for the most accurate comparisons between events.
+
+
+
