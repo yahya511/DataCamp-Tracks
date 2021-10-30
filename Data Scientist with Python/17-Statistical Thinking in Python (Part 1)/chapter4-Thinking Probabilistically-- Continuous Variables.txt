@@ -1,0 +1,149 @@
+
+
+1. Probability density functions
+So far, we have talked about probabilities of discrete quantities, such as die rolls and number of bus arrivals, but what about continuous quantities?
+
+2. Continuous variables
+A continuous quantity can take on any value, not just discrete ones. For example, the speed of a train can be 45-point-76 km/h.
+
+3. Michelson's speed of light experiment
+Continuous variables also have probability distributions. Let's consider an example. In 1879, Albert Michelson performed 100 measurements of the speed of light in air.
+
+4. Michelson's speed of light experiment
+Each measurement has some error in it; conditions, such as temperature, humidity, alignment of his optics, et cetera, change from measurement to measurement. As a result, any fractional value of the measured speed of light is possible, so it is apt to describe the results with a continuous probability distribution. In looking at Michelson's numbers, shown here in units of megameters/s, or 1000s of kilometers/s, we see this is indeed the case. What probability distribution describes these data? I posit that these data follow the famous Normal distribution. To understand what the Normal distribution is,
+
+5. Probability density function (PDF)
+let's consider its probability density function, or PDF. This is the continuous analog to the probability mass function, the PMF. It describes the chances of observing a value of a continuous variable. The probability of observing a single value of the speed of light does not make sense, because there is an infinity of numbers,
+
+6. Normal PDF
+say between 299-point-6 and 300-point-0 megameters per second. Instead, areas under the PDF give probabilities. So, the probability of measuring that the speed of light is greater than
+
+7. Normal PDF
+300,000 km/s is an area under the normal curve. Parametrizing the PDF based on Michelson's experiments, this is about a 3% chance, since the pink region is about 3% of the total area under the PDF. To do this calculation, we were really just looking at the cumulative distribution function,
+
+8. Normal CDF
+or CDF, of the Normal distribution. Here is the CDF of the Normal distribution. Remember that the CDF gives the probability the measured speed of light will be less than the value on the x-axis. So, reading off the value at 300,000 km/s,
+
+9. Normal CDF
+we see that there is a 97% chance that a speed of light measurement is less than that. So, there is about a 3% change it is greater. We will study the Normal distribution in more depth in the coming exercises, but for right now,
+
+10. Let's practice!
+let's review some of the concepts we've learned about continuous distribution functions.
+
+
+
+
+1. Introduction to the Normal distribution
+The Normal distribution is famous, and we just used it as an example to learn about continuous distributions. We will not go into the story of the Normal distribution in depth,
+
+2. Normal distribution
+but for the purposes of this course, it suffices to say that it describes a continuous variable whose PDF is symmetric and has a single peak.
+
+3. Normal distribution
+Indeed, that is what its PDF looks like. The Normal distribution is parametrized by two parameters.
+
+4. Normal distribution
+The mean determines
+
+5. Normal distribution
+where the center of the peak is.
+
+6. Normal distribution
+The standard deviation
+
+7. Normal distribution
+is a measure of how wide the peak is, or how spread out the data are. Note that
+
+8. Insert title here...
+the mean and
+
+9. Insert title here...
+standard deviation are the names of the parameters of the Normal distribution. Do not confuse these with the mean and standard deviation that we computed directly from the data when doing exploratory data analysis. I know that nomenclature is confusing, but it is important to keep straight.
+
+10. Comparing data to a Normal PDF
+Now, if we add a histogram of the Michelson measurements, we see that the measured speed of light in air looks to be Normally distributed. Comparing the histogram to the PDF suffers from binning bias, so it is better to compare the ECDF of the data to the theoretical CDF of the Normal distribution. To compute the theoretical CDF, we can use np dot random dot normal to draw samples and then we can compute the CDF.
+
+11. Checking Normality of Michelson data
+As was the case with sampling out of the binomial distribution, we need to provide parameters, in this case the mean and standard deviation, to parametrize the Normal distribution we are sampling out of. The mean and standard deviations computed from the data are good estimates, so we'll compute them and pass them into np dot random dot normal to take our samples. We then use the function we already wrote to compute the ECDFs of the data and of the Normally distributed theoretical samples we just drew.
+
+12. Checking Normality of Michelson data
+Finally, we plot the theoretical and empirical CDFs on the same plot.
+
+13. Checking Normality of Michelson data
+With the absence of binning bias, it is much clearer that the Michelson data are approximately Normally distributed.
+
+14. Let's practice!
+Now that you can sample out of a Normal distribution, let's practice using it!
+
+
+
+
+1. The Normal distribution: Properties and warnings
+Here is the
+
+2. Image: Deutsche Bundesbank
+10 Deutschmark bill. It was retired in 2002 with the adoption of the Euro by Germany. The man pictured on this bill is Karl Gauss, one of the greatest mathematicians of all time. Clearly, the Germans think highly of Gauss to put him on their currency.
+
+3. The Gaussian distribution
+If we zoom in to the center of the bill, we see which of Gauss's barrel full of accomplishments they think most highly of. There it is, the Normal distribution! It is often also called the Gaussian distribution, after its inventor, so you will often hear it referred to this way. So, yes, the Normal distribution is very important and very widely used. It is so prevalent, it is worth talking about some more. In practice, it is used to describe most symmetric peaked data you will encounter. Furthermore, for many of the statistical procedures you have heard of, Normality assumptions about the data are present. Indeed, it is a very powerful distribution that seems to be ubiquitous in nature, not just in the field of statistics. That said, there are important caveats about the distribution and we need to be careful when using it. First off, often times things you may think are Normally distributed are not.
+
+4. Length of MA large mouth bass
+Consider for example large mouth bass in Massachusetts lakes measured in 1994 and 1995 by the Massachusetts Department of Environmental Protection. If we look at a histogram of the length of the 316 fish they measured, they appear to be Normally distributed. Indeed, when we look at
+
+5. Length of MA large mouth bass
+the ECDF overlayed with a theoretical Normal CDF, the measurements look close to Normally distributed. There are some systematic differences, though,
+
+6. Length of MA large mouth bass
+especially on the left tail. So this is not quite a Normal distribution, but we might not be making too big of an error by treating it as so.
+
+7. Mass of MA large mouth bass
+Now, let's consider the mass of the bass. One might think that since the length of these bass is close to Normally distributed, the mass should be also. When we overlay the theoretical Normal CDF on the ECDF of the data, it is not even close. Seeing this immediately shows us that our initial thought was incorrect. Another important issue to keep in mind when using the Normal distribution is
+
+8. Light tails of the Normal distribution
+the lightness of its tails. If we look at the Normal distribution, the probability of being
+
+9. Light tails of the Normal distribution
+more than four standard deviations from the mean is very small. This means that when you are modeling data as Normally distributed, outliers are extremely unlikely. Real data sets often have extreme values, and when this happens, the Normal distribution might not be the best description of your data.
+
+10. Let's practice!
+These caveats are not meant to scare you. I bring them up to remind you to always think carefully about assumptions that go into your analyses. The Normal distribution is still of great use, and use it you will in the next exercises!
+
+
+
+1. The Exponential distribution
+Just as there are many named discrete distribution, there are many named continuous distributions as well. For example, let's take a another trip to Poissonville and stand at a bus stop. We know that the number of buses that will arrive per hour are Poisson distributed. But the amount of time between arrivals of buses is Exponentially distributed.
+
+2. The Exponential distribution
+The Exponential distribution has this story: the waiting time between arrivals of a Poisson process are exponentially distributed. It has a single parameter, the mean waiting time. This distribution is not peaked,
+
+3. The Exponential PDF
+as we can see from its PDF. As an example,
+
+4. Possible Poisson process
+As an example, we can look at the time between all incidents involving nuclear power since 1974. We might expect incidents to be well-modeled by a Poisson process, ie, the timing of one incident is independent of all others. So, the time between incidents should be Exponentially distributed.
+
+5. Exponential inter-incident times
+We can compute and plot the CDF we would expect based on the mean time between incidents and overlay that with the ECDF from the real data. We take our usual approach where we draw many samples out of the Exponential distribution, using the mean inter-incident time as the parameter. We make the plot and label the axes.
+
+6. Exponential inter-incident times
+We see that it is close to being Exponentially distributed, indicating the nuclear incidents can indeed be modeled as a Poisson process. The Exponential and Normal are just two of many examples of continuous distributions. Importantly, in many cases you can just simulate your story to get the CDF. Remember, you have the power of a computer. If you can simulate a story, you can get its distribution!
+
+7. Let's practice!
+Now, let's play with the Exponential distribution in some exercises.
+
+
+
+1. Final thoughts
+Congratulations! You have completed the first course in statistical thinking.
+
+2. You now can…
+You can now use Python to construct instructive plots and informative summary statistics to explore your data. You have also built the intellectual and computational infrastructure to think probabilistically. You've accomplished a lot in a short time. Impressive! The knowledge you learned in this course really shines when you directly apply it to statistical inference problems.
+
+3. In the sequel, you will…
+In the next course, you will work with real data sets in Python to infer parameter values by a variety of methods including linear regression. You will use hacker statistics to compute confidence intervals to help you couch the conclusions you draw from your data in the appropriate probabilistic language. You will perform hypothesis tests, such as A/B tests, to help you discern differences between data sets. It's a great opportunity to use and expand upon what you learned in this first course in statistical thinking.
+
+4. Let's practice!
+I encourage you to take that opportunity! See you there!
+
+
+

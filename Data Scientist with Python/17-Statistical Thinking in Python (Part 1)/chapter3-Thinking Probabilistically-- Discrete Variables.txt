@@ -1,0 +1,134 @@
+
+
+1. Probabilistic logic and statistical inference
+Imagine you measured the petal lengths of
+
+2. 50 measurements of petal length
+50 flowers of a certain species. Here is the ECDF of those measurements. From what you have just learned, you can compute
+
+3. 50 measurements of petal length
+the mean of those 50 measurements, and I'll annotate it on the ECDF with a vertical line. That is useful, but there are millions of these flowers on the planet. Can you tell me the mean petal length of all of the flowers of that species?
+
+4. 50 measurements of petal length
+If I measure another 50 flowers, I get a similar, but quantitatively different set of measurements. Can you tell me what value I would get for the mean petal length if I measured yet another 50 flowers? We just don't have the language to do that, without probability. Probabilistic reasoning allows us to describe uncertainty. Though you can't tell me exactly what the mean of the next 50 petal lengths you measure will be, you could say that it is more probable to be close to what you got in the first 50 measurements that it is to be much greater.
+
+5. 50 measurements of petal length
+We can go ahead and repeat the measurements
+
+6. 50 measurements of petal length
+over and over again.
+
+7. Repeats of 50 measurements of petal length
+We see from the vertical lines that we expect the mean to be somewhere between 4-point-5 and 5 cm. This is what probabilistic thinking is all about. Given a set of data, you describe probabilistically what you might expect if those data were acquired again and again and again. This is the heart of statistical inference. It is the process by which we go from measured data to probabilistic conclusions about what we might expect if we collected the same data again. Your data speak in the language of probability.
+
+8. Let's practice!
+Let's do a few exercises exploring these idea, and then we'll come back to learn how to start speaking this probabilistic language.
+
+
+
+
+1. Random number generators and hacker statistics
+In practice, we are going to think probabilistically using hacker statistics. You had an introduction to hacker statistics in previous DataCamp courses, and in this course we will greatly extend your expertise.
+
+2. Hacker statistics
+The basic idea is that instead of literally repeating the data acquisition over and over again, we can simulate those repeated measurements using Python. For our first simulation, we will take a cue from our forebears. The concepts of probability originated from studies of games of chance
+
+3. Blaise Pascal
+by Pascal and others in the 17th century, so we will simulate
+
+1 Image: artist unknown
+4. Coins
+coin flips. Specifically, we will simulate the outcome of 4 successive coin flips. Our goal is to compute the probability that we will get four heads out of four flips.
+
+1 Image: Heritage Auction
+5. The np.random module
+Numpy's random module, a suite of functions based on pseudorandom number generation, will be your main engine for doing this. To simulate a coin flip, we will use the function np dot random dot random, which draws a number between zero and one such that all numbers in this interval are equally likely to occur.
+
+6. The np.random module
+If the number we draw is less than point-5, which has a 50% chance of happening, we say we got heads, and we get tails otherwise. This type of experiment, where the result is either True (heads) or False (tails) is referred to as
+
+7. Bernoulli trial
+a Bernoulli trial, and we will work with these more as we go through the course. The pseudorandom number generator works by starting with an integer, called a seed,
+
+8. Random number seed
+and then generates random numbers in succession. The same seed gives the same sequence of random numbers, hence the name, "psuedorandom number generation". So, if you want to have reproducible code, it is a good idea to seed the random number generator using the np dot random dot seed function.
+
+9. Simulating 4 coin flips
+Now, to do our coin flips, we import NumPy, seed the random number generator, and then draw four random numbers. Conveniently, we can specify how many random numbers we want with the size keyword argument. The first number we get is less than one half, so it is a heads, but the remaining three are tails. We can show that explicitly using the less than operation, which gives us an array with the Boolean value True for heads and False for tails. We can compute the number of heads by summing the array of Booleans because in numerical contexts, Python treats True at one and False as zero. We want to know the probability of getting four heads if we were to repeat the four flips over and over again. We can do this with a for loop.
+
+10. Simulating 4 coin flips
+We first initialize the count to zero. We then do 10,000 repeats of the four-flip trials. If a given trial had four heads, we increase the count. So, what is the probability of getting all four heads? It's the number of times we got all heads, divided by the total number of trials we did. The result is about point-06. Pascal and his friends did not have computers and worked out problems like these with pen and paper. While this particular problem is tractable, pen-and-paper statistics can get hard fast.
+
+11. Hacker stats probabilities
+With hacker statistics, you pretty much do this same procedure every time. Figure out how to simulate your data, simulate it many many times, and then compute the fraction of trials that had the outcome you're interested in.
+
+12. Let's practice!
+Now, let's use hacker statistics to simulate some more data!
+
+
+
+
+1. Probability distributions and stories: The Binomial distribution
+In the last video, we simulated a story about a person flipping a coin. We did this to get the probability for each possible outcome of the story. That set of probabilities is called
+
+2. Probability mass function (PMF)
+a probability mass function (PMF). A PMF is defined as the set of probabilities of discrete outcomes. To understand how this works, consider a simpler story,
+
+3. Discrete Uniform PMF
+a person rolling a die once. The outcomes are discrete because only certain values may be attained; you cannot roll a 3-point-7 with a die. Each result has the same, or uniform probability, 1/6. For this reason, the PMF associated with this story is called the Discrete Uniform PMF. Now the PMF is a property of a discrete probability distribution.
+
+4. Probability distribution
+A distribution is just a mathematical description of outcomes. We can match a story to a mathematical description of probabilities, as we have just seen with the Discrete Uniform distribution.
+
+5. Discrete Uniform distribution: the story
+The story we simulated in the last video corresponds to the Binomial distribution. Its story is as follows:
+
+6. Binomial distribution: the story
+the number r of successes in n Bernoulli trials with probability p of success is Binomially distributed. The number of heads in four coin flips matches this story, since a coin flip is a Bernoulli trial with p = point-5.
+
+7. Sampling from the Binomial distribution
+We call the function np dot random dot binomial with two arguments, the number of Bernoulli trials (coin flips) and the probability of success (heads). We get 2 heads out of four. We want repeat the four-flip experiment over and over again. Again, we can specify the size keyword argument, which tells the function how many random numbers to sample out of the Binomial distribution.
+
+8. The Binomial PMF
+To be able to plot the Binomial PMF, we'll draw 10,000 samples from a Binomial distribution where we do 60 Bernoulli trials with a probability of success of point-1. If we do this over and over and tally the results, we can plot the PMF. As expected the most likely number of successes is 6 out of 60, but we may expect to get as many as 11 or as few as 1. Unfortunately, while this is a proper way to display a PMF, it is not the easiest to implement with Matplotlib. You'll plot a PMF as a histogram in the exercises.
+
+9. The Binomial CDF
+The CDF is just as informative and easier to plot just as we have done before,
+
+10. The Binomial CDF
+and here it is. Now that you know the story of the binomial distribution, have a feel for how it looks, and know how to sample out of it,
+
+11. Let's practice!
+let's do some hacker statistics with it!
+
+
+
+
+1. Poisson processes and the Poisson distribution
+In his great book on information theory, statistical inference, and machine learning, David MacKay described a town called Poissonville where the buses have a very erratic schedule. If you stand at a bus stop in Poissonville, the amount of time you have to wait for a bus is completely independent of when the previous bus arrived. In other words, you would watch a bus drive off and another one will arrive almost instantly, or you could be waiting for hours. Arrival of buses in Poissonville is what we call
+
+2. Poisson process
+a Poisson process. The timing of the next event is completely independent of when the previous event happened. Many real-life processes behave in this way.
+
+3. Examples of Poisson processes
+For example, natural births in a given hospital are a Poisson process. There is a well-defined average number of natural births per year, and the timing of one birth is independent of the timing of the previous one. Another example is hits on a website. The timing of the next hit is independent of the timing of the last. There are countless other examples. Any process that matches the buses in Poissonville story is a Poisson process. The number of arrivals of a Poisson process in a given amount of time is Poisson distributed.
+
+4. Poisson distribution
+The Poisson distribution has one parameter, the average number of arrivals in a given length of time. So, to match the story, we could consider the number of hits on a website in an hour with an average of six hits per hour. This is Poisson distributed.
+
+5. Poisson PMF
+Let's take a look at the PMF for this example. For a given hour, we are most likely to get 6 hits, which is the average, but we may get more than ten, or possibly none. You might notice that this looks an awful lot like the Binomial PMF we looked at in the last video. This is because the Poisson distribution
+
+6. Poisson Distribution
+is a limit of the Binomial distribution for low probability of success and large number of trials, ie for rare events. You'll explore this relationship further in the following interactive exercises.
+
+7. The Poisson CDF
+To sample from the Poisson distribution, we use np dot random dot poisson. It also has the size keyword argument to allow multiple samples. Let's use this function to generate the Poisson CDF. After that it is the usual procedure of computing the ECDF, plotting it, and labeling axes.
+
+8. The Poisson CDF
+The result, predictably, looks like the Binomial CDF we saw in the last video.
+
+9. Let's practice!
+Now let's get some experience with the Poisson distribution in the exercises!
+
+

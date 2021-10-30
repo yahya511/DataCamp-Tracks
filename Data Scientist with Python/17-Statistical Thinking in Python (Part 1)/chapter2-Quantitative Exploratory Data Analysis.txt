@@ -1,0 +1,168 @@
+
+
+1. Introduction to summary statistics: The sample mean and median
+We have seen that histograms, bee swarm plots, and ECDFs provide effective summaries of data. But we often would like to summarize data even more succinctly, say in one or two numbers. These numerical summaries are not by any stretch a substitute for the graphical methods we have been employing, but they do take up a lot less real estate.
+
+2. 2008 US swing state election results
+Let's go back to the election data from the swing states again. If we could summarize the percentage of the votes for Obama at the county level in Pennsylvania in one number, what would we choose? The first number that pops into my mind is
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+3. 2008 US swing state election results
+the mean. The mean for a given state is just the average percentage of votes over the counties. If we add the means as horizontal lines to the bee swarm plot, we see that they are a reasonable summary of the data.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+4. Mean vote percentage
+To compute the mean of a set of data, we use the np dot mean function, here used to compute the mean county-level vote for Obama in Pennsylvania. To put it precisely, the mean, written here as x-bar, is the sum of all the data, divided by the number n of data points. Now, the mean is a useful statistic and easy to calculate, but a major problem is that it is heavily influenced
+
+5. Outliers
+by outliers, or data points whose value is far greater or less than most of the rest of the data. Consider the county-level
+
+6. 2008 Utah election results
+votes for Utah in the 2008 election. There are five counties that have high vote share for Obama, one of which has almost 60%. Even though the majority of the counties in Utah had less than 25% voting for Obama,
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+7. 2008 Utah election results
+these anomalous counties pull the mean higher up. So, when we compute the mean, we get about 28%. We might like a summary statistic that is immune to extreme data.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+8. The median
+The median provides exactly that. The median is the middle value of a data set. It is defined by how it is calculated: sort the the data and choosing the datum in the middle. Because it is derived from the ranking of sorted data, and not on the values of the data, the median is immune to data that take on extreme values.
+
+9. 2008 Utah election results
+Here it is displayed on the bee swarm plot. It is not tugged up by the counties with large fraction of votes for Obama.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+10. Computing the median
+The median is computed by simply calling the np dot median function.
+
+11. Let's practice!
+Now let's practice using these two powerful and ubiquitous summary statistics!
+
+
+
+
+1. Percentiles, outliers, and box plots
+The median is a special name for the 50th percentile;
+
+2. Percentiles on an ECDF
+that is 50% of
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+3. Percentiles on an ECDF
+the data are less than the median. Similarly, the 25th percentile
+
+4. Percentiles on an ECDF
+is the value of the data point that is greater than 25% of the sorted data, and so on for any
+
+5. Percentiles on an ECDF
+other percentile we want. Percentiles are useful summary statistics, and can be computed
+
+6. Computing percentiles
+using np dot percentile. We just pass a list of the percentiles we want (percentiles, not fractions), and it returns the data that match those percentiles. We can do this for all of the swing states. Let's compute the 25th, 50th, and 75th percentiles. We now have three summary statistics. Now the whole point of summary statistics was to keep things concise, but we're starting to get a lot of numbers here. Dealing with this issue is where quantitative EDA meets graphical EDA.
+
+7. 2008 US election box plot
+Box plots were invented by John Tukey himself to display some of the salient features of a data set based on percentiles. Here, we see a box plot showing Obama's vote share from states east and west of the Mississippi River. The center of box is the median,
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+8. 2008 US election box plot
+which we know is the 50th percentile of the data. The edges of the boxes
+
+9. 2008 US election box plot
+are the 25th and 75th percentile. The total height of the box contains the middle 50% of the data, and is called
+
+10. 2008 US election box plot
+the interquartile range, or IQR. The whiskers extend a distance
+
+11. 2008 US election box plot
+of 1-point-5 times the IQR, or to the extent of the data, whichever is more extreme. Finally, any points outside of the whiskers are plotted
+
+12. 2008 US election box plot
+as individual points, which we often demarcate as outliers. While there is no single definition for an outlier, being more than 2 IQRs away from the median is a common criterion. It is important to remember that an outlier is not necessarily an erroneous data point. You should not assume an outlier is erroneous unless you have some known reason to. Since there is zero evidence of any substantial voter fraud in the United States, these outliers are not erroneous. They are just data points with extreme values. When the number of data are very large and bee swarm plots are too cluttered, box plots are a great alternative. It makes sense, then, that constructing a box plot
+
+13. Generating a box plot
+using Seaborn is exactly the same as making a bee swarm plot; we just use sns dot boxplot. And of course we never forget to label the axes.
+
+14. Let's practice!
+All right, let's go have some fun computing percentiles and making box plots!
+
+
+
+
+1. Variance and standard deviation
+Once again, let's look at the 2008
+
+2. 2008 US swing state election results
+swing state data on the county level and think about other summary statistics we can calculate. In this bee swarm plot, I also show the means of each state with a horizontal line. In looking at this plot, the mean seems to capture the magnitude of the data, but what about the variability, or the spread, of the data? Florida seems to have more county-to-county variability than Pennsylvania or Ohio.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+3. Variance
+We can quantify this spread with the variance. The variance is the average of the squared distance from the mean. That definition was a mouthful. Let's parse that more carefully with a graphical example, looking specifically at Florida.
+
+4. 2008 Florida election results
+For each data point,
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+5. 2008 Florida election results
+we square the distance from the mean, and then take the average of all of these values.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+6. Computing the variance
+Calculation of the variance is implemented in the np dot var function. Now, because the calculation of the variance involves squared quantities, it does not have the same units of what we have measured, in this case the vote share for Obama. Therefore, we are interested in
+
+7. Computing the standard deviation
+the square root of the variance, which is called the standard deviation. This is calculated with the np dot std function, and the results are the same as taking the square root of the variance.
+
+8. 2008 Florida election results
+When we look at the swarm plot, it is clear that the standard deviation is a reasonable metric for the typical spread of the data.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+9. Let's practice!
+Ok, let's practice computing some variances and standard deviations!
+
+
+
+1. Covariance and the Pearson correlation coefficient
+We have more data than just the vote share for Obama. We also know the total number of votes in each county. Let's look at how these two quantities vary together.
+
+2. 2008 US swing state election results
+We start by looking at a scatter plot of the county data for the three swing states, plotting the percent vote for Obama versus the total number of votes in each county. Immediately from the scatter plot, we see that
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+3. 2008 US swing state election results
+the twelve most populous counties all voted for Obama, and that most of the counties
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+4. 2008 US swing state election results
+with small populations voted for McCain.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+5. Generating a scatter plot
+To generate a scatter plot, we plot the data as points by setting the marker and linestyle keyword arguments of plt dot plot. (And of course we label the axes!) So, we have exposed another graphical EDA technique: scatter plots! We would like to have a summary statistic to go along with the information we have just gleaned from the scatter plot. We want a number that summarizes how Obama's vote share varies with the total vote count.
+
+6. Covariance
+One such statistic is the covariance. To understand where it comes from,
+
+7. Calculation of the covariance
+let's annotate the scatter plot with the means of the two quantities we are interested in. Now let's look at
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+8. Calculation of the covariance
+this data point, from Lucas County, Ohio. This data point
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+9. Calculation of the covariance
+differs from the mean vote share for Obama, and
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+10. Calculation of the covariance
+the mean total votes. We can compute these differences for each data point. The covariance is the mean of the product of these differences. If x and y both tend to be above, or both below their respective means together, as they are in this data set, then the covariance is positive. This means that they are positively correlated: when x is high, so is y; when the county is populous, it has more votes for Obama. Conversely, if x is high while y is low, the covariance is negative, and the data are negatively correlated, or anticorrelated, which is not the case for this data set. We can compute the covariance using built-in NumPy functions you will use in the exercises. However, if we want to have a more generally applicable measure of how two variables depend on each other, we want it to be dimensionless, that is to not have any units.
+
+1 Data retrieved from Data.gov (https://www.data.gov/)
+11. Pearson correlation coefficient
+So, we can divide the covariance by the standard deviations of the x and y variables. This is called the Pearson correlation coefficient, usually denoted by the Greek letter rho. It is a comparison of the variability in the data due to codependence (the covariance) to the variability inherent to each variable independently (their standard deviations). Conveniently, it is dimensionless and ranges from -1 (for complete anticorrelation) to 1 (for complete correlation).
+
+12. Pearson correlation coefficient examples
+A value of zero means that there is no correlation at all between the data, as shown in the plot on the upper left. Data with intermediate values are shown on the other plots. As you can see, the Pearson correlation coefficient is a good metric for correlation between two variables.
+
+13. Let's practice!
+Now that you know how what the Pearson correlation coefficient is and what it means, you can compute it in the exercises using Python. You will then have an added tool in your EDA summary statistics toolbox. Let's do it!
