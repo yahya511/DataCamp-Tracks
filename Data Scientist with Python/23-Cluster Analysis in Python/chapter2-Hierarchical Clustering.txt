@@ -1,0 +1,106 @@
+
+
+1. Basics of hierarchical clustering
+Hello everyone! In the previous chapter, you were introduced to the basics of two clustering algorithms. This chapter focuses on performing hierarchical clustering with SciPy. This video looks at the various parameters of the hierarchical clustering algorithm.
+
+2. Creating a distance matrix using linkage
+A critical step is to compute the distance matrix at each stage. This is achieved through the linkage method available in scipy-dot-cluster-dot-hierarchy. This process computes the distances between clusters as we go from N clusters to 1 cluster, where N is the number of points. There are four parameters for this method. The first parameter is the observations. The second parameter, method, tells the algorithm how to calculate proximity between two clusters. The metric is the function that decides the distance between two objects. Euclidean distance is a straight line distance between two points on a 2D plane. You can use your own function here. The optimal_ordering is an optional argument that changes the order of linkage matrix. We will not use this argument. Let us explore the method argument.
+
+3. Which method should use?
+The second parameter, method, decides how clusters are separated at each step. This is the parameter that we will tweak in this lesson and see the differences. The single method decides the proximity of clusters based on their two closest objects. On the other extreme end, the complete method decides the proximity of cluster centers based on their two farthest objects. The average and centroid methods decide cluster proximities based on arithmetic and geometric means, respectively. The median method uses the median of cluster objects. Finally, the ward method that we used earlier computes cluster proximity using the difference between summed squares of their joint clusters minus the individual summed squares. The ward method focuses on clusters more concentric towards its center.
+
+4. Create cluster labels with fcluster
+Once you have created the distance matrix, you can create the cluster labels through the fcluster method, which takes three arguments -the distance matrix, the number of clusters and the criteria to form the clusters based on certain thresholds. We will use the value of maxclust in the criterion argument.
+
+5. Hierarchical clustering with ward method
+Let us try to understand the differences between various methods to perform hierarchical clustering on a list of points on a 2D plane. This is the result using the ward method. Notice that clusters are generally dense towards the centers. In all seaborn plots, an extra cluster with label 0 is shown, even though no objects are present in it. This can be removed if you store the cluster labels as strings.
+
+6. Hierarchical clustering with single method
+Next, we will use the single method to see how the clusters change. Recall the single method used the two closest objects between clusters to determine the inter-cluster proximity. Naturally, the clusters formed when performing clustering through this method are more dispersed. Although the top cluster, labelled 1, is roughly the same, most objects from cluster 3 have shifted to cluster 2.
+
+7. Hierarchical clustering with complete method
+In the next and final iteration, we look at the clusters formed by the complete method. This method uses the two farthest objects among clusters to determine inter-cluster proximity. Coincidentally, though, the results of the complete method on the same data points that we used is similar to that of the ward method.
+
+8. Final thoughts on selecting a method
+Here are a few thoughts before we complete this lesson. First, there is no right method that you can apply to all problems that you face. You would need to carefully study the data that you are going to handle to decide which method is right for your case, which falls outside the scope of this course.
+
+9. Let's try some exercises
+It is now time for you to try some exercises.
+
+
+
+
+1. Visualize clusters
+Hi everyone! Now that you are familiar with hierarchical clustering and how the algorithm works, let us take a step in the direction of visualizing clusters.
+
+2. Why visualize clusters?
+Why do we need to visualize clusters? One can quickly make sense of the clusters formed by any algorithm by visually analyzing it rather than just looking at cluster centers. It can serve as an additional step for validation of clusters formed. Additionally, you may also spot trends in your data by visually going through it. Let us now look at possible ways of visualizing the clusters that we have formed in our earlier exercise.
+
+3. An introduction to seaborn
+Seaborn is a data visualization library in Python that is based on matplotlib. It provides better default plotting themes, which can be easily and intuitively modified. It has functions for quick visualizations in the context of data analytics. In this course on clustering, we use Pandas data frames to store our data, often adding a separate column for cluster centers. Seaborn provides an argument in its scatterplot method to allow us to use different colors for cluster labels to differentiate the clusters when visualizing them. Let us compare the implementation of the two plotting techniques - matplotlib and seaborn.
+
+4. Visualize clusters with matplotlib
+To visualize clusters, we first import the pyplot class in matplotlib. Let us start with a Pandas data frame which has the columns - x, y and label for its x and y coordinates and cluster labels, A and B. We will use the c argument of the scatter method, to assign a color to each cluster. However, we first need to manually map each cluster to a color. Therefore, we define a dictionary named colors with the cluster labels as keys, and the color associated with the clusters as its values. We then pass a list of colors to c argument using a lambda function, which returns the corresponding value of each cluster label.
+
+5. Visualize clusters with seaborn
+The implementation in seaborn is fairly straightforward with the built in scatterplot method. We first import the pyplot class and seaborn library. We use the same data frame as earlier to visualize the clusters. To visualize the data points with each point associated with a separate color, we use the hue argument of the scatterplot method, and pass on the column name of the cluster labels, which is labels in this example. Now that we have written the code for each of them, let us compare the results. Recall from the last lesson that seaborn shows an extra cluster with label 0 if the cluster labels are integers. In this example, we have manually assigned string cluster labels, so this issue will not arise.
+
+6. Comparison of both methods of visualization
+Although the results are comparable, there are two reasons why we prefer seaborn. First, the implementation using seaborn was more convenient once you have stored cluster labels in your data frame. Second, you do not need to manually select colors in seaborn as it would be using a default palette no matter how many clusters you have.
+
+7. Next up: Try some visualizations
+Now that you know how to visualize data using two libraries, let us try some exercises.
+
+
+
+
+
+1. How many clusters?
+Hi everyone! In this video, we will explore a way to decide how many clusters are present in our data.
+
+2. Introduction to dendrograms
+Up until this point, we have graphically looked at the number of points in our data sets to decide how many clusters to form. To decide on the number of clusters in hierarchical clustering, we can use a graphical diagram called the dendrogram. A dendrogram is a branching diagram that shows the progression in a linkage object as we proceed through the hierarchical clustering algorithm. Let us look at an example.
+
+3. Create a dendrogram in SciPy
+The first step in creating a dendrogram is to import the method from scipy-dot-cluster-dot-hierarchy. Next, we use the linkage method to create a distance matrix. Finally, we use the dendrogram method and provide the linkage object as an argument, and display the plot.
+
+4. Dendrogram demonstration
+To understand the intricacies of a dendrogram, let us look at the dendrogram that has been generated and then make corresponding clusters. Recall the hierarchical clustering algorithm, where each step was a result of merging of two closest clusters in the earlier step. The x axis represents individual points, whereas the y axis represents the distance or dissimilarity between clusters. In the dendrogram, each inverted U represents a cluster divided into its two child clusters. The inverted U at the top of the figure represents a single cluster of all the data points. The width of the U shape represents the distance between the two child clusters. A wider U, therefore, means that the two child clusters were farther away from each other as compared to a narrower U in the diagram.
+
+5. Dendrogram demonstration - 2
+Now, if you draw a horizontal line at any part of the figure, the number of vertical lines it intersects tells you the number of clusters at that stage, and the distance between those vertical lines indicates the inter-cluster distance. At the horizontal line drawn on the figure, we see that there are three clusters. When you move the line below, the number of clusters increases but the inter-cluster distance decreases. This information helps us in deciding the number of clusters. For instance, even though we haven't looked at the distribution of the data points, it seems that the top three clusters have the highest distances between them. At this point, I must reiterate that there is no right metric to decide how many clusters are ideal. For instance, it looks like choosing three clusters should be ideal for this exercise. However, one's argument for two or four clusters may stand as well. Let us look at the results of each of these three cases.
+
+6. Two clusters
+Here is the result of performing the clustering with two clusters.
+
+7. Three clusters
+Here is the result with three clusters.
+
+8. Four clusters
+And here is how 4 clusters look on the data. Although the dendorgram indicated we could go ahead with three clusters, the case with four clusters makes sense too. Therefore, an additional check of visualizing the data may be performed before deciding on the number of clusters.
+
+9. Next up - try some exercises
+Now, let us try some exercises on how to decide the number of clusters using the dendrogram!
+
+
+
+
+
+1. Limitations of hierarchical clustering
+Hi everyone, welcome to the final video in the chapter! Now that you are familiar with hierarchical clustering let us look at the challenges when performing this type of clustering.
+
+2. Measuring speed in hierarchical clustering
+Let us design a small task to measure the speed of various iterations of hierarchical clustering in order to check how long it takes for iterations. We will use the timeit module to check runtime of functions. As the most time-consuming step in the process of hierarchical clustering is constructing the distance matrix through the linkage method, we will time the amount of time it takes to form the matrix. For the purpose of this exercise, we will use randomly generated data points on the XY plane. To test the limits of the algorithm, we will use an increasing number of data points.
+
+3. Use of timeit module
+To demonstrate the use of timeit to further check how much time it may take for a large number of points, let us look at how long it takes to run the linkage method for 100 points with randomly generated coordinates. We first import the random and timeit modules to generate the points and time the runtime of a function respectively. Next, we create a data frame with 100 points, and randomly generate 100 points within coordinates in the range of zero to a hundred. To check the time of a function in the interpreter, we use the percent symbol before the timeit keyword followed by the statement that we were about to run. The timeit module runs the function multiple times and reports the mean and standard deviations of the runtimes. When I run this code on a 2017 Macbook Air running Jupyter notebooks, the mean time to execute the statement is about 1-point-02 milliseconds. Let us now perform iterations for an increasing number of points, check how long it takes to run the linkage method and then plot a graph to compare the performace.
+
+4. Comparison of runtime of linkage method
+If you plot the runtime of the linkage method with the number of points, you can see that the runtime increases with the increase in number of data points. In addition to it, you would notice that the increase in run time is not linear with respect to the increase in data points, but quadratic. This makes the technique of hierarchical clustering infeasible for huge number of data points, for instance, the shopping habits of all customers in Walmart in a year.
+
+5. Next up - exercises
+Let us now try some exercises to measure the time of functions through timeit.
+
+
+
+

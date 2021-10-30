@@ -1,0 +1,99 @@
+
+
+1. Dominant colors in images
+In the final chapter of this course, let us try to use clustering on real world problems. In this first video, we will analyze images to determine dominant colors.
+
+2. Dominant colors in images
+Any image consists of pixels, each pixel represents a dot in the image. A pixel consists of three values - each value is a number between 0-255, representing the amount of its red, green and blue components. The combination of these forms the actual color of the pixel. To find the dominant colors, we will perform k-means clustering, with its RGB components. One important use of k-means clustering on images is to segment satellite images to identify surface features.
+
+3. Feature identification in satellite images
+In this satellite image, you can see the terrain of a river valley. Various colors typically belong to different features. K-means clustering can be used to cluster them into groups, which can then be identified into various surface features like water and vegetation.
+
+4. Tools to find dominant colors
+There are two additional methods that you will be introduced to in this video, which are a part of the image class of matplotlib. The first one is the imread method, which converts a JPEG image into a matrix, which contains the RGB values of each pixel. The second method is the imshow method which would display colors of the cluster centers once you perform k-means clustering on the RGB values.
+
+5. Test image
+In this video, let us perform k-means clustering on this image of the sea. Notice that there are two dominant colors in the image - a blue-green color of the sea water, and a light blue sky.
+
+6. Convert image to RGB matrix
+The first step in the process is to convert the image to pixels using the imread method of the image class. Notice that the output of this function is a MxNx3 matrix, where M and N are the dimensions of the image. In this analysis, we are going to collectively look at all pixels, and their position would not matter, hence, we will just extract all RGB values and store them in their corresponding lists.
+
+7. Data frame with RGB values
+Once the lists are created, we store them in a Pandas data frame.
+
+8. Create an elbow plot
+Here is the code to create an elbow plot from the last chapter.
+
+9. Elbow plot
+Once we scale the RGB values of the list of pixels, we create the elbow plot to see how many dominant colors are present in the image. Notice that the elbow plot indicates two clusters, which supports our initial observation of two prominent colors in the image.
+
+10. Find dominant colors
+The cluster centers obtained are standardized RGB values. Recall that a standardized value of a variable is its actual value divided by the standard deviation. We would display the colors through the imshow method, which takes RGB values that have been scaled to the range of 0 to 1. To do so, we need to multiply the standardized values of the cluster centers with their corresponding standard deviations. We saw earlier that actual RGB values take the maximum value of 255, hence we divide it by 255 to get a scaled value in the range of 0-1.
+
+11. Display dominant colors
+Once we have the colors with their RGB values, the imshow method is used to display them. Note that you need to provide the colors variable encapsulated as a list, as the imshow method expects a MxNx3 matrix to display a 2D grid of colors. By doing this, we are providing a 1xNx3 matrix, which tells imshow method to display only one row of colors, where N is the number of clusters. Here are the two dominant colors, which supports our preliminary observations.
+
+12. Next up: exercises
+Let us now move on to exercises.
+
+
+
+
+1. Document clustering
+In the introductory lesson, we discussed about the use of unsupervised learning techniques to group news items together by a service such as Google News. This technique, which is known as document clustering, will be explored in this video.
+
+2. Document clustering: concepts
+Document clustering uses some concepts from natural language processing, or NLP. Although NLP is a huge subject, let us try and understand its basics to apply in this use case. First, we will clean the data for anything that does not add value to our analysis. Some items to remove include punctuation, emoticons and words such as "the, is, are". Next we find the TF-IDF of the terms, or a weighted statistic that describes the importance of a term in a document. Finally, we cluster the TF-IDF matrix and display the top terms in each cluster.
+
+3. Clean and tokenize data
+The text in itself cannot be analyzed before converting into smaller parts called tokens, which we achieve by using NLTK's word_tokenize method. First, we remove all special characters from tokens and check if it contains to any stop words. Finally, we return the cleaned tokens. Here's the output of sample quote from the movie Pink Panther.
+
+4. Document term matrix and sparse matrices
+Once relevant terms have been extracted, a matrix is formed, with the terms and documents as dimensions. An element of the matrix signifies how many times a term has occurred in each document. Most elements are zeros, hence, sparse matrices are used to store these matrices more efficiently. A sparse matrix only contains terms which have non zero elements.
+
+5. TF-IDF (Term Frequency - Inverse Document Frequency)
+To find the TF-IDF of terms in a group of documents, we use the TfidfVectorizer class of sklearn. We initialize it with the following features: max_df and min_df signify the maximum and minimum fraction of documents a word should occur in - here we go ahead with terms that appear in more than 20% but less than 80% documents. We keep the top 50 terms. Finally, we use our custom function as a tokenizer. The fit_transform method creates the TF-IDF matrix for the data, which is a sparse matrix.
+
+6. Clustering with sparse matrix
+kmeans in scipy does not work with sparse matrices, so we convert the tfidf matrix to its expanded form using the todense method. kmeans can then be applied to get the cluster centers. We do not use the elbow plot, as it will take an erratic form due to the high number of variables.
+
+7. Top terms per cluster
+Each cluster center is a list of tfidf weights, which signifies the importance of each term in the matrix. To find the top terms, we first create a list of all terms. Then, we create a dictionary with the terms are keys and tfidf as values. We then sort the dictionary by its values in descending order and display top terms. Zip method joins two lists in python. We analyze a list of 1000 hotel reviews to find that the top terms in one of the clusters were room, hotel, and staff, whereas the other cluster, had bad, location, and breakfast as the top terms.
+
+8. More considerations
+Due to the scope of the course, we have seen a simple form of document clustering. There are more considerations when it comes to NLP. For instance, you can modify the remove_noise method to filter hyperlinks, or replace emoticons with text. You can normalize every word to its base form: for instance, run, ran and running are the forms of the same verb run. Further, the todense method may not work with large datasets, and you may need to consider an implementation of k-means that works with sparse matrices.
+
+9. Next up: exercises!
+Let us now try to cluster movies based on their synopses.
+
+
+
+
+1. Clustering with multiple features
+In the final video exercise of the course, let us perform clustering on the FIFA dataset again. However, this time we will consider more than two variables and try to interpret and validate the results of clustering.
+
+2. Basic checks
+While it is important to understand that all features can not be visualized and assessed at the same time when clustering with more than 3 features, we will discuss a few techniques to validate your results. This step assumes that you have created the elbow plot, performed the clustering process and generated cluster labels. First, you can check how the cluster centers vary with respect to the overall data. If you notice that cluster centers of some features do not vary significantly with respect to the overall data, perhaps, it is an indication that you can drop that feature in the next run. Next, you can also look at the sizes of the clusters formed. If one or more clusters are significantly smaller than the rest, you may want to double if their cluster centers are similar to other clusters. If the answer is yes, you may want to reduce the number of clusters in subsequent runs. In this case, you notice that the second cluster is significantly smaller. It is because we have performed clustering on three attacking attributes, for which goalkeepers have a very low value as indicated by the cluster centers. Hence, the smaller cluster is composed primarily of goalkeepers, as we will explore later.
+
+3. Visualizations
+Even though all variables cannot be visualized across clusters, there are other simpler visualizations that help you understand the results of clustering. You may either visualize cluster centers or other variables stacked against each other. In pandas, you can use the plot method after groupby to generate such plots. In this example, the bar chart is demonstrated. You can also create a line chart to see how variables vary across clusters. In our case, you will notice that all three attributes are significantly higher in one cluster.
+
+4. Top items in clusters
+Finally, let us check five players from each cluster. As expected the first cluster has top attack minded players like Ronaldo, Messi and Neymar. As explained earlier, the second cluster has top goalkeepers like Manuel Neuer, De Gea and Buffon, who have very low values for traits like volleys and heading accuracy. This determines that our clustering was appropriate.
+
+5. Feature reduction
+When dealing with a large number of features, certain techniques of feature reduction may be used. Two popular tools to reduce the number of features are factor analysis and multidimensional scaling. Although these are beyond the scope of this course, you may consider them as a precursor to clustering.
+
+6. Final exercises!
+Let us now move on to the final exercises of this course.
+
+
+
+1. Farewell!
+Congratulations! You have successfully completed this course. Let us part with a few pointers.
+
+2. What comes next?
+As I have mentioned in this course earlier, clustering is often one of the very first steps in analysis of data - which should bring you to the question - what lays ahead? We have a number of courses of DataCamp to take your learning to the next level - make sure to check them out. Finally, the only way to retain knowledge is to practice. Make sure you apply the concepts learnt in this course on real data sets. If you still have a question,
+
+3. Until next time
+you may fill in the form in the feedback sections or hit me up on social media! It's been a great time. Bye bye.

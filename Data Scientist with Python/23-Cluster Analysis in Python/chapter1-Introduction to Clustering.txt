@@ -1,0 +1,101 @@
+
+1. Unsupervised learning: basics
+Hi everyone! Welcome to the video of this course. In this video, we will focus on unsupervised learning, business problems that are solved using such techniques and basic plotting of points that would help us later in the course! Let's get started.
+
+2. Everyday example: Google news
+While browsing through Google News, have you wondered what goes behind grouping news items together? How does the algorithm decide which articles are similar? It is the result of an unsupervised learning algorithm. It scans through the text of each article and based on frequently occurring terms, groups articles together. The group of articles shown here is based on the Indian cricket team. Through this course, you will be introduced to various clustering techniques. Similar to this example, you will also perform document clustering on text.
+
+3. Labeled and unlabeled data
+Before we define unsupervised learning, let us try to understand the terms: labeled and unlabeled data. Imagine you have a list of points with X and Y coordinates. If only the coordinates of the points are available and there is no other characteristic available to distinguish the data points, it is called unlabeled data. At the same time, if we associate each data point with a group beforehand, say normal and danger zones, we call it labeled data.
+
+4. What is unsupervised learning?
+What is unsupervised learning? It is an umbrella term for a group of machine learning algorithms that are used to find patterns. The data that is used in these algorithms is not labeled, classified or characterized prior to running the algorithm. The algorithm is run, therefore, to find and explain inherent structures within the data. Common unsupervised learning algorithms are clustering, anomaly detections, and neural networks. Clustering is used to group similar data points together.
+
+5. What is clustering?
+Let us now move on to a specific class of unsupervised learning algorithms. Clustering is the process of grouping items with similar characteristics. The groups so formed are such that items in a single group are closer to each other in terms of some characteristics as compared to items in other clusters. Clustering falls under the group of unsupervised learning algorithms as the data is not labeled, grouped or characterized beforehand. A simple example to demonstrate clustering would be to group points on a 2D plane based on their distance. Let us try to visualize it in Python.
+
+6. Plotting data for clustering - Pokemon sightings
+To make a scatter plot, we will use the pyplot class of the matplotlib library in Python. We will plot the sightings of Pokemon in a park in the form of coordinates. The first step, therefore, is to import the required class as plt. Next, we define the coordinates of points to be plotted in two lists - one each for x and y coordinates. In this case, we have fifteen sightings that we would like to plot. Finally, we use the scatter method of the pyplot class, with the lists for the coordinates as arguments and the plot method to display the plot. Let us see how the plot looks.
+
+7. Plotting data for clustering - the scatter plot
+Here is how the plot looks like. As a preliminary analysis before you perform any clustering analysis on the points, visualizing helps you understand how many natural clusters are present in the data. There are three clusters in the data, which
+
+8. Plotting data for clustering - clusters
+are highlighted in the plot. By visualizing this data, you can infer with some confidence where the Pokemon actually are!
+
+9. Up next - some practice
+Although this is a simplified case, real life problems may not have an obvious solution, and you may have to employ more analysis to decipher how many clusters there actually are, which you will learn later in the course. It is time for some exercises based on this video.
+
+
+
+
+1. Basics of cluster analysis
+Hello everyone! Now that you are familiar with unsupervised learning, let us move on to the basics of cluster analysis.
+
+2. What is a cluster?
+First, let us define a cluster. It is a group of items with similar characteristics. In the Google News example, a cluster of news articles has similar words and word associations appearing in them. Another example of clustering is segmentation of customers based on their spending habits. A cluster of customers would exhibit similar spending habits.
+
+3. Clustering algorithms
+Although there are other algorithms like the density based DBSCAN technique or Gaussian models for cluster analysis, this course will focus only on the two most common techniques - hierarchical and k-means clustering.
+
+4. Hierarchical clustering algorithm: Step 1
+Let us look at the steps in hierarchical clustering before the implementation. For demonstration purposes, let us consider 13 points on a 2D plane.
+
+5. Hierarchical clustering algorithm: Step 2
+In the first step, all the points are considered as individual clusters. A cluster center is a mean of attributes of all data points in a cluster. In this case, cluster centers will have two attributes - the mean of x and y coordinates. At this stage, cluster centers of all clusters are the coordinates of the individual points.
+
+6. Hierarchical clustering algorithm: Step 3
+Next, the distances between all pairs of cluster centers are computed and the two closest clusters are merged. The cluster center of the merged cluster is then recomputed. In the example, two clusters on the bottom left have been merged. At this step, we are left with 12 clusters, one less than we started.
+
+7. Hierarchical clustering algorithm: Step 4
+In the second step, the clusters with the closest cluster centers are merged on the top left. This process of merging the two closest clusters continues until we arrive at the desired clusters. At every step, the number of clusters reduces by one. As visible from the distribution of points, let us stop at three clusters.
+
+8. Hierarchical clustering algorithm: Step 5
+Finally, these are three clusters that you arrive at after the algorithm has run. Let us now look at its simple implementation in SciPy.
+
+9. Hierarchical clustering in SciPy
+The required methods for hierarchical clustering, linkage and fcluster, are stored in scipy-dot-cluster-dot-hierarchy. We will explore the parameters of these methods later in the course. We additionally import pyplot and seaborn for visualization and pandas for data manipulation. A list of fifteen points with x and y coordinates is stored in a dataframe. First, the linkage method computes distances between intermediate clusters. Next, the fcluster method generates clusters and assigns associated cluster labels to a new column in the dataframe. Finally, we plot the points using seaborn with the cluster labels as the hue argument to associate clusters with different colors.
+
+10. Hierarchical clustering results
+Here is the result of the seaborn scatterplot, showing the three clusters.
+
+11. K-means clustering algorithm: Part 1
+Next, we discuss the algorithm of k-means clustering with the same set of points to create three clusters.
+
+12. K-means clustering algorithm: Part 2
+First, a random cluster center is generated for each of the three clusters.
+
+13. K-means clustering algorithm: Part 3
+Next, the distance to these cluster centers is computed for each point to assign to the closest cluster.
+
+14. K-means clustering algorithm: Part 4
+The cluster centers are recomputed. This iteration of assigning points to the recomputed cluster centers is performed a predefined number of times. Here, the clusters have been formed in the first iteration.
+
+15. K-means clustering in SciPy
+K-means clustering is implemented using methods kmeans and vq of scipy-dot-cluster-dot-vq. The centroids of the clusters are computed using kmeans and cluster assignments for each point are done through vq. The second argument in both methods is distortion, which we capture in a dummy variable. We will explore the parameters of these methods later in the course. Finally, we plot the clusters using seaborn.
+
+16. K-means clustering results
+Here is the resulting plot.
+
+17. Next up: hands-on exercises
+Let us try some exercises now.
+
+
+
+
+
+1. Data preparation for cluster analysis
+Hello everyone. Now that you are familiar with the two basic clustering techniques, let us discuss an important step in processing data that we should apply before performing clustering.
+
+2. Why do we need to prepare data for clustering?
+Why do we need to prepare data for clustering? Imagine a situation where you have a set of variables with incomparable units - such as the dimensions of a product and its price. Even if variables have the same unit, they may be significantly different in terms of their scales and variances. For instance, the amount that one may spend on an inexpensive item like cereals is low as compared to traveling expenses. If we use data in this raw form, the results of clustering may be biased. The clusters formed may be dependent on one variable significantly more than the other. How do we account for these issues, then? We use a process called normalization.
+
+3. Normalization of data
+What is normalization of data? It is a process by which we rescale the values of a variable with respect to standard deviation of the data. The resultant standard deviation post normalization is 1. The process of normalization is simple and achieved through dividing a value by its standard deviation. Let us look at its implementation in Python. A normalization library is available on the SciPy package, using the whiten method of the vq class. First, we initiate the data to be normalized in a list and then use the whiten method, to transform. The array may be one or multi dimensional. Note that, in the example, we use a one dimensional list. In case of a multi dimensional array or list of lists, whiten divides each value by the standard deviation of the column. The result of the whiten method is an array of the same dimensions.
+
+4. Illustration: normalization of data
+Let us look at a plot using the matplotlib library in Python to compare the results of the normalization process. First, you need import the pyplot class of the matplotlib library in Python. We initialized the two lists which contain the original and scaled data points. By default, pyplot plots line graphs. Next, we enable the legend in the graph and then display the plot. Let us see how the plot looks like. The original and scaled lists have been plotted in blue and orange colors, respectively. The serial number of the points is in the x axis, whereas the value of the original and scaled data points is in the y axis. As you can see, the variation in the scaled data has been toned down from the original data. Interestingly, the trends remain similar to the original data though.
+
+5. Next up: some DIY exercises
+With this, we come to the end of this demonstration. It is time for you get familiar with the normalization process by writing some code of your own.
+

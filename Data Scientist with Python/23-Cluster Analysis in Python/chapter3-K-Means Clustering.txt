@@ -1,0 +1,83 @@
+
+
+1. Basics of k-means clustering
+Hi everyone! Now that you are familiar with hierarchical clustering, let us move on to k-means clustering. In the first chapter, we had a look at the algorithm behind k-means clustering - in this chapter, we will focus on the various parameters and their implications on the clustering results. Let's get started!
+
+2. Why k-means clustering?
+We explored a critical issue in hierarchical clustering in the last chapter - runtime. This chapter discusses a new clustering technique, K-means clustering, which allows you to cluster large datasets in a fraction of the time.
+
+3. Step 1: Generate cluster centers
+To perform K-Means clustering in scipy, there are two steps involved - generate the cluster centers and then assign the cluster labels. The first step is performed by the kmeans method. There are five arguments for this method. The first argument is the list of observations, which have been standardized through the whiten method. The second argument, k_or_guess, is the number of clusters. The next argument is the number of iterations of the algorithm to perform. Its default value is 20. The fourth argument is the threshold. The idea behind this argument is that the algorithm is terminated if the change in distortion since the last k-means iteration is less than or equal to the threshold. Its default value is 10 raised to the power minus 5, or 0-point-00001. The last argument is a boolean value indicating if a check needs to be performed on the data for the presence of infinite or NaN values. The default value is True, which ensures that data points with NaN or infinite values are not considered for classification, which ensures that the results are accurate and unbiased. The k-means function returns two arguments, the cluster centers and distortion. The cluster centers, is also known as the code book. You will notice that k-means runs really quickly as compared to hierarchical clustering as the number of operations is considerably less in k-means clustering.
+
+4. How is distortion calculated?
+The distortion is calculated as the sum of square of distances between the data points and cluster centers, as demonstrated in this figure.
+
+5. Step 2: Generate cluster labels
+The next step is to use the vq method to generate cluster labels. It takes three arguments. The first argument is the list of observations, which have been standardized through the whiten method. The second argument is the code book, that is the first output of the kmeans method. The third optional argument is check_finite, a boolean value indicating if a check needs to be performed on the data for the presence of infinite or NaN values. By default, its value is set to True. The function returns the cluster labels, also known as the "code book index" and the distortion.
+
+6. A note on distortions
+Let us explore distortions further. kmeans returns a single value of distortions based on the overall data, whereas vq returns a list of distortions, one for each data point. The mean of the list of distortions from the vq method should approximately equal the distortion value of the kmeans method if the same list of observations is passed.
+
+7. Running k-means
+Let us run k-means in Python. First, we import kmeans and vq. Then, we use the kmeans to get cluster centers and vq to get cluster labels. Then, we display a scatter plot with seaborn.
+
+8. Seaborn plot
+Here is how the resultant plot looks like. Notice the three distinct clusters in the figure.
+
+9. Next up: exercises!
+Now that you are familiar with kmeans clustering in scipy, let's test your knowledge through some exercises.
+
+
+
+1. How many clusters?
+In the earlier chapter, we analyzed the dendrogram to determine how many clusters were present in the data. This video talks of a way of determining the number of clusters in k-means clustering.
+
+2. How to find the right k?
+One critique of k-means clustering is that there is no right way of finding out how many clusters exist in your dataset. There are certain indicative methods, and this chapter discusses one such method: constructing an elbow plot to decide the right number of clusters for your dataset.
+
+3. Distortions revisited
+Recall our discussion on distortions, The distortion is the sum of the squares of distances between each data point and its cluster center. Ideally, distortion has an inverse relationship with the number of clusters - which means that distortion decreases with increasing number of clusters. This trend is intuitive - as segmenting the data into smaller fragments will lead to clusters being closer together, leading to a lower distortion This is the underlying logic of the elbow method, which is a line plot between the number of clusters and their corresponding distortions.
+
+4. Elbow method
+We first run k-means clustering with a varying number of clusters on the data, and construct an elbow plot, which has the number of clusters on the x-axis and distortion on the y-axis. The number of clusters can start from one to the number of data points. The ideal point is one beyond which the distortion decreases relatively less on increasing the number of clusters. Let us look at the code and a sample plot to better understand how to do this.
+
+5. Elbow method in Python
+In this code, we prepare the data to construct an elbow plot. To do so, we first decide the range of number of clusters that we would like to run the algorithm for. In this case, cluster sizes range from 2 to 6. Next, we collect the distortion from each run of the k-means method and plot the two lists using seaborn. We run the k-means method for each cluster and collect the corresponding distortions in a list for use later. In the final step, we create a data frame with the distortions for each number of clusters and plot it using seaborn, with number of clusters on x axis and distortion on y axis.
+
+6. Sample elbow plot
+This is a sample elbow plot. You would notice that distortion decreases sharply from 2 to 3 clusters, but has a very gradual decrease with a subsequent increase in number of clusters. The ideal number of clusters here is therefore, 3.
+
+7. Final thoughts on using the elbow method
+Before completing this video, I would like to emphasize that the elbow method only gives an indication of ideal number of clusters. Occasionally, it may be insufficient to find an optimal k. For instance, the elbow method fails when data is evenly distributed. There are other methods to find the optimal number of clusters such as the average silhouette and gap statistic methods. They are indicative methods too, and will not be discussed as a part of this course.
+
+8. Next up: exercises
+Now that you have knowledge of using the elbow method to determine the number of clusters, let us move on to some exercises to find the optimal number of clusters.
+
+
+
+
+1. Limitations of k-means clustering
+You have learnt about k-means clustering in SciPy in earlier exercises. We will now focus on the limitations of this clustering method and how you should proceed with caution while using k-means clustering.
+
+2. Limitations of k-means clustering
+Earlier, we saw that k-means clustering overcomes the biggest drawback of hierarchical clustering, runtime. However, it comes with its own set of limitations which you should consider while using it. The first issue is the procedure to find the right number of clusters, k. As discussed earlier, the elbow method is one of the ways to determine the right k, but may not always work. The next limitation of k-means clustering is the impact of seeds on clustering, which we will explore shortly. The final limitation that we will explore is the formation of equal-sized clusters.
+
+3. Impact of seeds
+Let us look at the impact of seeds on the resulting clusters. As the process of defining the initial cluster centers is random, this initialization can affect the final clusters. Therefore, to get consistent results when running k-means clustering on the same dataset multiple times, it is a good idea to set the initialization parameters for random number generation. The seed is initialized through the seed method of random class in numpy. You can pass a single integer or a 1D array as an argument. Let us see the results of k-means clustering when we pass two different seeds before running the algorithm. For the purposes of testing, we take a list of randomly generated 200 points and use five clusters. It is seen that in the two cases the cluster sizes are different. Let us see the plots.
+
+4. Impact of seeds: plots
+Here are the plots to compare the resulting clusters. You will notice that many points along the cluster boundaries have interchanged clusters. Interestingly, the effect of seeds is only seen when the data to be clustered is fairly uniform. If the data has distinct clusters before clustering is performed, the effect of seeds will not result in any changes in the formation of resulting clusters.
+
+5. Uniform clusters in k means
+To illustrate the bias in kmeans clustering towards uniform clusters to minimize variance, let us perform clustering on this set of 280 points, divided into non uniform groups of 200, 70 and 10. Graphically, they look distinctly separated into three clusters. Therefore, if we ran any clustering algorithm, these three clusters should be picked up. Let us test that theory with kmeans clustering first.
+
+6. Uniform clusters in k-means: a comparison
+If you look at the results of k-means clustering on this data set, you get non intuitive clusters even after varying the seeds. This is because the very idea of k-means clustering is to minimize distortions. This results in clusters that have similar areas and not necessarily the similar number of data points. However, when you look at the results of hierarchical clustering on the same dataset using the complete method to decide cluster proximity, you will notice that the clusters formed are intuitive and consistent with our assumption in the earlier slide.
+
+7. Final thoughts
+Finally, we realize that each technique has its pros and cons, and you should know about the underlying assumptions of each technique before applying them. Ideally, you should spend some time pondering over your data size, its patterns and resources and time available to you before finalizing on an algorithm. Remember, clustering is still the exploratory phase of your analysis - it is perfectly fine for some trial and error at this stage.
+
+8. Next up: exercises
+Let us work on some exercises now.
+
+
