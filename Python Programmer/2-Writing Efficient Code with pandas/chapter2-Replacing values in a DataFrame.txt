@@ -1,0 +1,48 @@
+Got It!
+1. Replace scalar values using .replace()
+Welcome back! In this second chapter, we will focus on the .replace() function, and see how it can be used to replace a scalar value in a pandas DataFrame.
+
+2. The popular name dataset
+In this chapter, we will work with a dataset that includes the most popular names that were given to newborns between 2011 and 2016. Our dataset includes, among other information, the most popular names in the US by year, gender and ethnicity. For example, the name Chloe was ranked second in popularity among all female newborns of Asian and Pacific Islander ethnicity in 2011.
+
+3. Replace values in pandas
+In pandas, we can replace values in a very intuitive way. We can simply define which values we want to replace, and then what we want to replace them with. We can use any method to select our entries of interest. In the following example, we will replace all the babies that are classified as male to boys. First, we select all the entries from the Gender feature that correspond to male and we simply replace with them with the word boy. But is it the fastest way to perform this action?
+
+4. Replace values using .replace()
+As for most operations we are covering, pandas has an optimized built-in functions: .replace(). When we want to replace a scalar value with another scalar value, the syntax of this function is simple. We denote the value we want to replace, and then the value we want to replace it with. As before, we time the performance of the function when replacing all the entries classified as male with boy. As we can see when comparing the speed between the two functions, pandas' .replace() function performs ~1,700 percent faster!
+
+5. Let's do it
+We just saw the difference between the intuitive way and the pandas way of replacing scalar values. Now it's your turn to give it a try!
+
+
+Got It!
+1. Replace values using lists
+Welcome back! In the previous lesson, we saw how we can use the .replace() function to replace scalar values more efficiently. In this one, we will see how we can use lists to replace single or multiple values.
+
+2. Replace multiple values with one value
+We already know how to replace a scalar value in a pandas DataFrame. However, there might be cases where we need to replace multiple values at the same time. Let's see how to do this. We will keep using the names dataset. Our objective is to change all ethnicities classified as WHITE NON HISPANIC or WHITE NON HISP to WNH. Using the .loc() function, we will locate babies of the ethnicities we are looking for, using the 'or' statement (which in Python is symbolized by the pipe). We will then assign the new value. As always, we also measure the CPU time needed for this operation.
+
+3. Replace multiple values using .replace() I
+Let's try to speed up this process using pandas .replace() function. As we saw in the previous lesson, the syntax of the .replace() function is very simple. We first type what we want to replace, and then what we want to replace it with. Instead of a scalar, we choose to replace a list of values with a single value. We want to perform the same task as in the previous slide, which is to replace all ethnicities classified as WHITE NON HISPANIC or WHITE NON HISP to WNH. Thus, in the .replace() function, we pass the values we want to replace, WHITE NON HISPANIC and WHITE NON HISP, as a list, and the value we want to replace them with as WNH. As we can see, there is a massive improvement in terms of efficiency by using the .replace() function.
+
+4. Replace multiple values using .replace() II
+So, can we use the .replace() function to replace multiple values with multiple values? Of course we can! As we have seen in the previous slides, there are some entries in our popular names dataset with ethnicity classified as BLACK NON HISP and WHITE NON HISP. We want to replace these entries with BLACK NON HISPANIC and WHITE NON HISPANIC respectively. One possible solution would be to use two different .replace() functions, but there is a more efficient way. Instead, we use one .replace() function which takes as input a list containing the entries we want to replace, BLACK NON HISP and WHITE NON HISP, and a list containing the values we want to replace them with, BLACK NON HISPANIC and WHITE NON HISPANIC. The function works on a one-to-one mapping, so the first element of the first list will be replaced by the first element of the second list, etc.
+
+5. Let's do it
+Now it's your turn to replace several values at once!
+
+
+Got It!
+1. Replace values using dictionaries
+Great job on using lists to replace values! Let's now discuss how we can use dictionaries to replace values in a pandas DataFrame efficiently.
+
+2. Replace single values with dictionaries
+Similarly to lists, we can use a different data structure to map values we want to replace to the ones they should be replaced with. Dictionaries are a valuable arrow in your Python's quiver, and they will serve our purpose well. We're going to use dictionaries to replace every male's gender to BOY and every female's gender to GIRL. The syntax is very simple: we map each value we want to replace to the value we want to replace it with, using the colon symbol. We could do the same thing with lists, but it's a more verbose. If we compare both methods, we can see that dictionaries run approximately 55% faster. In general, working with dictionaries in Python is very efficient compared to lists: looking through a list requires a pass in every element of the list, while looking at a dictionary directs instantly to the key that matches the entry. The comparison is a little unfair though, since both structures serve different purposes.
+
+3. Replace multiple values using dictionaries
+Using dictionaries allows you to replace with the same values on several different columns. In all the previous examples, we specified the column from which the values to replace came from. We're now going to replace several values from a same column with one common value. We want to classify all ethnicities into three big categories: Black, Asian and White. The syntax again is very simple. We use nested dictionaries here: the outer key is the column in which we want to replace values. The value of this outer key is another dictionary, where the keys are the ethnicities to replace, and the values for the new ethnicity (Black, Asian or White).
+
+4. Let's do it!
+Now that you know almost everything about the .replace() function, let's practice!
+
+

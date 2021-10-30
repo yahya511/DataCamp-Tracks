@@ -1,0 +1,123 @@
+Got It!
+1. Welcome!
+Hello and welcome! My name is Logan Thomas, and I'll be your guide through this course about writing efficient code using Python.
+
+2. Course overview
+As a data scientist, the majority of your time should be spent gleaning actionable insights from data. Whether you're cleaning and curating a messy dataset, deploying a machine learning model, or creating a sleek data visualization, the code you write should be a helpful tool to quickly get you where you need to go - not something that leaves you waiting around. In this course, you'll learn how to write cleaner, faster, and more efficient Python code. We'll explore how to time and profile your code in order to find potential bottlenecks. Then, you'll practice eliminating these bottlenecks, and other bad design patterns, using Python's Standard Library, NumPy, and pandas. After completing this course, you'll have everything you need to start writing elegant and efficient Python code! But first, let's explore what is meant by efficient Python code.
+
+3. Defining efficient
+In the context of this course, efficient refers to code that satisfies two key concepts. First, efficient code is fast and has a small latency between execution and returning a result. Second, efficient code allocates resources skillfully and isn't subjected to unnecessary overhead. Although your definition of fast runtime and small memory usage may depend on the task at hand, the goal of writing efficient code is still to reduce both latency and overhead. For the remainder of this course, we'll be exploring how to write Python code that runs quickly and has little memory overhead.
+
+4. Defining Pythonic
+We've defined what is meant by efficient code, but it is also important to note that this course focuses on writing efficient code using Python. Python is a language that prides itself on code readability, and thus, it comes with its own set of idioms and best practices. Writing Python code the way it was intended is often referred to as Pythonic code. This means the code that you write follows the best practices and guiding principles of Python. Pythonic code tends to be less verbose and easier to interpret. Although Python supports code that doesn't follow its guiding principles, this type of code tends to run slower. As an example, look at the non-Pythonic code in this slide. Not only is this code more verbose than the Pythonic version, it takes longer to run. We'll take a closer look at why this is the case later on in the course, but for now, the main take away here is that Pythonic code is efficient code!
+
+5. The Zen of Python by Tim Peters
+In the previous slide, I discussed the importance of following Python's guiding principles and idioms. But what are these idioms you may ask? Enter The Zen of Python. This is a list of a few idioms and best practices that summarize Python's design philosophy. Take a moment to familiarize yourself with these principles. Chances are, if you have been working with Python for some time, you are already familiar with most of them. If not, don't worry! We'll be touching on a few of these concepts throughout the course.
+
+6. Things you should know
+Before moving on, we should check your Python knowledge level. There are a few things this course assumes you have a working knowledge of. You don't need to be an expert on the topics listed here, but you should definitely be familiar with them in order to get the most out of this course.
+
+7. Let's get started!
+Now that we've defined efficient and Pythonic code, and touched on a few things you should already be familiar with, it's time to start coding!
+
+
+Got It!
+1. Building with built-ins
+Python comes with a number of built-in components that you can think of as a "batteries included" concept. Although these aren't exhaustive, they give us more than enough to start using Python out-of-the-box. Let's explore a few built-in components that help write efficient Python code.
+
+2. The Python Standard Library
+Built-in components are referred to as the Python Standard Library. This library comes with every Python installation and is commonly cited as one of Python's greatest strengths. Python has a number of built-in types. We'll be focusing on specific data structure types like lists, tuples, sets, and dictionaries. Python also comes with built-in functions that provide a variety of problem-solving features. Listed here are a few of the built-in functions we'll discuss and use in the course. It's worth noting that Python's built-ins have been optimized to work within the Python language itself. Therefore, we should default to using a built-in solution (if one exists) rather than developing our own.
+
+3. Built-in function: range()
+Let's explore some notable built-in functions; starting with range. This is a handy tool whenever we want to create a sequence of numbers. Suppose we wanted to create a list of integers from zero to ten. We could explicitly type out each integer, but that is not very efficient.
+
+4. Built-in function: range()
+Instead, let's use range to accomplish this task. We can provide range with a start and stop value to create this sequence. Or, we can provide just a stop value assuming that we want our sequence to start at zero. Notice that the stop value is exclusive, or up to but not including this value. Also note the range function returns a range object, which we can convert into a list and print.
+
+5. Built-in function: range()
+range can also accept a start, stop, and step value (in that order). In this block of code, we tell range to create a sequence of numbers starting at two, ending at ten, and incrementing by two.
+
+6. Built-in function: enumerate()
+Another useful built-in function is enumerate. enumerate creates an index item pair for each item in the object provided. For example, calling enumerate on the list letters produces a sequence of indexed values. Similar to range, enumerate returns an enumerate object, which can also be converted into a list and printed.
+
+7. Built-in function: enumerate()
+We can also specify the starting index of enumerate with the keyword argument start. Here, we tell enumerate to start the index at five by passing start equals five into the function call.
+
+8. Built-in function: map()
+The last notable built-in function we'll cover is map. map applies a function to each element in an object. Notice that map takes two arguments; first, the function you'd like to apply and second, the object you'd like to apply that function on. Here, we use map to apply the built-in function round to each element of the nums list.
+
+9. Built-in function: map()
+map can also be used with a lambda, or, an anonymous function. Notice here, that we can use map and a lambda expression to apply a function, which we've defined on the fly, to our original list nums. The map function provides a quick and clean way to apply a function to an object iteratively without writing a for loop.
+
+10. Let's start building with built-ins!
+Now that we've covered a few key components of the Python Standard Library let's start building with these built-ins.
+
+
+Got It!
+1. The power of NumPy arrays
+NumPy, or Numerical Python, is an invaluable Python package for Data Scientists. It is the fundamental package for scientific computing in Python and provides a number of benefits for writing efficient code. In this lesson, we'll highlight one of the most important advantages of NumPy: the NumPy array.
+
+2. NumPy array overview
+NumPy arrays provide a fast and memory efficient alternative to Python lists. Typically, we import NumPy as np and use np dot array to create a NumPy array.
+
+3. NumPy array homogeneity
+NumPy arrays are homogeneous, which means that they must contain elements of the same type. We can see the type of each element using the dot dtype method. Suppose we created an array using a mixture of types. Here, we create the array nums_np_floats using the integers one and three and a float two point five. Can you spot the difference in the output? The integers now have a proceeding dot in the array. That's because NumPy converted the integers to floats to retain that array's homogeneous nature. Using dot dtype, we can verify that the elements in this array are floats. Homogeneity allows NumPy arrays to be more memory efficient and faster than Python lists. Requiring all elements be the same type eliminates the overhead needed for data type checking.
+
+4. NumPy array broadcasting
+When analyzing data, you'll often want to perform operations over entire collections of values quickly. Say, for example, you'd like to square each number within a list of numbers. It'd be nice if we could simply square the list, and get a list of squared values returned. Unfortunately, Python lists don't support these types of calculations.
+
+5. NumPy array broadcasting
+We could square the values using a list by writing a for loop or using a list comprehension. But neither of these approaches is the most efficient way of doing this.
+
+6. NumPy array broadcasting
+Here lies the second advantage of NumPy arrays - their broadcasting functionality. NumPy arrays vectorize operations, so they are performed on all elements of an object at once. This allows us to efficiently perform calculations over entire arrays. Notice that by squaring the array nums_np, all elements are squared at once.
+
+7. NumPy array indexing
+Another advantage of NumPy arrays is their indexing capabilities. When comparing basic indexing between a one-dimensional array and list, the capabilities are identical.
+
+8. NumPy array indexing
+When using two-dimensional arrays and lists, the advantages of arrays are clear. To return the second item of the first row in our two-dimensional object, the array syntax is square bracket, zero, comma, one, square bracket. The analogous list syntax is a bit more verbose as you have to surround both the zero and one with square brackets. To return the first column of values in our two-d object, the array syntax is square bracket, colon, comma, zero, square bracket. Lists don't support this type of syntax, so we must use a list comprehension to return columns.
+
+9. NumPy array boolean indexing
+NumPy arrays also have a special technique called boolean indexing. Suppose we wanted to gather only positive numbers from the sequence listed here. With an array, we can create a boolean mask using a simple inequality. Indexing the array is as simple as enclosing this inequality in square brackets.
+
+10. NumPy array boolean indexing
+To do this using a list, we need to write a for loop to filter the list or use a list comprehension. In either case, using a NumPy array to index is less verbose and has a faster runtime.
+
+11. Let's practice with powerful NumPy arrays!
+Now that we've covered powerful and efficient NumPy arrays let's start putting what we've learned into practice!
+
+
+Got It!
+1. The power of NumPy arrays
+NumPy, or Numerical Python, is an invaluable Python package for Data Scientists. It is the fundamental package for scientific computing in Python and provides a number of benefits for writing efficient code. In this lesson, we'll highlight one of the most important advantages of NumPy: the NumPy array.
+
+2. NumPy array overview
+NumPy arrays provide a fast and memory efficient alternative to Python lists. Typically, we import NumPy as np and use np dot array to create a NumPy array.
+
+3. NumPy array homogeneity
+NumPy arrays are homogeneous, which means that they must contain elements of the same type. We can see the type of each element using the dot dtype method. Suppose we created an array using a mixture of types. Here, we create the array nums_np_floats using the integers one and three and a float two point five. Can you spot the difference in the output? The integers now have a proceeding dot in the array. That's because NumPy converted the integers to floats to retain that array's homogeneous nature. Using dot dtype, we can verify that the elements in this array are floats. Homogeneity allows NumPy arrays to be more memory efficient and faster than Python lists. Requiring all elements be the same type eliminates the overhead needed for data type checking.
+
+4. NumPy array broadcasting
+When analyzing data, you'll often want to perform operations over entire collections of values quickly. Say, for example, you'd like to square each number within a list of numbers. It'd be nice if we could simply square the list, and get a list of squared values returned. Unfortunately, Python lists don't support these types of calculations.
+
+5. NumPy array broadcasting
+We could square the values using a list by writing a for loop or using a list comprehension. But neither of these approaches is the most efficient way of doing this.
+
+6. NumPy array broadcasting
+Here lies the second advantage of NumPy arrays - their broadcasting functionality. NumPy arrays vectorize operations, so they are performed on all elements of an object at once. This allows us to efficiently perform calculations over entire arrays. Notice that by squaring the array nums_np, all elements are squared at once.
+
+7. NumPy array indexing
+Another advantage of NumPy arrays is their indexing capabilities. When comparing basic indexing between a one-dimensional array and list, the capabilities are identical.
+
+8. NumPy array indexing
+When using two-dimensional arrays and lists, the advantages of arrays are clear. To return the second item of the first row in our two-dimensional object, the array syntax is square bracket, zero, comma, one, square bracket. The analogous list syntax is a bit more verbose as you have to surround both the zero and one with square brackets. To return the first column of values in our two-d object, the array syntax is square bracket, colon, comma, zero, square bracket. Lists don't support this type of syntax, so we must use a list comprehension to return columns.
+
+9. NumPy array boolean indexing
+NumPy arrays also have a special technique called boolean indexing. Suppose we wanted to gather only positive numbers from the sequence listed here. With an array, we can create a boolean mask using a simple inequality. Indexing the array is as simple as enclosing this inequality in square brackets.
+
+10. NumPy array boolean indexing
+To do this using a list, we need to write a for loop to filter the list or use a list comprehension. In either case, using a NumPy array to index is less verbose and has a faster runtime.
+
+11. Let's practice with powerful NumPy arrays!
+Now that we've covered powerful and efficient NumPy arrays let's start putting what we've learned into practice!

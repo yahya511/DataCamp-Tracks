@@ -1,0 +1,57 @@
+Got It!
+1. The need for efficient coding I
+Welcome to this course on optimizing python code with pandas! My name is Leonidas and together, we will explore the most efficient ways to perform a variety of tasks using the pandas library. Even the easiest task in Python will have a faster alternative, which will be very handy in situations where time matters.
+
+2. How do we measure time?
+For the context of this course, we will use a function which captures the current time of the computer in seconds since the 1st of January 1970, as a floating point number. This function is the `time()` function from the time Python package. Each time we are interested in measuring some code's execution time, we will assign the current time before execution, using the time() function, execute the operation we are interested in, and measure the time again right after the code's execution. In the end, we print the result in second, in a compact but meaningful message.
+
+3. For loop vs List comprehension
+Before we apply the notion of time efficiency in any pandas- related problem, we will compare the difference in efficiency between a list comprehension and a for loop in a toy example. We are interested in calculating the square of each number from zero, up to a million. At first we will use a list comprehension to execute this operation, and the repeat the same procedure using a for loop. As you can see, we store the time each operation began, then execute it and in the end store the time it ends on a different variable. The executed time is just the difference between those two variables. Make a guess, which method is faster?
+
+4. For loop vs List comprehension II
+I am sure you guessed it right. In the majority of occasions, a list comprehension a faster way to perform a simple operation compared to a for loop. Keep my words 'in the majority' in mind, as One last interesting finding would be to see how much faster a list comprehension is. We can see that that it is 87% faster that than a for loop. Impressive eh?
+
+5. Where time matters I
+While the previous example might not appear like a big improvement, we will work on a second example to illustrate the importance of efficient coding. We are interested in calculating the sum of all consecutive positive numbers from 1 to 1 million. The most intuitive way to do it is by brute force, adding each number to the sum one by one. A more clever way to proceed is to use a well-known formula. When we want to calculate the sum of all the integer numbers from 1 up to a number, let's say N, we can multiply N by N+1, and then divide by 2, and this will give us the result we want. This problem was actually given to some students back in Germany in the 19th century, and a bright student called Carl-Friedrich Gauss devised this formula to solve the problem in seconds.
+
+6. Where time matters II
+After running both methods, we achieve a massive improvement with a magnitude of over 160,000%, which clearly demonstrates why we need efficient and optimized code, even for simple tasks.
+
+7. Let's do it!
+After this brief introduction, I hope you are as excited as I am to measure the time needed to run all these sophisticated functions. You will be surprised by the results. Let's go!
+
+
+Got It!
+1. Locate rows: .iloc[] and .loc[]
+Welcome back! In the previous lesson, we studied the basics of timing, how to time a chunk of code, and why speed efficiency matters with pandas and in general. In this lesson, we will look at the loc[] and iloc[] pandas functions, and find out which one is the most efficient to select columns and rows in a pandas DataFrame.
+
+2. The poker dataset
+Let's look at the main dataset we will use in this lesson, which derives from the famous poker card game. In each round, each player has five cards in hand, each one characterized by its symbol, which can be either hearts, diamonds, clubs or spades, and its rank, which ranges from 1 to 13. The dataset consists of every possible combination of five cards one person can posses. Let's take for example the first combination, which corresponds to the first row. We have a 10 of diamonds, a Jack and a King of clubs, a 4 of spades and an ace of hearts. If you are still not completely sure about the dataset, pause the video and look the bottom part of this slide carefully.
+
+3. Locate targeted rows
+One of the most useful features of the pandas library is the ease of convenience of selecting specific rows of a Pandas DataFrame. We're going to use iloc[], the index number locator, and loc[], the index name locator. In this example, we want to select the first 500 rows of the poker dataset. Firstly by using the loc[] function, and then by using the iloc[] function. While these two methods have the same syntax, iloc[] performs almost 200% faster than loc[]. iloc[] takes advantage of the order of the indices, which are already sorted, and is therefore faster.
+
+4. Locate targeted columns
+We used iloc[] and loc[] to target rows, but we can also use them to locate different features in a pandas DataFrame. In this example, we want to select the first three columns of the poker dataset: the symbol and the rank of the cards that came first in each hand, and the rank of the cards that came second in each hand. We can use the iloc[] function to locate a feature by index. Alternatively, we can simply select one or several columns by name. The syntax of iloc[] for that purpose is simple: we denote with a colon that we want all the rows of the DataFrame and then after the comma, we use a colon followed by a 3 to denote that we want all the columns until the 3rd one. To select columns by name, we simply include the name of the columns we want in double square brackets. In terms of speed, for the task of locating features, loc[] performs 30% faster. In general, the loc[] function works better for for selecting columns, while iloc[] is faster for selecting specific rows.
+
+5. Let's do it!
+Now that we explored the differences between .iloc() and .loc(), it's your turn to target rows and columns and evaluate performance yourself!
+
+
+Got It!
+1. Select random rows
+Welcome back! In the last lesson of this first chapter, we will explore a couple of different ways to randomly select rows and columns in a pandas DataFrame.
+
+2. Sampling random rows using pandas
+Sometimes, we may not be interested in a specific entry or feature of a DataFrame. Instead, we may want to select one or several completely random ones. In the poker dataset, we select 100 random rows, which correspond to 100 poker hands. We will use pandas .sample() function, which was written for that specific reason. The syntax for this function is very straightforward; we denote how many samples we want to obtain, and the axis we want to sample from; in this case, we use 0 for rows.
+
+3. Sampling random rows using numpy
+NumPy includes a random integer generation function, random.randint(), which we can use to get random numbers from a predefined range. We can then use these numbers as indices for the DataFrame's rows. The syntax of this function is very simple: we give the lowest and highest numbers we want to sample from with arguments low and high, and the number of samples we want with argument size. Built-in functions are always handy because they are optimized for specific tasks. We can see that the pandas sample() function is about 37% faster than NumPy's random integer generator.
+
+4. Sampling random columns
+For the same poker dataset, we are interested in selecting three random features from all the features in the dataset. As we did when sampling random rows, we can still use pandas' .sample() function, just changing the axis to 1 to now select from features instead of rows. Similarly, we can slightly modify NumPy's random integer generator to generate random column indices, and use the .iloc() function to locate all the rows and the selected columns. As we can see, pandas' .sample() function performs 60% faster than NumPy's random integer generator.
+
+5. Let's do it!
+Now it's your turn to try your hand at randomly sampling rows!
+
+

@@ -1,0 +1,183 @@
+Got It!
+1. Efficiently combining, counting, and iterating
+In this lesson, we'll cover combining, counting, and iterating over objects efficiently. Let's begin by exploring a dataset from the popular Nintendo video game Pokémon.
+
+2. Pokémon Overview
+The Pokémon game centers around players called trainers that try to collect fictional animals called Pokémon.
+
+3. Pokémon Overview
+These Pokémon animals roam the fictional universe where the game takes place. When a trainer encounters a Pokémon, they try to capture that Pokémon to add to their collection.
+
+4. Pokémon Overview
+If a trainer successfully captures a Pokémon, it is stored in a tool called a Pokédex.
+
+5. Pokémon Description
+Each Pokémon comes with its own set of metadata.
+
+6. Pokémon Description
+This metadata contains a name for each Pokémon. It also has the generation of each Pokémon specifying what version of the game the Pokémon appears in. Here, Squirtle, a Pokémon from generation one, is shown.
+
+7. Pokémon Description
+The metadata also includes the Pokémon's Type and whether or not it belongs to a special category called Legendary.
+
+8. Pokémon Description
+Each Pokémon has a set of statistics that are numerical values for certain categories like Health Points (called HP), Attack, and others. We'll use a dataset that contains pieces of this metadata for the remainder of the chapter.
+
+9. Combining objects
+Suppose we have two lists: one of Pokémon names and another of each Pokémon's Health Points. We want to combine these lists so that each Pokémon is stored next to its Health Points. We can iterate over the names list using enumerate and grab each Pokémon's corresponding Health Points using the index variable.
+
+10. Combining objects with zip
+But Python's built-in function zip provides a more elegant solution. The name "zip" describes how this function combines objects like a zipper on a jacket (making two separate things become one). zip returns a zip object that must be unpacked into a list and printed to see the contents. Each item is a tuple of elements from the original lists.
+
+11. The collections module
+Python comes with a number of efficient built-in modules. The collections module contains specialized datatypes that can be used as alternatives to standard dictionaries, lists, sets, and tuples.
+
+12. The collections module
+A few notable specialized datatypes are listed here. Let's dig deeper into the Counter object.
+
+13. Counting with loop
+Our Pokémon dataset describes 720 characters. Here is a list of each Pokémon's corresponding type. We'd like to create a dictionary where each key is a Pokémon type, and each value is the count of characters that belong to that type. Using a standard dictionary approach, we have to instantiate an empty output dictionary. Then, we iterate over the poke_types list and check whether or not each poke_type exists within the type_counts dictionary. If the poke_type is not in the dictionary, we create a new key and initialize its count value as one. If the poke_type is already in the dictionary, we update the count by one.
+
+14. collections.Counter()
+Using Counter from the collections module is a more efficient approach. Just import Counter and provide the object to be counted. No need for a loop! Counter returns a Counter dictionary of key-value pairs. When printed, it's ordered by highest to lowest counts. If comparing runtime times, we'd see that using Counter takes half the time as the standard dictionary approach!
+
+15. The itertools module
+Another built-in module, itertools, contains functional tools for working with iterators. A subset of these tools is listed here.
+
+16. The itertools module
+We'll focus on one piece of this module: the combinatoric generators. These generators efficiently yield Cartesian products, permutations, and combinations of objects. Let's explore an example.
+
+17. Combinations with loop
+Suppose we want to gather all combination pairs of Pokémon types possible. We can do this with a nested for loop that iterates over the poke_types list twice. Notice that a conditional statement is used to skip pairs having the same type twice. For example, if x is 'Bug' and y is 'Bug', we want to skip this pair. Since we're interested in combinations (where order doesn't matter), another statement is used to ensure either order of the pair doesn't already exist within the combos list before appending it. For example, the pair ('Bug', 'Fire') is the same as the pair ('Fire', 'Bug'). We want one of these pairs, not both.
+
+18. itertools.combinations()
+The combinations generator from itertools provides a more efficient solution. First, we import combinations and then create a combinations object by providing the poke_types list and the length of combinations we desire. combinations returns a combinations object, which we unpack into a list and print to see the result. If comparing runtimes, we'd see using combinations is significantly faster than the nested loop.
+
+19. Let's practice!
+Let's put our skills to the test and practice combining, counting, and iterating!
+
+
+
+Got It!
+1. Set theory
+In this lesson, we'll continue to use the Pokémon dataset to enhance our skills when it comes to comparing objects. Let's dive in.
+
+2. Set theory
+Often, we'd like to compare two objects to observe similarities and differences between their contents. When doing this type of comparison, it's best to leverage a branch of mathematics called set theory. As you know, Python comes with a built-in set data type. Sets come with some handy methods we can use for comparing. We'll explore each of these methods later on. The main takeaway is that when we'd like to compare objects multiple times and in different ways, we should consider storing our data in sets to leverage these elegant and efficient methods. Another nice feature of Python sets is their ability to quickly check if a value exists within its members. We call this membership testing. In this lesson, we'll show that using the in operator with a set is much faster than using it with a list or tuple. Let's explore a few examples.
+
+3. Comparing objects with loops
+Suppose we had two lists of Pokémon: list_a and list_b.
+
+4. Comparing objects with loops
+We'd like to compare these lists to see which Pokémon appear in both lists.
+
+5. Comparing objects with loops
+We could use a nested for loop to compare each item in list_a to each item in list_b and collect only those items that appear in both lists. But, iterating over each item in both lists is extremely inefficient.
+
+6. Comparing objects with set theory
+Instead, we should use Python's set data type to compare these lists. By converting each list into a set, we can use the dot-intersection method to collect the Pokémon shared between the two sets. One simple line of code and no need for a loop!
+
+7. Efficiency gained with set theory
+When comparing runtimes, we see that using sets is a much faster approach.
+
+8. Set method: difference
+We can also use a set method to see Pokémon that exist in one set but not in another. To gather Pokémon that exist in set_a but not in set_b, use set_a-dot-difference(set_b).
+
+9. Set method: difference
+If we want the Pokémon in set_b, but not in set_a, we use set_b-dot-difference(set_a).
+
+10. Set method: symmetric difference
+To collect Pokémon that exist in exactly one of the sets (but not both), we can use a method called the symmetric difference.
+
+11. Set method: union
+Finally, we can combine these sets using the dot-union method. This collects all of the unique Pokémon that appear in either or both sets.
+
+12. Membership testing with sets
+Another nice efficiency gain when using sets is the ability to quickly check if a specific item is a member of a set's elements. Consider our collection of 720 Pokémon names stored as a list, tuple, and set.
+
+13. Membership testing with sets
+We want to check whether or not the character, Zubat, is in each of these data structures.
+
+14. Membership testing with sets
+When comparing runtimes, it's clear that membership testing with a set is significantly faster than a list or a tuple.
+
+15. Uniques with sets
+One final efficiency gain when using sets comes from the definition of set itself. A set is defined as a collection of distinct elements. Thus, we can use a set to collect unique items from an existing object. Let's revisit the primary_types list, which contains the primary types of each Pokémon. If we wanted to collect the unique Pokémon types within this list, we could write a for loop to iterate over the list, and only append the Pokémon types that haven't already been added to the unique_types list.
+
+16. Uniques with sets
+Using a set makes this much easier. All we have to do is convert the primary_types list into a set, and we have our solution: a set of distinct Pokémon types.
+
+17. Let's practice set theory!
+Let's practice using set theory with a few coding examples.
+
+
+
+Got It!
+1. Eliminating loops
+In this lesson, we'll discuss the concept of looping. Although using loops when writing Python code isn't necessarily a bad design pattern, using extraneous loops can be inefficient and costly. Let's explore some tools that can help us eliminate the need to use loops in our code.
+
+2. Looping in Python
+Python comes with a few looping patterns that can be used when we want to iterate over an object's contents. For loops iterate over elements of a sequence piece-by-piece. While loops execute a loop repeatedly as long as some Boolean condition is met. Nested loops use multiple loops inside one another. Although all of these looping patterns are supported by Python, we should be careful when using them. Because most loops are evaluated in a piece-by-piece manner, they are often an inefficient solution.
+
+3. Benefits of eliminating loops
+We should try to avoid looping as much as possible when writing efficient code. Eliminating loops usually results in fewer lines of code that are easier to interpret. Recall in a previous lesson we referred to the Zen of Python - a collection of idioms for writing Pythonic code. One of these idioms was "flat is better than nested." Striving to eliminate loops in our code will help us follow this idiom. In the following examples, we'll see that there are often more efficient approaches that can be used instead of using a loop.
+
+4. Eliminating loops with built-ins
+Suppose we have a list of lists, called poke_stats, that contains statistical values for each Pokémon. Each row corresponds to a Pokémon, and each column corresponds to a Pokémon's specific statistical value. Here, the columns represent a Pokémon's Health Points, Attack, Defense, and Speed.
+
+5. Eliminating loops with built-ins
+We want to do a simple sum of each of these rows in order to collect the total stats for each Pokémon. If we were to use a loop to calculate row sums, we would have to iterate over each row and append the row's sum to the totals list. We can accomplish the same task, in fewer lines of code, with a list comprehension. Or, we could use the built-in map function that we've discussed previously.
+
+6. Eliminating loops with built-ins
+Each of these approaches will return the same list, but using a list comprehension or the map function takes one line of code, and has a faster runtime.
+
+7. Eliminating loops with built-in modules
+We've also covered a few built-in modules that can help us eliminate loops. Remember when we collected the different combinations of Pokémon types? Instead of using the nested for loop, we used combinations from the itertools module for a cleaner, more efficient solution.
+
+8. Eliminate loops with NumPy
+Another powerful technique for eliminating loops is to use the NumPy package. Suppose we had the same collection of statistics we used in a previous example but stored in a NumPy array instead of a list of lists.
+
+9. Eliminate loops with NumPy
+We'd like to collect the average stat value for each Pokémon (or row) in our array. We could use a loop to iterate over the array and collected the row averages. But, NumPy arrays allow us to perform calculations on entire arrays all at once. Here, we use the dot-mean method and specifying an axis equal to 1 to calculate the mean for each row (meaning we calculate an average across the column values). This eliminates the need for a loop and is much more efficient.
+
+10. Eliminate loops with NumPy
+When comparing runtimes, we see that using the dot-mean method on the entire array and specifying an axis is significantly faster than using a loop.
+
+11. Let's practice!
+Now, let's practice replacing loops with the techniques we've learned!
+
+
+Got It!
+1. Writing better loops
+We've discussed how loops can be costly and inefficient. But, sometimes you can't eliminate a loop. In this lesson, we'll explore how to make loops more efficient when looping is unavoidable.
+
+2. Lesson caveat
+Before diving in, some of the loops we'll discuss can be eliminated using techniques covered in previous lessons. For demonstrative purposes, we'll assume the use cases shown here are instances where a loop is unavoidable.
+
+3. Writing better loops
+The best way to make a loop more efficient is to analyze what's being done within the loop. We want to make sure that we aren't doing unnecessary work in each iteration. If a calculation is performed for each iteration of a loop, but its value doesn't change with each iteration, it's best to move this calculation outside (or above) the loop. If a loop is converting data types with each iteration, it's possible that this conversion can be done outside (or below) the loop using a map function. Anything that can be done once should be moved outside of a loop. Let's explore a few examples.
+
+4. Moving calculations above a loop
+We have a list of Pokémon names and an array of each Pokémon's corresponding attack value. We'd like to print the names of each Pokémon with an attack value greater than the average of all attack values. To do this, we'll use a loop that iterates over each Pokémon and their attack value. For each iteration, the total attack average is calculated by finding the mean value of all attacks. Then, each Pokémon's attack value is evaluated to see if it exceeds the total average. Can you spot the inefficiency? The total_attack_avg variable is being created with each iteration of the loop. But, this calculation doesn't change between iterations since it is an overall average. We only need to calculate this value once.
+
+5. Moving calculations above a loop
+By moving this calculation outside (or above) the loop, we calculate the total attack average only once. We get the same output, but this is a more efficient approach.
+
+6. Moving calculations above a loop
+Comparing runtimes, we see that keeping the total_attack_avg calculation within the loop takes roughly 75 microseconds.
+
+7. Moving calculations above a loop
+Moving the calculation takes about half the time.
+
+8. Using holistic conversions
+Another way to make loops more efficient is to use holistic conversions outside (or below) the loop. We have three lists from our dataset of 720 Pokémon: a list of each Pokémon's name, a list corresponding to whether or not a Pokémon has a legendary status, and a list of each Pokémon's generation. We want to combine these objects so that each name, status, and generation is stored in an individual list. To do this, we'll use a loop that iterates over the output of the zip function. Remember, zip returns a collection of tuples, so we need to convert each tuple into a list since we want to create a list of lists as our output. Now, we append each individual poke_list to our poke_data output variable. By printing the result, we see our desired list of lists. However, converting each tuple to a list within the loop is not very efficient.
+
+9. Using holistic conversions
+Instead, we should collect all of our poke_tuples together, and use the map function to convert each tuple to a list. The loop no longer converts tuples to lists with each iteration. Instead, we moved this tuple to list conversion outside (or below) the loop. That way, we convert data types all at once (or holistically) rather than converting in each iteration.
+
+10. Using holistic conversions
+Runtimes show that converting each tuple to a list outside of the loop is more efficient.
+
+11. Time for some practice!
+Let's practice writing more efficient loops!
+
