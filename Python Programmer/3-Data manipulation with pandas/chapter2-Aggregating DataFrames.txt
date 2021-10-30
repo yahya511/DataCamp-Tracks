@@ -1,0 +1,107 @@
+
+
+1. Summary statistics
+Hi, I'm Maggie, and I'll be the other instructor for this course. In the first chapter, you learned about DataFrames, how to sort and subset them, and how to add new columns to them. In this chapter, we'll talk about aggregating data, starting with summary statistics. Summary statistics, as follows from their name, are numbers that summarize and tell you about your dataset.
+
+2. Summarizing numerical data
+One of the most common summary statistics for numeric data is the mean, which is one way of telling you where the "center" of your data is. You can calculate the mean of a column by selecting the column with square brackets and calling dot-mean. There are lots of other summary statistics that you can compute on columns, like median and mode, minimum and maximum, and variance and standard deviation. You can also take sums and calculate quantiles.
+
+3. Summarizing dates
+You can also get summary statistics for date columns. For example, we can find the oldest dog's date of birth by taking the minimum of the date of birth column. Similarly, we can take the maximum to see that the youngest dog was born in 2018.
+
+4. The .agg() method
+The aggregate, or agg, method allows you to compute custom summary statistics. Here, we create a function called pct30 that computes the thirtieth percentile of a DataFrame column. Don't worry if this code doesn't make sense to you -- just know that the function takes in a column and spits out the column's thirtieth percentile. Now we can subset the weight column and call dot-agg, passing in the name of our function, pct30. It gives us the thirtieth percentile of the dogs' weights.
+
+5. Summaries on multiple columns
+agg can also be used on more than one column. By selecting the weight and height columns before calling agg, we get the thirtieth percentile for both columns.
+
+6. Multiple summaries
+We can also use agg to get multiple summary statistics at once. Here's another function that computes the fortieth percentile called pct40. We can pass a list of functions into agg, in this case, pct30 and pct40, which will return the thirtieth and fortieth percentiles of the dogs' weights.
+
+7. Cumulative sum
+pandas also has methods for computing cumulative statistics, for example, the cumulative sum. Calling cumsum on a column returns not just one number, but a number for each row of the DataFrame. The first number returned, or the number in the zeroth index, is the first dog's weight. The next number is the sum of the first and second dogs' weights. The third number is the sum of the first, second, and third dogs' weights, and so on. The last number is the sum of all the dogs' weights.
+
+8. Cumulative statistics
+pandas also has methods for other cumulative statistics, such as the cumulative maximum, cumulative minimum, and the cumulative product. These all return an entire column of a DataFrame, rather than a single number.
+
+9. Walmart
+In this chapter, you'll be working with data on Walmart stores, which is a chain of department stores in the US. The dataset contains weekly sales in US dollars in various stores. Each store has an ID number and a specific store type. The sales are also separated by department ID. Along with weekly sales, there is information about whether it was a holiday week or not, the average temperature during the week in that location, the average fuel price in dollars per liter that week, and the national unemployment rate that week.
+
+10. Let's practice!
+Time to practice your summary statistics skills!
+
+
+
+1. Counting
+So far, in this chapter, you've learned how to summarize numeric variables. In this video, you'll learn how to summarize categorical data using counting.
+
+2. Avoiding double counting
+Counting dogs is no easy task when they're running around the park. It's hard to keep track of who you have and haven't counted!
+
+3. Vet visits
+Here's a DataFrame that contains vet visits. The vet's office wants to know how many dogs of each breed have visited their office. However, some dogs have been to the vet more than once, like Max and Stella, so we can't just count the number of each breed in the breed column.
+
+4. Dropping duplicate names
+Let's try to fix this by removing rows that contain a dog name already listed earlier in the dataset, or in other words; we'll extract a dog with each name from the dataset once. We can do this using the drop_duplicates method. It takes an argument, subset, which is the column we want to find our duplicates based on - in this case, we want all the unique names. Now we have a list of dogs where each one appears once. We have Max the Chow Chow, but where did Max the Labrador go? Because we have two different dogs with the same name, we'll need to consider more than just name when dropping duplicates.
+
+5. Dropping duplicate pairs
+Since Max and Max are different breeds, we can drop the rows with pairs of name and breed listed earlier in the dataset. To base our duplicate dropping on multiple columns, we can pass a list of column names to the subset argument, in this case, name and breed. Now both Maxes have been included, and we can start counting.
+
+6. Easy as 1, 2, 3
+To count the dogs of each breed, we'll subset the breed column and use the value_counts method. We can also use the sort argument to get the breeds with the biggest counts on top.
+
+7. Proportions
+The normalize argument can be used to turn the counts into proportions of the total. 25% of the dogs that go to this vet are Labradors.
+
+8. Let's practice!
+Time to commence counting!
+
+
+
+1. Grouped summary statistics
+So far, you've been calculating summary statistics for all rows of a dataset, but summary statistics can be useful to compare different groups.
+
+2. Summaries by group
+While computing summary statistics of entire columns may be useful, you can gain many insights from summaries of individual groups. For example, does one color of dog weigh more than another on average? Are female dogs taller than males? You can already answer these questions with what you've learned so far! We can subset the dogs into groups based on their color, and take the mean of each. But that's a lot of work, and the duplicated code means you can easily introduce copy and paste bugs.
+
+3. Grouped summaries
+That's where the groupby method comes in. We can group by the color variable, select the weight column, and take the mean. This will give us the mean weight for each dog color. This was just one line of code compared to the five we had to write before to get the same results.
+
+4. Multiple grouped summaries
+Just like with ungrouped summary statistics, we can use the agg method to get multiple statistics. Here, we pass a list of functions into agg after grouping by color. This gives us the minimum, maximum, and sum of the different colored dogs' weights.
+
+5. Grouping by multiple variables
+You can also group by multiple columns and calculate summary statistics. Here, we group by color and breed, select the weight column and take the mean. This gives us the mean weight of each breed of each color.
+
+6. Many groups, many summaries
+You can also group by multiple columns and aggregate by multiple columns.
+
+7. Let's practice!
+Now that we've talked about grouping, it's time to practice grouped summary statistics.
+
+
+
+1. Pivot tables
+Pivot tables are another way of calculating grouped summary statistics. If you've ever used a spreadsheet, chances are you've used a pivot table. Let's see how to create pivot tables in pandas.
+
+2. Group by to pivot table
+In the last lesson, we grouped the dogs by color and calculated their mean weights. We can do the same thing using the pivot_table method. The "values" argument is the column that you want to summarize, and the index column is the column that you want to group by. By default, pivot_table takes the mean value for each group.
+
+3. Different statistics
+If we want a different summary statistic, we can use the aggfunc argument and pass it a function. Here, we take the median for each dog color using NumPy's median function.
+
+4. Multiple statistics
+To get multiple summary statistics at a time, we can pass a list of functions to the aggfunc argument. Here, we get the mean and median for each dog color.
+
+5. Pivot on two variables
+You also previously computed the mean weight grouped by two variables: color and breed. We can also do this using the pivot_table method. To group by two variables, we can pass a second variable name into the columns argument. While the result looks a little different than what we had before, it contains the same numbers. There are NaNs, or missing values, because there are no black Chihuahuas or gray Labradors in our dataset, for example.
+
+6. Filling missing values in pivot tables
+Instead of having lots of missing values in our pivot table, we can have them filled in using the fill_value argument. Here, all of the NaNs get filled in with zeros.
+
+7. Summing with pivot tables
+If we set the margins argument to True, the last row and last column of the pivot table contain the mean of all the values in the column or row, not including the missing values that were filled in with Os. For example, in the last row of the Labrador column, we can see that the mean weight of the Labradors is 26 kilograms. In the last column of the Brown row, the mean weight of the Brown dogs is 24 kilograms. The value in the bottom right, in the last row and last column, is the mean weight of all the dogs in the dataset. Using margins equals True allows us to see a summary statistic for multiple levels of the dataset: the entire dataset, grouped by one variable, by another variable, and by two variables.
+
+8. Let's practice!
+Time to practice aggregating data using pivot tables!
+
